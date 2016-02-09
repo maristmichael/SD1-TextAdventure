@@ -23,7 +23,9 @@ public class HouseOfQuestions {
 		"You are now in a room with a giant globe and many history books surrounding it"
 	};
 	
+	// Variables that holds updates scene for player and hold player's name
 	static String locationScene;
+	static String playerName;
 
 	public static void main(String[] args) {
 		// Variable Declarations
@@ -33,8 +35,10 @@ public class HouseOfQuestions {
 		
 		
 		System.out.println("\n"+"House of Questions");
-		System.out.println("------------------"+"\n");
-		System.out.println("You wake up to find yourself inside of the "+
+		System.out.println("------------------");
+		System.out.print("\n" + "What's your name?: ");
+		playerName = inputSource.nextLine();
+		System.out.println("\nYou, " + playerName + ", wake up to find yourself inside of the "+
 			"'House of Questions'\n"+"Nothing else to do but explore...\n");
 		
 		
@@ -46,10 +50,10 @@ public class HouseOfQuestions {
 			// Game loop until user quits
 			if (userInput.equals("N") && playerLocation == 4) {
 				playerLocation = 5;
-				locationScene = LOCATIONS[3];	
+				locationScene = LOCATIONS[4];	
 			} else if (userInput.equals("N") && playerLocation == 5) {
 				playerLocation = 6;
-				locationScene = LOCATIONS[6];
+				locationScene = LOCATIONS[5];
 			} else if (userInput.equals("N") && playerLocation == 2) {
 				playerLocation = 1;
 				locationScene = LOCATIONS[0];
@@ -83,7 +87,8 @@ public class HouseOfQuestions {
 			} else if (userInput.equals("Q")) {
 				break;
 			} else if (userInput.equals("H")) {
-				locationScene = "Explore by typing in 'n', 's', 'e', 'w'\n";
+				locationScene = "Explore by typing in 'n', 's', 'e', 'w'\n" + 
+				"Type in 'q' to quit the game.\n";
 			}else {
 				System.out.println("That is a wall, try somthing else");
 				continue;
@@ -92,7 +97,10 @@ public class HouseOfQuestions {
 			System.out.println(locationScene);
 		}
 		
-		System.out.println("Quitting game... ;(");
+		System.out.println("\n" +"Quitting game... ;(\n" + "Thank you for playing :)");
+		System.out.println("\nCopyright Michael Gutierrez");
+		System.out.println("===========================");
+		System.out.println("Under the supervision of Professor Johnson");
 		inputSource.close();
 	
 	
