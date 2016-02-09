@@ -23,12 +23,13 @@ public class HouseOfQuestions {
 		"You are now in a room with a giant globe and many history books surrounding it"
 	};
 	
-	
+	static String locationScene;
+
 	public static void main(String[] args) {
 		// Variable Declarations
 		Scanner inputSource = new Scanner(System.in);
-		String userInput;
-		String direction;
+		 String userInput;
+		 String direction;
 		
 		
 		System.out.println("\n"+"House of Questions");
@@ -43,22 +44,52 @@ public class HouseOfQuestions {
 			userInput = inputSource.nextLine().toUpperCase();
 			
 			// Game loop until user quits
-			if (userInput.equals("N")) {
-				direction = "North";
-			} else if (userInput.equals("S")) {
-				direction = "South";
-			} else if (userInput.equals("E")) {
-				direction = "East";
-			} else if (userInput.equals("W")) {
-				direction = "West";
+			if (userInput.equals("N") && playerLocation == 4) {
+				playerLocation = 5;
+				locationScene = LOCATIONS[3];	
+			} else if (userInput.equals("N") && playerLocation == 5) {
+				playerLocation = 6;
+				locationScene = LOCATIONS[6];
+			} else if (userInput.equals("N") && playerLocation == 2) {
+				playerLocation = 1;
+				locationScene = LOCATIONS[0];
+			} else if (userInput.equals("N") && playerLocation == 3) {
+				playerLocation = 2;
+				locationScene = LOCATIONS[1];
+			} else if (userInput.equals("S") && playerLocation == 1) {
+				playerLocation = 2;
+				locationScene = LOCATIONS[1];
+			} else if (userInput.equals("S") && playerLocation == 2) {
+				playerLocation = 3;
+				locationScene = LOCATIONS[2];
+			} else if (userInput.equals("S") && playerLocation == 6) {
+				playerLocation = 5;
+				locationScene = LOCATIONS[4];
+			} else if (userInput.equals("S") && playerLocation == 5) {
+				playerLocation = 4;
+				locationScene = LOCATIONS[3];
+			} else if (userInput.equals("E") && playerLocation == 0) {
+				playerLocation = 4;
+				locationScene = LOCATIONS[3];
+			} else if (userInput.equals("E") && playerLocation == 1) {
+				playerLocation = 0;
+				locationScene = "We are back where we woke up";
+			} else if (userInput.equals("W") && playerLocation == 0) {
+				playerLocation = 1;
+				locationScene = LOCATIONS[0];
+			} else if (userInput.equals("W") && playerLocation == 4) {
+				playerLocation = 0;
+				locationScene = "We are back where we woke up";
 			} else if (userInput.equals("Q")) {
 				break;
-			} else {
-				System.out.println("Not a valid command!\n");
+			} else if (userInput.equals("H")) {
+				locationScene = "Explore by typing in 'n', 's', 'e', 'w'\n";
+			}else {
+				System.out.println("That is a wall, try somthing else");
 				continue;
 			}
 			
-			System.out.println("You moved " + direction + ".\n");
+			System.out.println(locationScene);
 		}
 		
 		System.out.println("Quitting game... ;(");
