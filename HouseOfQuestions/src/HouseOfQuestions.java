@@ -27,27 +27,19 @@ public class HouseOfQuestions {
 	static String locationScene;
 	static String playerName;
 
-	public static void main(String[] args) {
-		// Variable Declarations
-		Scanner inputSource = new Scanner(System.in);
-		 String userInput;
-		 String direction;
-		
-		
-		System.out.println("\n"+"House of Questions");
-		System.out.println("------------------");
-		System.out.print("\n" + "What's your name?: ");
-		playerName = inputSource.nextLine();
-		System.out.println("\nYou, " + playerName + ", wake up to find yourself inside of the "+
-			"'House of Questions'\n"+"Nothing else to do but explore...\n");
-		
+	// Variables handle input by user
+	static Scanner inputSource = new Scanner(System.in);
+	static String userInput;
+	
+	// Function that starts the game loop
+	static void gameStart() {
 		
 		while (true) {
 			// User input that is case-insensitive
 			System.out.print("Where should I go?: ");
 			userInput = inputSource.nextLine().toUpperCase();
 			
-			// Game loop until user quits
+			// Game loops until user quits
 			if (userInput.equals("N") && playerLocation == 4) {
 				playerLocation = 5;
 				locationScene = LOCATIONS[4];	
@@ -92,21 +84,35 @@ public class HouseOfQuestions {
 			}else {
 				System.out.println("That is a wall, try somthing else");
 				continue;
-			}
-			
+			}	
 			System.out.println(locationScene);
 		}
-		
+	}
+	
+	// Function that displays welcome message and captures player's name
+	static void gameIntro(){
+		System.out.println("\n"+"House of Questions");
+		System.out.println("------------------");
+		System.out.print("\n" + "What's your name?: ");
+		playerName = inputSource.nextLine();
+		System.out.println("\nYou, " + playerName + ", wake up to find yourself inside of the "+
+			"'House of Questions'\n"+"Nothing else to do but explore...\n");
+	}
+	
+	// Function that displays credits
+	static void gameCredits() {
 		System.out.println("\n" +"Quitting game... ;(\n" + "Thank you for playing :)");
 		System.out.println("\nCopyright Michael Gutierrez");
 		System.out.println("===========================");
 		System.out.println("Under the supervision of Professor Johnson");
-		inputSource.close();
-	
-	
 	}
-
 	
-	
+	public static void main(String[] args) {
+		
+		HouseOfQuestions.gameIntro();
+		HouseOfQuestions.gameStart();
+		HouseOfQuestions.gameCredits();
+		inputSource.close();
+	}
 	
 }
