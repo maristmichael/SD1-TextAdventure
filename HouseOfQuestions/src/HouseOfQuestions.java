@@ -10,9 +10,20 @@ import java.util.Scanner;
 
 public class HouseOfQuestions {
 
-	/**
-	 * @param args
-	 */
+	// Variable for player location
+	static int playerLocation = 0;
+	
+	// Array containing location Descriptions
+	static String[] LOCATIONS = {
+		"This is a room whose walls are written with math equations",
+		"You enter a room littered with many scientific journals and books",
+		"This room contains many philosphical rhetoric inscribed on the walls",
+		"What a beautiful room! It has many works of art scattered around",
+		"You enter a room with a plethora of dictionaries and novels all stacked nicely",
+		"You are now in a room with a giant globe and many history books surrounding it"
+	};
+	
+	
 	public static void main(String[] args) {
 		// Variable Declarations
 		Scanner inputSource = new Scanner(System.in);
