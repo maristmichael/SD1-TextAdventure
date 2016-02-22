@@ -12,5 +12,12 @@ public class Player {
 		this.inventory = new String[7];
 	}
 	
+	@Override
+	public String toString() {
+		return "Your name is " + this.name + "\n" +
+				"You're current at " + this.location + "\n" +
+				"Your score is: " + this.score + "\n" +
+				"You have the following items: " + this.inventory;
+	}
 
 }
