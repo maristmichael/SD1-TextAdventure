@@ -34,7 +34,7 @@ public class HouseOfQuestions {
 	// Function that starts the game loop
 	static void gameStart() {
 		
-		while (true) {
+	/* while (true) {
 			// User input that is case-insensitive
 			System.out.print("Where should I go?: ");
 			userInput = inputSource.nextLine().toUpperCase();
@@ -86,8 +86,8 @@ public class HouseOfQuestions {
 				continue;
 			}	
 			System.out.println(locationScene);
-		}
-	}
+		} */
+	} 
 	
 	// Function that displays welcome message and captures player's name
 	static void gameIntro(){
