@@ -9,24 +9,26 @@
 import java.util.Scanner;
 
 public class HouseOfQuestions {
-
-	// Variable for player location
-	static int playerLocation = 0;
 	
-	// Array containing location Descriptions
-	static String[] LOCATIONS = {
-		"This is a room that has walls written with math equations",
-		"You enter a room littered with many scientific journals and books",
-		"This room contains many philosphical rhetoric inscribed on the walls",
-		"What a beautiful room! It has many works of art scattered around",
-		"You enter a room with a plethora of dictionaries and novels all stacked neatly",
-		"You are now in a room with a giant globe with many history books surrounding it"
+	// Constant Variables representing directions for matrix
+	public static final int N = 0;
+	public static final int S = 1;
+	public static final int W = 2;
+	public static final int E = 3;
+
+	// Navigation matrix
+	public final int [][] map = {
+			{1,-1,2,5},
+			{-1,0,-1,-1},
+			{-1,3,-1,0},
+			{2,4,-1,-1},
+			{3,-1,-1,-1},
+			{6,-1,0,-1},
+			{7,5,-1,-1},
+			{-1,6,-1,-1}
 	};
-	
-	// Variables that holds updates scene for player and hold player's name
-	static String locationScene;
-	static String playerName;
-
+			
+			
 	// Variables handle input by user
 	static Scanner inputSource = new Scanner(System.in);
 	static String userInput;
@@ -109,7 +111,6 @@ public class HouseOfQuestions {
 	
 	public static void main(String[] args) {
 		
-		HouseOfQuestions.gameIntro();
 		HouseOfQuestions.gameStart();
 		HouseOfQuestions.gameCredits();
 		inputSource.close();
