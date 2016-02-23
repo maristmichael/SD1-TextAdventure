@@ -5,8 +5,8 @@ public class Player {
 	public String[] inventory;
 	public int score;
 	
-	public Player(String name, String location) {
-		this.name = name;
+	public Player(String location) {
+		this.name = "noName";
 		this.location = location;
 		this.score = 0;
 		this.inventory = new String[7];
