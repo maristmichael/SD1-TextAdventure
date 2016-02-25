@@ -8,5 +8,10 @@ public class Locale {
 		this.name = name;
 		this.description = description;
 		this.item = item;
-	}	
+	}
+	
+	@Override
+	public String toString() {
+		return this.description;
+	}
 }

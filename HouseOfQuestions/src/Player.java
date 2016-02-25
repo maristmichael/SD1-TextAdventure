@@ -1,15 +1,15 @@
 
 public class Player {
 	public String name;
-	public String location;
+	public int location = 0;
 	public String[] inventory;
 	public int score;
 	
-	public Player(String location) {
-		this.name = "noName";
-		this.location = location;
+	public Player(String name, int location) {
+		this.name = name;
 		this.score = 0;
 		this.inventory = new String[7];
+		this.location = location;
 	}
 	
 	@Override
