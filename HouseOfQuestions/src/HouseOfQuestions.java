@@ -2,7 +2,7 @@
  * @author Michael Gutierrez
  * CMPT 220L-114
  * Professor Johnson
- * 9 February 2016
+ * 25 February 2016
  *
  */
 
@@ -40,19 +40,19 @@ public class HouseOfQuestions {
 	};
 	
 	public static String gameMap = 
-			  "                    History \n" +
-			  "                       |    \n" +
-		 	  "                       |    \n" +
-			  "          Music     English \n" +
-			  "            |          |    \n" +
-			  "            |          |    \n" +
-			  "   Math----Start------Art   \n" +
-			  "     |                      \n" +
-			  "     |                      \n" +
-			  "   Science                  \n" +
-			  "     |                      \n" +
-			  "     |                      \n" +
-			  "   Philosophy               \n";
+		"                    History \n" +
+		"                       |    \n" +
+		"                       |    \n" +
+		"          Music     English \n" +
+		"            |          |    \n" +
+		"            |          |    \n" +
+		"   Math----Start------Art   \n" +
+		"     |                      \n" +
+		"     |                      \n" +
+		"   Science                  \n" +
+		"     |                      \n" +
+		"     |                      \n" +
+		"   Philosophy               \n";
 	
 	// Locale Array with instances of locations
 	final static Locale[] LOCALES = {
