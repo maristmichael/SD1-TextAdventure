@@ -15,8 +15,7 @@ public class HouseOfQuestions {
 	public static final int S = 1;
 	public static final int W = 2;
 	public static final int E = 3;
-	
-	public static String item;
+
 	// Array containing location Descriptions
 	public static final String[] LocDescrip = {
 		"This is the starting area, there are several paths to take",
@@ -29,7 +28,7 @@ public class HouseOfQuestions {
 		"You are now in a room with a giant globe with many history books surrounding it"
 		};
 	
-	public static  String[] allItems = {
+	public static String[] allItems = {
 		"Area Map",
 		"Guitar",
 		"Calculator",
@@ -39,7 +38,22 @@ public class HouseOfQuestions {
 		"Great Gatsby",
 		"U.S. History Book"
 	};
-		
+	
+	public static String gameMap = 
+			  "                    History \n" +
+			  "                       |    \n" +
+		 	  "                       |    \n" +
+			  "          Music     English \n" +
+			  "            |          |    \n" +
+			  "            |          |    \n" +
+			  "   Math----Start------Art   \n" +
+			  "     |                      \n" +
+			  "     |                      \n" +
+			  "   Science                  \n" +
+			  "     |                      \n" +
+			  "     |                      \n" +
+			  "   Philosophy               \n";
+	
 	// Locale Array with instances of locations
 	final static Locale[] LOCALES = {
 		new Locale("Starting Room", LocDescrip[0],allItems[0]),
@@ -52,7 +66,6 @@ public class HouseOfQuestions {
 		new Locale("History Room", LocDescrip[7], allItems[7])
 	};
 	
-	static Object start = LOCALES[0];
 	
 	// Navigation matrix
 	public final static int [][] MAP = {
@@ -108,6 +121,14 @@ public class HouseOfQuestions {
 		}
 	}
 	
+	static void map(){
+		if (LOCALES[0].item.equals("")) { 
+			System.out.println("");
+			System.out.println(gameMap);
+		} else {
+			System.out.println("You do not have a map yet");
+		}
+	}
 	// This method looks at player's current location 
 	static int from(int dir){
 		int locId = currentPlayer.location;
@@ -132,9 +153,8 @@ public class HouseOfQuestions {
 		
 		while (true) {
 			// User input that is case-insensitive
-			System.out.println("Where should I go?: ");
+			System.out.print("Where should I go?: ");
 			userInput = inputSource.nextLine().trim().toUpperCase();
-			
 
 			// Game loops until user quits
 			if (userInput.equals("N")) {
@@ -147,9 +167,13 @@ public class HouseOfQuestions {
 				HouseOfQuestions.move(E);
 			} else if (userInput.equals("T")) {
 				HouseOfQuestions.take();
+			} else if (userInput.equals("M")) {
+				HouseOfQuestions.map();
 			} else if (userInput.equals("H")) {
 				locationScene = "Explore by typing in 'n', 's', 'e', 'w'\n" + 
-				"Type in 'q' to quit the game.\n";
+				"Type in 'q' to quit the game.\n" + 
+				"Type in 't' to take an item that may be in a room" + 
+				"Type in 'm' to display the game map if you found it";
 			} else if (userInput.equals("Q")) {
 				break;
 			}else {
