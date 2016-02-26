@@ -66,7 +66,6 @@ public class HouseOfQuestions {
 		new Locale("History Room", LocDescrip[7], allItems[7])
 	};
 	
-	
 	// Navigation matrix
 	public final static int [][] MAP = {
 			  /*{N,S,W,E}*/
@@ -78,7 +77,7 @@ public class HouseOfQuestions {
 	 	/*5*/	{6,-1,0,-1}, // From Art --> English (N), or Start(E)
 	 	/*6*/	{7,5,-1,-1}, // From English --> History(N), or Art(S)
 	 	/*7*/	{-1,6,-1,-1} // From History --> English(S)
-		};
+	};
 	
 	// This is the instance of the Player object 
 	static Player currentPlayer = new Player("", 0);
@@ -116,11 +115,15 @@ public class HouseOfQuestions {
 			for (int i = 0; i< maxCount; i++){
 				currentPlayer.inventory[i] = LOCALES[currentPlayer.location].item;
 				System.out.println("You picked up a(n): " + LOCALES[currentPlayer.location].item);
+				currentPlayer.score += 5;
+				System.out.println("Score +5");
+				System.out.println("Your score is: " + currentPlayer.score);;
 				LOCALES[currentPlayer.location].item = "";
 			}
 		}
 	}
 	
+	// This method displays the game map if player has obtained the map
 	static void map(){
 		if (LOCALES[0].item.equals("")) { 
 			System.out.println("");
@@ -129,6 +132,7 @@ public class HouseOfQuestions {
 			System.out.println("You do not have a map yet");
 		}
 	}
+	
 	// This method looks at player's current location 
 	static int from(int dir){
 		int locId = currentPlayer.location;
@@ -164,7 +168,7 @@ public class HouseOfQuestions {
 			} else if (userInput.equals("W")) {
 				HouseOfQuestions.move(W);
 			} else if (userInput.equals("E")) {
-				HouseOfQuestions.move(E);
+				HouseOfQuestions.move(E);	
 			} else if (userInput.equals("T")) {
 				HouseOfQuestions.take();
 			} else if (userInput.equals("M")) {
@@ -207,7 +211,6 @@ public class HouseOfQuestions {
 	}
 	
 	public static void main(String[] args) {
-		
 		HouseOfQuestions.gameIntro();
 		HouseOfQuestions.gameStart();
 		HouseOfQuestions.gameCredits();
