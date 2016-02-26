@@ -8,7 +8,7 @@ public class Player {
 	public Player(String name, int location) {
 		this.name = name;
 		this.score = 0;
-		this.inventory = new String[7];
+		this.inventory = new String[8];
 		this.location = location;
 	}
 	

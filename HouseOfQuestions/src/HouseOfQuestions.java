@@ -16,29 +16,43 @@ public class HouseOfQuestions {
 	public static final int W = 2;
 	public static final int E = 3;
 	
+	public static String item;
 	// Array containing location Descriptions
 	public static final String[] LocDescrip = {
-			"This is the starting area, there are several paths to take",
-			"In this room, you hear many melodies emanating from the walls.",
-			"This is a room that has walls written with math equations",
-			"You enter a room littered with many scientific journals and books",
-			"This room contains many philosophical rhetoric inscribed on the walls",
-			"What a beautiful room! It has many works of art scattered around",
-			"You enter a room with many dictionaries and novels all stacked neatly",
-			"You are now in a room with a giant globe with many history books surrounding it"
+		"This is the starting area, there are several paths to take",
+		"In this room, you hear many melodies emanating from the walls.",
+		"This is a room that has walls written with math equations",
+		"You enter a room littered with many scientific journals and books",
+		"This room contains many philosophical rhetoric inscribed on the walls",
+		"What a beautiful room! It has many works of art scattered around",
+		"You enter a room with many dictionaries and novels all stacked neatly",
+		"You are now in a room with a giant globe with many history books surrounding it"
 		};
+	
+	public static  String[] allItems = {
+		"Area Map",
+		"Guitar",
+		"Calculator",
+		"Beaker",
+		"Plato's Manuscripts",
+		"Starry Night Painting",
+		"Great Gatsby",
+		"U.S. History Book"
+	};
 		
 	// Locale Array with instances of locations
-	static final Object[] LOCALES = {
-		new Locale("Starting Room", LocDescrip[0],""),
-		new Locale("Music Room", LocDescrip[1],"Guitar"),
-		new Locale("Math Room", LocDescrip[2], "Calculator"),
-		new Locale("Science Room", LocDescrip[3], "Beaker"),
-		new Locale("Philosophy Room", LocDescrip[4], "Plato's manuscrips"),
-		new Locale("Art Room", LocDescrip[5], "Starry Night"),
-		new Locale("English Room", LocDescrip[6], "Great Gatsby"),
-		new Locale("History Room", LocDescrip[7], "U.S. History Book")
+	final static Locale[] LOCALES = {
+		new Locale("Starting Room", LocDescrip[0],allItems[0]),
+		new Locale("Music Room", LocDescrip[1],allItems[1]),
+		new Locale("Math Room", LocDescrip[2], allItems[2]),
+		new Locale("Science Room", LocDescrip[3], allItems[3]),
+		new Locale("Philosophy Room", LocDescrip[4], allItems[4]),
+		new Locale("Art Room", LocDescrip[5], allItems[5]),
+		new Locale("English Room", LocDescrip[6], allItems[6]),
+		new Locale("History Room", LocDescrip[7], allItems[7])
 	};
+	
+	static Object start = LOCALES[0];
 	
 	// Navigation matrix
 	public final static int [][] MAP = {
@@ -80,6 +94,20 @@ public class HouseOfQuestions {
 		}
 	}
 	
+	// This method allow's player to grab items and store them in the inventory
+	static void take(){
+		int maxCount = 1;
+		if (LOCALES[currentPlayer.location].item == "") {
+			System.out.print("No items to find");
+		} else {
+			for (int i = 0; i< maxCount; i++){
+				currentPlayer.inventory[i] = LOCALES[currentPlayer.location].item;
+				System.out.println("You picked up a(n): " + LOCALES[currentPlayer.location].item);
+				LOCALES[currentPlayer.location].item = "";
+			}
+		}
+	}
+	
 	// This method looks at player's current location 
 	static int from(int dir){
 		int locId = currentPlayer.location;
@@ -104,9 +132,10 @@ public class HouseOfQuestions {
 		
 		while (true) {
 			// User input that is case-insensitive
-			System.out.print("Where should I go?: ");
+			System.out.println("Where should I go?: ");
 			userInput = inputSource.nextLine().trim().toUpperCase();
 			
+
 			// Game loops until user quits
 			if (userInput.equals("N")) {
 				HouseOfQuestions.move(N);
@@ -116,6 +145,8 @@ public class HouseOfQuestions {
 				HouseOfQuestions.move(W);
 			} else if (userInput.equals("E")) {
 				HouseOfQuestions.move(E);
+			} else if (userInput.equals("T")) {
+				HouseOfQuestions.take();
 			} else if (userInput.equals("H")) {
 				locationScene = "Explore by typing in 'n', 's', 'e', 'w'\n" + 
 				"Type in 'q' to quit the game.\n";
