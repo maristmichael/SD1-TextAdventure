@@ -110,11 +110,11 @@ public class HouseOfQuestions {
 	static void take(){
 		int maxCount = 1;
 		if (LOCALES[currentPlayer.location].item == "") {
-			System.out.print("No items to find");
+			System.out.print("No items to find\n");
 		} else {
 			for (int i = 0; i< maxCount; i++){
 				currentPlayer.inventory[i] = LOCALES[currentPlayer.location].item;
-				System.out.println("You picked up a(n): " + LOCALES[currentPlayer.location].item);
+				System.out.println("\nYou picked up a(n): " + LOCALES[currentPlayer.location].item);
 				currentPlayer.score += 5;
 				System.out.println("Score +5");
 				System.out.println("Your score is: " + currentPlayer.score);;
@@ -146,9 +146,9 @@ public class HouseOfQuestions {
 		if (!(nextLoc ==-1)) {
 			currentPlayer.location = nextLoc;
 		} else {
-			System.out.println("Cannot go this way... Choose another path");
+			System.out.println("\nCannot go this way... Choose another path");
 		}
-		System.out.println(HouseOfQuestions.locToScene());
+		System.out.println("\n"+HouseOfQuestions.locToScene());
 	}
 	
 	// Function that starts the game loop
@@ -174,17 +174,18 @@ public class HouseOfQuestions {
 			} else if (userInput.equals("M")) {
 				HouseOfQuestions.map();
 			} else if (userInput.equals("H")) {
-				locationScene = "Explore by typing in 'n', 's', 'e', 'w'\n" + 
+				locationScene = "\nExplore by typing in 'n', 's', 'e', 'w'\n" + 
 				"Type in 'q' to quit the game.\n" + 
 				"Type in 't' to take an item that may be in a room" + 
-				"Type in 'm' to display the game map if you found it";
+				"Type in 'm' to display the game map if you found it\n";
 			} else if (userInput.equals("Q")) {
 				break;
 			}else {
-				System.out.println("Not a valid command");
+				System.out.println("Not a valid comman\n");
 				continue;
 			}	
 			System.out.println(locationScene);
+			locationScene = "";
 		}
 	} 
 	
@@ -199,7 +200,7 @@ public class HouseOfQuestions {
 		currentPlayer.name = enteredName;
 		System.out.println("\nYou, " + currentPlayer.name + ", wake up to find yourself inside of the "+
 				"'House of Questions'\n"+"Nothing else to do but explore...\n");
-		System.out.println(HouseOfQuestions.locToScene());
+		System.out.println(HouseOfQuestions.locToScene() + "\n");
 	}
 	
 	// Function that displays credits
