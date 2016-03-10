@@ -28,15 +28,15 @@ public class HouseOfQuestions {
 		"You are now in a room with a giant globe with many history books surrounding it"
 		};
 	
-	public static String[] allItems = {
-		"Area Map",
-		"Guitar",
-		"Calculator",
-		"Beaker",
-		"Plato's Manuscripts",
-		"Starry Night Painting",
-		"Great Gatsby",
-		"U.S. History Book"
+	public static Item[] allItems = {
+		new Item("Area Map", "A map of the house"),
+		new Item("Guitar", "A nifty acoustic guitar"),
+		new Item("Calculator","A fancy TI-84 calculator used for math classes"),
+		new Item("Beaker", "A beaker for measurement"),
+		new Item("Plato's Manuscripts", "A collection of writings from Plato"),
+		new Item("Starry Night Painting", "Van Gogh's famous famous painting"),
+		new Item("Great Gatsby", "A famous book by F.Scott Fitzgerald"),
+		new Item("U.S. History Book", "A thick book containing U.S. history")
 	};
 	
 	public static String gameMap = 
@@ -56,7 +56,7 @@ public class HouseOfQuestions {
 	
 	// Locale Array with instances of locations
 	final static Locale[] LOCALES = {
-		new Locale("Starting Room", LocDescrip[0],allItems[0]),
+		new Locale("Starting Room", LocDescrip[0], allItems[0]),
 		new Locale("Music Room", LocDescrip[1],allItems[1]),
 		new Locale("Math Room", LocDescrip[2], allItems[2]),
 		new Locale("Science Room", LocDescrip[3], allItems[3]),

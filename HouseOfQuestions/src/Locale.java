@@ -1,13 +1,12 @@
 
 public class Locale {
-	public String name;
-	public String description;
-	public String item;
+	String name;
+	String description;
+	Item item;
 	
-	public Locale(String name, String description, String item) {
+	public Locale(String name, String description, Item item) {
 		this.name = name;
 		this.description = description;
-		this.item = item;
 	};
 	
 	@Override
