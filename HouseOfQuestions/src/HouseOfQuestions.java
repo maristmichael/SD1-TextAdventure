@@ -73,8 +73,8 @@ public class HouseOfQuestions {
 	
 	
 	// Variables handle input by user
-	static Scanner inputSource = new Scanner(System.in);
-	static String userInput;
+	public static Scanner inputSource = new Scanner(System.in);
+	public static String userInput;
 	
 	// This method looks at player's location and displays appropriate description
 	static String locToScene() {
@@ -108,7 +108,7 @@ public class HouseOfQuestions {
 			break;
 			}
 		} else {
-			System.out.println("You do not have a map yet");
+			System.out.println("You do not have a map");
 		}
 	}
 	
@@ -161,6 +161,8 @@ public class HouseOfQuestions {
 				HouseOfQuestions.move(E);	
 			} else if (userInput.equals("T")) {
 				Player.take(currentPlayer, LOCALES[currentPlayer.location]);
+			} else if (userInput.equals("D")) {
+				Player.drop(currentPlayer, LOCALES[currentPlayer.location]);
 			} else if (userInput.equals("M")) {
 				HouseOfQuestions.map();
 			} else if (userInput.equals("H")) {
