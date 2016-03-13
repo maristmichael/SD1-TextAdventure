@@ -36,6 +36,7 @@ public class Player {
 			}
 		}
 		
+	// This method 
 		static void drop(Player user, Locale userLocation) {
 			Scanner inputSource = new Scanner(System.in);
 			String userInput;
@@ -50,9 +51,15 @@ public class Player {
 						System.out.print("You dropped the " + user.inventory.get(i).name + " here in the " + userLocation.name);
 						System.out.println();
 						user.inventory.remove(user.inventory.get(i));
+					} else if (userInput.equals("all")){
+						userLocation.items.addAll(user.inventory);
+						for (int l = 0; l < user.inventory.size(); l++) {
+							user.inventory.remove(user.inventory.get(i));
+						}
+						System.out.println("You droped all your items");
 					} else {
 						System.out.println("What item did you want to drop again?");
-					}
+					} 
 				break;
 				}
 			}
