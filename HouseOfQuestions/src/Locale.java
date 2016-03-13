@@ -1,12 +1,14 @@
+import java.util.ArrayList;
 
 public class Locale {
 	String name;
 	String description;
-	Item item;
+	ArrayList<Item>items;
 	
-	public Locale(String name, String description, Item item) {
+	public Locale(String name, String description) {
 		this.name = name;
 		this.description = description;
+		this.items = new ArrayList<Item>();
 	};
 	
 	@Override

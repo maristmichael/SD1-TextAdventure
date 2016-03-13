@@ -55,7 +55,7 @@ public class HouseOfQuestions {
 		"   Philosophy               \n";
 	
 	// Locale Array with instances of locations
-	final static Locale[] LOCALES = {
+	public final static Locale[] LOCALES = {
 		new Locale("Starting Room", LocDescrip[0], allItems[0]),
 		new Locale("Music Room", LocDescrip[1],allItems[1]),
 		new Locale("Math Room", LocDescrip[2], allItems[2]),
@@ -106,22 +106,6 @@ public class HouseOfQuestions {
 		}
 	}
 	
-	// This method allow's player to grab items and store them in the inventory
-	static void take(){
-		int maxCount = 1;
-		if (LOCALES[currentPlayer.location].item == "") {
-			System.out.print("No items to find\n");
-		} else {
-			for (int i = 0; i< maxCount; i++){
-				currentPlayer.inventory[i] = LOCALES[currentPlayer.location].item;
-				System.out.println("\nYou picked up a(n): " + LOCALES[currentPlayer.location].item);
-				currentPlayer.score += 5;
-				System.out.println("Score +5");
-				System.out.println("Your score is: " + currentPlayer.score);;
-				LOCALES[currentPlayer.location].item = "";
-			}
-		}
-	}
 	
 	// This method displays the game map if player has obtained the map
 	static void map(){
