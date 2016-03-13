@@ -16,6 +16,7 @@ public class Locale {
 		this.items.add(newItem);   
 	    }
 	
+	
 	@Override
 	public String toString() {
 		return this.description + "\n(You are in the " + this.name + ")";

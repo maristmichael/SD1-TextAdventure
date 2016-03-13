@@ -15,19 +15,18 @@ public class Player {
 	
 	// This method allow's player to grab items and store them in the inventory
 		static void take(Player user, Locale userLocation){
-			System.out.println(user.inventory);
-			System.out.println();
-			if (userLocation.item == null) {
+
+			if (userLocation.items.size() == 0) {
 				System.out.print("No items to find\n");
 			} else {
 				for (int i = 0; i< 1; i++){
-					user.inventory.add(userLocation.item);
-					userLocation.
-					System.out.println("\nYou picked up a(n): " + userLocation.item);
+					user.inventory.addAll(userLocation.items);
+					System.out.println("\nYou picked up a(n): " + userLocation.items);
+					userLocation.items.clear();
 					user.score += 5;
 					System.out.println("Score +5");
-					System.out.println("Your score is: " + user.score);;
-					System.out.println(user.inventory);
+					System.out.println("Your total score is: " + user.score);
+					System.out.println("Your inventory: " + user.inventory.toString());
 
 				}
 			}
