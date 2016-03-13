@@ -11,6 +11,11 @@ public class Locale {
 		this.items = new ArrayList<Item>();
 	};
 	
+	public void placeItems(String name, String descrip) {
+		Item newItem = new Item(name, descrip);
+		this.items.add(newItem);   
+	    }
+	
 	@Override
 	public String toString() {
 		return this.description + "\n(You are in the " + this.name + ")";

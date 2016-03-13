@@ -28,17 +28,6 @@ public class HouseOfQuestions {
 		"You are now in a room with a giant globe with many history books surrounding it"
 		};
 	
-	public static Item[] allItems = {
-		new Item("Area Map", "A map of the house"),
-		new Item("Guitar", "A nifty acoustic guitar"),
-		new Item("Calculator","A fancy TI-84 calculator used for math classes"),
-		new Item("Beaker", "A beaker for measurement"),
-		new Item("Plato's Manuscripts", "A collection of writings from Plato"),
-		new Item("Starry Night Painting", "Van Gogh's famous famous painting"),
-		new Item("Great Gatsby", "A famous book by F.Scott Fitzgerald"),
-		new Item("U.S. History Book", "A thick book containing U.S. history")
-	};
-	
 	public static String gameMap = 
 		"                    History \n" +
 		"                       |    \n" +
@@ -56,14 +45,14 @@ public class HouseOfQuestions {
 	
 	// Locale Array with instances of locations
 	public final static Locale[] LOCALES = {
-		new Locale("Starting Room", LocDescrip[0], allItems[0]),
-		new Locale("Music Room", LocDescrip[1],allItems[1]),
-		new Locale("Math Room", LocDescrip[2], allItems[2]),
-		new Locale("Science Room", LocDescrip[3], allItems[3]),
-		new Locale("Philosophy Room", LocDescrip[4], allItems[4]),
-		new Locale("Art Room", LocDescrip[5], allItems[5]),
-		new Locale("English Room", LocDescrip[6], allItems[6]),
-		new Locale("History Room", LocDescrip[7], allItems[7])
+		new Locale("Starting Room", LocDescrip[0]),
+		new Locale("Music Room", LocDescrip[1]),
+		new Locale("Math Room", LocDescrip[2]),
+		new Locale("Science Room", LocDescrip[3]),
+		new Locale("Philosophy Room", LocDescrip[4]),
+		new Locale("Art Room", LocDescrip[5]),
+		new Locale("English Room", LocDescrip[6]),
+		new Locale("History Room", LocDescrip[7])
 	};
 	
 	// Navigation matrix
@@ -135,9 +124,20 @@ public class HouseOfQuestions {
 		System.out.println("\n"+HouseOfQuestions.locToScene());
 	}
 	
+	static void setItems(){
+		LOCALES[0].placeItems("Area Map", "A map of the house");
+		LOCALES[1].placeItems("Guitar", "A nifty acoustic guitar");
+		LOCALES[2].placeItems("Calculator","A fancy TI-84 calculator used for math classes");
+		LOCALES[3].placeItems("Beaker", "A beaker for measurement");
+		LOCALES[4].placeItems("Plato's Manuscripts", "A collection of writings from Plato");
+		LOCALES[5].placeItems("Starry Night Painting", "Van Gogh's famous famous painting");
+		LOCALES[6].placeItems("Great Gatsby", "A famous book by F.Scott Fitzgerald");
+		LOCALES[7].placeItems("U.S. History Book", "A thick book containing U.S. history");
+	}
 	// Function that starts the game loop
 	static void gameStart() {
 		String locationScene = "";
+		HouseOfQuestions.setItems();
 		
 		while (true) {
 			// User input that is case-insensitive
