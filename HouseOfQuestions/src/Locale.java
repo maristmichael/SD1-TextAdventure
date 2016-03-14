@@ -13,12 +13,13 @@ public class Locale {
 		this.visitCount = 0;
 	};
 	
+	// This method creates and places new items into the Locale ArrayList
 	public void placeItems(String name, String descrip) {
 		Item newItem = new Item(name, descrip);
 		this.items.add(newItem);   
 	    }
 	
-	
+	// A more useful toString method
 	@Override
 	public String toString() {
 		return this.description + "\n(You are in the " + this.name + ")";

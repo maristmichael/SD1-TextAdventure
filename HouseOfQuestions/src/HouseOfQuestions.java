@@ -10,13 +10,13 @@ import java.util.Scanner;
 
 public class HouseOfQuestions {
 	
-	// Constant Variables representing directions for matrix
+	// These are constant variables representing directions for matrix
 	public static final int N = 0;
 	public static final int S = 1;
 	public static final int W = 2;
 	public static final int E = 3;
 
-	// Array containing location Descriptions
+	// This is a String array containing Locale descriptions
 	public static final String[] LocDescrip = {
 		"This is the starting area, there are several paths to take",
 		"In this room, you hear many melodies emanating from the walls.",
@@ -28,6 +28,7 @@ public class HouseOfQuestions {
 		"You are now in a room with a giant globe with many history books surrounding it"
 		};
 	
+	// This is a String variable holding the game map
 	public static String gameMap = 
 		"                    History \n" +
 		"                       |    \n" +
@@ -43,7 +44,7 @@ public class HouseOfQuestions {
 		"     |                      \n" +
 		"   Philosophy               \n";
 	
-	// Locale Array with instances of locations
+	// This is a Locale array with instances of locations
 	public final static Locale[] LOCALES = {
 		new Locale("Starting Room", LocDescrip[0]),
 		new Locale("Music Room", LocDescrip[1]),
@@ -55,7 +56,7 @@ public class HouseOfQuestions {
 		new Locale("History Room", LocDescrip[7])
 	};
 	
-	// Navigation matrix
+	// This is the navigation matrix
 	public final static int [][] MAP = {
 			  /*{N,S,W,E}*/
 		/*0*/	{1,-1,2,5},  // From Start --> Math(W), Music(N), or Art(E)
@@ -72,7 +73,7 @@ public class HouseOfQuestions {
 	static Player currentPlayer = new Player("", 0);
 	
 	
-	// Variables handle input by user
+	// These variables handle input by user
 	public static Scanner inputSource = new Scanner(System.in);
 	public static String userInput;
 	
@@ -100,12 +101,12 @@ public class HouseOfQuestions {
 	static void map(){
 		if (currentPlayer.inventory.size() != 0) {
 			String map = "Area Map";
-			for (int i = 0; i< currentPlayer.inventory.size(); i++){
+			for (int i = 0; i < currentPlayer.inventory.size(); i++){
 				if (currentPlayer.inventory.get(i).name.equals(map)) {
 					System.out.println();
 					System.out.println(gameMap);
 				}
-			break;
+				break;
 			}
 		} else {
 			System.out.println("You do not have a map");
@@ -130,24 +131,26 @@ public class HouseOfQuestions {
 		System.out.println("\n"+HouseOfQuestions.locToScene());
 	}
 	
+	// This method creates instances of Item and sets them in their proper location
 	static void setItems(){
 		LOCALES[0].placeItems("Area Map", "A map of the house");
 		LOCALES[1].placeItems("Guitar", "A nifty acoustic guitar");
 		LOCALES[2].placeItems("Calculator","A fancy TI-84 calculator used for math classes");
 		LOCALES[3].placeItems("Beaker", "A beaker for measurement");
-		LOCALES[4].placeItems("Plato's Manuscripts", "A collection of writings from Plato");
+		LOCALES[4].placeItems("Famous Manuscript", "A collection of writings from Plato");
 		LOCALES[5].placeItems("Starry Night Painting", "Van Gogh's famous famous painting");
 		LOCALES[6].placeItems("Great Gatsby", "A famous book by F.Scott Fitzgerald");
 		LOCALES[7].placeItems("U.S. History Book", "A thick book containing U.S. history");
 	}
-	// Function that starts the game loop
+	
+	// This method starts the game loop
 	static void gameStart() {
 		String locationScene = "";
 		HouseOfQuestions.setItems();
 		
 		while (true) {
 			// User input that is case-insensitive
-			System.out.print("Where should I go?: ");
+			System.out.print("What should I do?: ");
 			userInput = inputSource.nextLine().trim().toUpperCase();
 
 			// Game loops until user quits
@@ -181,7 +184,7 @@ public class HouseOfQuestions {
 		}
 	} 
 	
-	// Function that displays welcome message and captures player's name
+	// This method displays the welcome message and captures player's name
 	static void gameIntro(){
 		String enteredName;
 		
@@ -195,7 +198,7 @@ public class HouseOfQuestions {
 		System.out.println(HouseOfQuestions.locToScene() + "\n");
 	}
 	
-	// Function that displays credits
+	// This method displays the game credits
 	static void gameCredits() {
 		System.out.println("\n" +"Quitting game... ;(\n" + "Thank you for playing :)");
 		System.out.println("\nCopyright Michael Gutierrez");
