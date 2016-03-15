@@ -28,22 +28,6 @@ public class HouseOfQuestions {
 		"You are now in a room with a giant globe with many history books surrounding it"
 		};
 	
-	// This is a String variable holding the game map
-	public static String gameMap = 
-		"                    History \n" +
-		"                       |    \n" +
-		"                       |    \n" +
-		"          Music     English \n" +
-		"            |          |    \n" +
-		"            |          |    \n" +
-		"   Math----Start------Art   \n" +
-		"     |                      \n" +
-		"     |                      \n" +
-		"   Science                  \n" +
-		"     |                      \n" +
-		"     |                      \n" +
-		"   Philosophy               \n";
-	
 	// This is a Locale array with instances of locations
 	public final static Locale[] LOCALES = {
 		new Locale("Starting Room", LocDescrip[0]),
@@ -68,6 +52,22 @@ public class HouseOfQuestions {
 	 	/*6*/	{7,5,-1,-1}, // From English --> History(N), or Art(S)
 	 	/*7*/	{-1,6,-1,-1} // From History --> English(S)
 	};
+	
+	// This is a String variable holding the game map
+	public static String gameMap = 
+		"                    History \n" +
+		"                       |    \n" +
+		"                       |    \n" +
+		"          Music     English \n" +
+		"            |          |    \n" +
+		"            |          |    \n" +
+		"   Math----Start------Art   \n" +
+		"     |                      \n" +
+		"     |                      \n" +
+		"   Science                  \n" +
+		"     |                      \n" +
+		"     |                      \n" +
+		"   Philosophy               \n";
 	
 	// This is the instance of the Player object 
 	static Player currentPlayer = new Player("", 0);
@@ -94,7 +94,6 @@ public class HouseOfQuestions {
 			return 3;
 		}
 	}
-	
 	
 	// This method displays the game map if player has obtained the map
 	static void map(){
@@ -175,15 +174,19 @@ public class HouseOfQuestions {
 			if (userInput.equals("N")) {
 				HouseOfQuestions.move(N);
 				playerTrail.dropCrumb(currentPlayer.location);
+				System.out.println("\nYou dropped a crumb to make a trail");
 			} else if (userInput.equals("S")) {
 				HouseOfQuestions.move(S);
 				playerTrail.dropCrumb(currentPlayer.location);
+				System.out.println("\nYou dropped a crumb to make a trail");
 			} else if (userInput.equals("W")) {
 				HouseOfQuestions.move(W);
 				playerTrail.dropCrumb(currentPlayer.location);
+				System.out.println("\nYou dropped a crumb to make a trail");
 			} else if (userInput.equals("E")) {
 				HouseOfQuestions.move(E);	
 				playerTrail.dropCrumb(currentPlayer.location);
+				System.out.println("\nYou dropped a crumb to make a trail");
 			} else if (userInput.equals("B")) {
 				HouseOfQuestions.back(playerTrail);
 			} else if (userInput.equals("T")) {
@@ -220,7 +223,7 @@ public class HouseOfQuestions {
 		enteredName = inputSource.nextLine();
 		currentPlayer.name = enteredName;
 		System.out.println("\nYou, " + currentPlayer.name + ", wake up to find yourself inside of the "+
-				"'House of Questions'\n"+"Nothing else to do but explore...\n");
+			"'House of Questions'\n"+"Nothing else to do but explore...\n");
 		System.out.println(HouseOfQuestions.locToScene() + "\n");
 	}
 	
@@ -237,6 +240,5 @@ public class HouseOfQuestions {
 		HouseOfQuestions.gameStart();
 		HouseOfQuestions.gameCredits();
 		inputSource.close();
-	}
-	
+	}	
 }
