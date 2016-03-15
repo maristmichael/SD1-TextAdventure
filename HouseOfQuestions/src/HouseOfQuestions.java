@@ -71,7 +71,6 @@ public class HouseOfQuestions {
 	
 	// This is the instance of the Player object 
 	static Player currentPlayer = new Player("", 0);
-	static BreadcrumbTrail breadcrumbTrail = new BreadcrumbTrail();
 	
 	// These variables handle input by user
 	public static Scanner inputSource = new Scanner(System.in);
@@ -131,6 +130,17 @@ public class HouseOfQuestions {
 		System.out.println("\n"+HouseOfQuestions.locToScene());
 	}
 	
+	static void back(BreadcrumbTrail trail) {
+		if (trail.hasMoreCrumbs()) {
+			System.out.println("This is where you started.");
+		} else {
+			trail.pickupCrumb();
+			currentPlayer.location = trail.currentCrumb();
+			System.out.println("You followed your breadcrumb trail back a room");
+			System.out.println("\n" + HouseOfQuestions.locToScene());
+		}
+	}
+	
 	// This method creates instances of Item and sets them in their proper location
 	static void setItems(){
 		LOCALES[0].placeItems("Area Map", "A map of the house");
@@ -147,6 +157,9 @@ public class HouseOfQuestions {
 	static void gameStart() {
 		String locationScene = "";
 		HouseOfQuestions.setItems();
+		BreadcrumbTrail playerTrail = new BreadcrumbTrail();
+		playerTrail.dropCrumb(currentPlayer.location);
+		
 		
 		while (true) {
 			// User input that is case-insensitive
@@ -156,16 +169,18 @@ public class HouseOfQuestions {
 			// Game loops until user quits
 			if (userInput.equals("N")) {
 				HouseOfQuestions.move(N);
-				breadcrumbTrail.dropCrumb(LOCALES[currentPlayer.location]);
+				playerTrail.dropCrumb(currentPlayer.location);
 			} else if (userInput.equals("S")) {
 				HouseOfQuestions.move(S);
-				breadcrumbTrail.dropCrumb(LOCALES[currentPlayer.location]);
+				playerTrail.dropCrumb(currentPlayer.location);
 			} else if (userInput.equals("W")) {
 				HouseOfQuestions.move(W);
-				breadcrumbTrail.dropCrumb(LOCALES[currentPlayer.location]);
+				playerTrail.dropCrumb(currentPlayer.location);
 			} else if (userInput.equals("E")) {
 				HouseOfQuestions.move(E);	
-				breadcrumbTrail.dropCrumb(LOCALES[currentPlayer.location]);
+				playerTrail.dropCrumb(currentPlayer.location);
+			} else if (userInput.equals("B")) {
+				HouseOfQuestions.back(playerTrail);
 			} else if (userInput.equals("T")) {
 				Player.take(currentPlayer, LOCALES[currentPlayer.location]);
 			} else if (userInput.equals("D")) {
@@ -173,10 +188,12 @@ public class HouseOfQuestions {
 			} else if (userInput.equals("M")) {
 				HouseOfQuestions.map();
 			} else if (userInput.equals("H")) {
-				locationScene = "\nExplore by typing in 'n', 's', 'e', 'w'\n" + 
-				"Type in 'q' to quit the game.\n" + 
-				"Type in 't' to take an item that may be in a room" + 
-				"Type in 'm' to display the game map if you found it\n";
+				locationScene = "\nExplore by entering 'n', 's', 'e', 'w'\n" + 
+				"Enter 'q' to quit the game.\n" + 
+				"Enter 't' to take all items that may be in a room.\n" + 
+				"Enter 'd' to drop an item by entering the exact name of it.\n" +
+				"Enter 'm' to display the game map if you found it.\n" + 
+				"Enter 'b' to follow your crumb trail back to a previos room\n";
 			} else if (userInput.equals("Q")) {
 				break;
 			}else {
@@ -200,7 +217,6 @@ public class HouseOfQuestions {
 		System.out.println("\nYou, " + currentPlayer.name + ", wake up to find yourself inside of the "+
 				"'House of Questions'\n"+"Nothing else to do but explore...\n");
 		System.out.println(HouseOfQuestions.locToScene() + "\n");
-		breadcrumbTrail.dropCrumb(LOCALES[currentPlayer.location]);
 	}
 	
 	// This method displays the game credits

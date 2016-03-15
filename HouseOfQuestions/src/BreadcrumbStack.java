@@ -5,10 +5,10 @@ public interface BreadcrumbStack {
     public void pickupCrumb();
 
     // Adds elements to the top top of the stack 
-    public void dropCrumb(Object x);
+    public void dropCrumb(int x);
 
     //Returns a reference to the top element of a stack
-    public Object currentCrumb();
+    public int currentCrumb();
 
     // Tests whether the stack contains any elements.
     public boolean hasMoreCrumbs();

@@ -3,12 +3,12 @@ public class BreadcrumbTrail implements BreadcrumbStack {
 
 	private Breadcrumb top;
 	
-	public BreadcrumbTrail(){
+	public BreadcrumbTrail() {
 		this.top = null;
 	}
 	
 	@Override
-	public void dropCrumb(Object x){
+	public void dropCrumb(int x) {
 		Breadcrumb newCrumb = new Breadcrumb(x, this.top);
 		this.top = newCrumb;
 	}
@@ -23,7 +23,7 @@ public class BreadcrumbTrail implements BreadcrumbStack {
 	}
 
 	@Override
-	public Object currentCrumb(){
+	public int currentCrumb() {
 		return this.top.data;
 	}
 	
@@ -34,10 +34,10 @@ public class BreadcrumbTrail implements BreadcrumbStack {
 }
 
 class Breadcrumb {
-	Object data;
+	int data;
 	Breadcrumb link;
 	
-	Breadcrumb(Object x, Breadcrumb n) {
+	Breadcrumb(int x, Breadcrumb n) {
 		this.data = x;
 		this.link = n;
 	}
