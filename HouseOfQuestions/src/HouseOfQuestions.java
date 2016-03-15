@@ -132,12 +132,17 @@ public class HouseOfQuestions {
 	
 	static void back(BreadcrumbTrail trail) {
 		if (trail.hasMoreCrumbs()) {
-			System.out.println("This is where you started.");
-		} else {
 			trail.pickupCrumb();
-			currentPlayer.location = trail.currentCrumb();
-			System.out.println("You followed your breadcrumb trail back a room");
-			System.out.println("\n" + HouseOfQuestions.locToScene());
+			if(trail.currentCrumb() >= 0) {
+				currentPlayer.location = trail.currentCrumb();
+				System.out.println("You followed your breadcrumb trail back a room");
+				System.out.println("\n" + HouseOfQuestions.locToScene());
+			} else {
+				currentPlayer.location = 0;
+				trail.dropCrumb(currentPlayer.location);
+				System.out.println("You reached your final crumb on the trail you made.");
+				System.out.println("You are in the " + LOCALES[currentPlayer.location].name);
+			}
 		}
 	}
 	

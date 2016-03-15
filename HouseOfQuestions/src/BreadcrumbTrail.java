@@ -24,12 +24,15 @@ public class BreadcrumbTrail implements BreadcrumbStack {
 
 	@Override
 	public int currentCrumb() {
+		if(this.top == null) {
+			return -1;
+		}
 		return this.top.data;
 	}
 	
 	@Override
 	public boolean hasMoreCrumbs(){
-		return (this.top == null);
+		return (this.top != null);
 	}	
 }
 

@@ -4,8 +4,8 @@ import java.util.Scanner;
 public class Player {
 	String name;
 	int location = 0;
-	ArrayList<Item> inventory;
 	int score;
+	ArrayList<Item> inventory;
 	
 	public Player(String name, int location) {
 		this.name = name;
@@ -21,16 +21,17 @@ public class Player {
 			if (userLocation.items.size() == 0) {
 				System.out.print("No items to find\n");
 			} else {
+				
 				for (int i = 0; i < 1; i++) {
 					// This small loop adds points to player for every item picked up
-					for (int l = 0; l < userLocation.items.size(); l++){
-						scoreToAdd =+5;
-						user.score += scoreToAdd;
+					for (int l = 0; l < userLocation.items.size(); l++) {
+						scoreToAdd += 5;
 					}
 					user.inventory.addAll(userLocation.items);
 					System.out.println("\nYou picked up a(n): " + userLocation.items);
 					System.out.println("Your inventory: " + user.inventory.toString());
 					userLocation.items.clear();
+					user.score += scoreToAdd;
 					System.out.println("Score +" + scoreToAdd);
 					System.out.println("Your total score is: " + user.score);
 					System.out.println("Your inventory: " + user.inventory.toString());
@@ -43,6 +44,7 @@ public class Player {
 		static void drop(Player user, Locale userLocation) {
 			Scanner inputSource = new Scanner(System.in);
 			String userInput;
+			
 			if (user.inventory.size() == 0){
 				System.out.println("No items to drop");
 			} else { 
