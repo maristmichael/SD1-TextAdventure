@@ -71,7 +71,7 @@ public class HouseOfQuestions {
 	
 	// This is the instance of the Player object 
 	static Player currentPlayer = new Player("", 0);
-	
+	static BreadcrumbTrail breadcrumbTrail = new BreadcrumbTrail();
 	
 	// These variables handle input by user
 	public static Scanner inputSource = new Scanner(System.in);
@@ -156,12 +156,16 @@ public class HouseOfQuestions {
 			// Game loops until user quits
 			if (userInput.equals("N")) {
 				HouseOfQuestions.move(N);
+				breadcrumbTrail.dropCrumb(LOCALES[currentPlayer.location]);
 			} else if (userInput.equals("S")) {
 				HouseOfQuestions.move(S);
+				breadcrumbTrail.dropCrumb(LOCALES[currentPlayer.location]);
 			} else if (userInput.equals("W")) {
 				HouseOfQuestions.move(W);
+				breadcrumbTrail.dropCrumb(LOCALES[currentPlayer.location]);
 			} else if (userInput.equals("E")) {
 				HouseOfQuestions.move(E);	
+				breadcrumbTrail.dropCrumb(LOCALES[currentPlayer.location]);
 			} else if (userInput.equals("T")) {
 				Player.take(currentPlayer, LOCALES[currentPlayer.location]);
 			} else if (userInput.equals("D")) {
@@ -196,6 +200,7 @@ public class HouseOfQuestions {
 		System.out.println("\nYou, " + currentPlayer.name + ", wake up to find yourself inside of the "+
 				"'House of Questions'\n"+"Nothing else to do but explore...\n");
 		System.out.println(HouseOfQuestions.locToScene() + "\n");
+		breadcrumbTrail.dropCrumb(LOCALES[currentPlayer.location]);
 	}
 	
 	// This method displays the game credits

@@ -14,18 +14,31 @@ public class BreadcrumbTrail implements BreadcrumbStack {
 	}
 	
 	@Override
-	public void pickupCrumb(){
-		this.top = this.top.link;
+	public void pickupCrumb() {
+		if (this.top == null) { 
+			System.out.println("Cant go back anymore");
+		} else {
+			this.top = this.top.link;
+		}
+	}
+
+	@Override
+	public Object currentCrumb(){
+		return this.top.data;
 	}
 	
-	class Breadcrumb {
-		Object data;
-		Breadcrumb link;
-		
-		Breadcrumb(Object x, Breadcrumb n) {
-			this.data = x;
-			this.link = n;
-		}
-		
+	@Override
+	public boolean hasMoreCrumbs(){
+		return (this.top == null);
+	}	
+}
+
+class Breadcrumb {
+	Object data;
+	Breadcrumb link;
+	
+	Breadcrumb(Object x, Breadcrumb n) {
+		this.data = x;
+		this.link = n;
 	}
 }
