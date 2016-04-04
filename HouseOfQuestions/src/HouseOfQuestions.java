@@ -148,14 +148,14 @@ public class HouseOfQuestions {
 	
 	// This method creates instances of Item and sets them in their proper location
 	static void setItems(){
-		LOCALES[0].placeItems("Area Map", "A map of the house");
-		LOCALES[1].placeItems("Guitar", "A nifty acoustic guitar");
-		LOCALES[2].placeItems("Calculator","A fancy TI-84 calculator used for math classes");
-		LOCALES[3].placeItems("Beaker", "A beaker for measurement");
-		LOCALES[4].placeItems("Famous Manuscript", "A collection of writings from Plato");
-		LOCALES[5].placeItems("Starry Night Painting", "Van Gogh's famous famous painting");
-		LOCALES[6].placeItems("Great Gatsby", "A famous book by F.Scott Fitzgerald");
-		LOCALES[7].placeItems("U.S. History Book", "A thick book containing U.S. history");
+		LOCALES[0].placeItems("Area Map", "A map of the house", "You spot a map on the floor");
+		LOCALES[1].placeItems("Guitar", "A nifty acoustic guitar", "You found a cool guitar");
+		LOCALES[2].placeItems("Calculator","A fancy TI-84 calculator used for math classes", "You spot a nice calculator");
+		LOCALES[3].placeItems("Beaker", "A beaker for measurement", "You see a fancy beaker on a lab table");
+		LOCALES[4].placeItems("Famous Manuscript", "A collection of writings from Plato", "You spot a manuscript layed on the floor");
+		LOCALES[5].placeItems("Starry Night Painting", "Van Gogh's famous famous painting","A familiar painting catches your eyes");
+		LOCALES[6].placeItems("Great Gatsby", "A famous book by F.Scott Fitzgerald", "You find your favorite book of all time");
+		LOCALES[7].placeItems("U.S. History Book", "A thick book containing U.S. history", "You see a big and boring book on the table");
 	}
 	
 	// This method starts the game loop
@@ -194,6 +194,8 @@ public class HouseOfQuestions {
 				Player.take(currentPlayer, LOCALES[currentPlayer.location]);
 			} else if (userInput.equals("D")) {
 				Player.drop(currentPlayer, LOCALES[currentPlayer.location]);
+			} else if (userInput.equals("X")) {
+				Player.examine(LOCALES[currentPlayer.location]);
 			} else if (userInput.equals("M")) {
 				HouseOfQuestions.map();
 			} else if (userInput.equals("H")) {

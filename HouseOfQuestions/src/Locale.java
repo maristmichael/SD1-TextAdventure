@@ -14,8 +14,8 @@ public class Locale {
 	};
 	
 	// This method creates and places new items into the Locale ArrayList
-	public void placeItems(String name, String descrip) {
-		Item newItem = new Item(name, descrip);
+	public void placeItems(String name, String descrip, String discovered) {
+		Item newItem = new Item(name, descrip, discovered);
 		this.items.add(newItem);   
 	    }
 	

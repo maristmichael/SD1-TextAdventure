@@ -73,6 +73,20 @@ public class Player {
 				}
 			}
 		}
+		
+		// This method allows user to examine room in order to discover items to pick up
+		static void examine(Locale userLocation) {
+			for (int i = 0; i < userLocation.items.size(); i++) {
+				if (userLocation.items.get(i).isDiscovered == false) {
+					userLocation.items.get(i).isDiscovered = true;
+					System.out.println(userLocation.items.get(i).discovered);
+				} else if(userLocation.items.size() != 0) {
+					System.out.println("The " + userLocation.items.get(i).name + " is in the room");
+				} else {
+					System.out.println("Nothing special to take in this room");
+				}
+			}
+		}
 	
 	// A more useful toString method
 	@Override
