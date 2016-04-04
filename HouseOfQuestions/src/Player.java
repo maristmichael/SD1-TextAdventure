@@ -23,19 +23,23 @@ public class Player {
 			} else {
 				
 				for (int i = 0; i < 1; i++) {
-					// This small loop adds points to player for every item picked up
-					for (int l = 0; l < userLocation.items.size(); l++) {
-						scoreToAdd += 5;
+					if (userLocation.items.get(i).isDiscovered == false) {
+						System.out.println("Maybe I should examine the room for an item");
+					} else {
+						// This small loop adds points to player for every item picked up
+						for (int l = 0; l < userLocation.items.size(); l++) {
+							scoreToAdd += userLocation.items.get(l).value;
+						}
+						user.inventory.addAll(userLocation.items);
+						System.out.println("\nYou picked up a(n): " + userLocation.items);
+						System.out.println("Your inventory: " + user.inventory.toString());
+						userLocation.items.clear();
+						user.score += scoreToAdd;
+						System.out.println("Score +" + scoreToAdd);
+						System.out.println("Your total score is: " + user.score);
+						System.out.println("Your inventory: " + user.inventory.toString());
+						userLocation.visitCount ++;
 					}
-					user.inventory.addAll(userLocation.items);
-					System.out.println("\nYou picked up a(n): " + userLocation.items);
-					System.out.println("Your inventory: " + user.inventory.toString());
-					userLocation.items.clear();
-					user.score += scoreToAdd;
-					System.out.println("Score +" + scoreToAdd);
-					System.out.println("Your total score is: " + user.score);
-					System.out.println("Your inventory: " + user.inventory.toString());
-					userLocation.visitCount ++;
 				}
 			}
 		}
@@ -82,9 +86,10 @@ public class Player {
 					System.out.println(userLocation.items.get(i).discovered);
 				} else if(userLocation.items.size() != 0) {
 					System.out.println("The " + userLocation.items.get(i).name + " is in the room");
-				} else {
-					System.out.println("Nothing special to take in this room");
-				}
+				} 
+			}
+			if(userLocation.items.size() < 1) {
+				System.out.println("Nothing special to take in this room");
 			}
 		}
 	
