@@ -103,11 +103,12 @@ public class HouseOfQuestions {
 				if (currentPlayer.inventory.get(i).name.equals(map)) {
 					System.out.println();
 					System.out.println(gameMap);
+				} else {
+					System.out.println("You do not have a map yet");
 				}
-				break;
 			}
 		} else {
-			System.out.println("You do not have a map");
+			System.out.println("You do not have any items");
 		}
 	}
 	
