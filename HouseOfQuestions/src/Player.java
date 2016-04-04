@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Player {
@@ -19,7 +20,7 @@ public class Player {
 			int scoreToAdd = 0;
 
 			if (userLocation.items.size() == 0) {
-				System.out.print("No items to find\n");
+				System.out.print("Already found an item here\n");
 			} else {
 				
 				for (int i = 0; i < 1; i++) {
@@ -45,18 +46,13 @@ public class Player {
 		}
 		
 	// This method allows player to drop specified items or all items in the player inventory
-		static void drop(Player user, Locale userLocation) {
-			Scanner inputSource = new Scanner(System.in);
-			String userInput;
-			
+		static void drop(Player user, Locale userLocation, String[] item) {			
 			if (user.inventory.size() == 0){
 				System.out.println("No items to drop");
-			} else { 
-				System.out.print("What to drop?: ");
-				userInput = inputSource.nextLine().toLowerCase().trim();
-				
+			} else { 				
 				for (int i = 0; i < user.inventory.size(); i++ ) {
-					if (userInput.equals(user.inventory.get(i).name.toLowerCase())) {
+					System.out.println(item);
+					if (item[1].equals(user.inventory.get(i).name.toUpperCase())) {
 						userLocation.items.add(user.inventory.get(i));
 						System.out.println("\nYou dropped the " + user.inventory.get(i).name + " here in the " + userLocation.name);
 						user.score -=5;
@@ -64,7 +60,7 @@ public class Player {
 						System.out.println("Score -5");
 						System.out.println("Your total score is: " + user.score);
 						System.out.println("Your inventory: " + user.inventory.toString());	
-					} else if (userInput.equals("all")) {
+					} else if (item.equals("all")) {
 						userLocation.items.addAll(user.inventory);
 						user.inventory.clear();
 						user.score = 0;
