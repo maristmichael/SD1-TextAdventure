@@ -154,7 +154,6 @@ public class HouseOfQuestions {
 		LOCALES[1].placeItems("guitar", "A nifty acoustic guitar", "You found a cool guitar");
 		LOCALES[2].placeItems("calculator","A calculator used for math classes", "You spot a nice calculator");
 		LOCALES[3].placeItems("beaker", "A beaker for measurement", "You see a fancy beaker on a lab table");
-		LOCALES[4].placeItems("manuscript", "A manuscript of writings from Plato", "You spot a manuscript layed on the floor");
 		LOCALES[5].placeItems("painting", "Van Gogh's famous famous painting","A familiar painting catches your eyes");
 		LOCALES[6].placeItems("novel", "Great Gatsby, a famous book by F.Scott Fitzgerald", "You find your favorite novel of all time");
 		LOCALES[7].placeItems("textook", "A thick book containing U.S. history", "You see a big and textbook on the table");
@@ -165,7 +164,7 @@ public class HouseOfQuestions {
 		String locationScene = "";
 		HouseOfQuestions.setItems();
 		LimitedUseItem bottle = new LimitedUseItem("bottle", "A water bottle", "You see a bottle", 1, "No water left");
-		LOCALES[0].items.add(bottle);
+		LOCALES[4].items.add(bottle);
 		BreadcrumbTrail playerTrail = new BreadcrumbTrail();
 		playerTrail.dropCrumb(currentPlayer.location);
 		

@@ -28,7 +28,6 @@ public class Player {
 						break;
 					
 					} else if(item[1].equals("ALL")) {
-						
 						for (int l = 0; l < userLocation.items.size(); l++) {
 							scoreToAdd += userLocation.items.get(l).value;
 						}
@@ -55,7 +54,6 @@ public class Player {
 						System.out.println(userLocation.items);
 						break;
 					}
-
 				}
 			}
 		}
@@ -65,6 +63,7 @@ public class Player {
 		static void drop(Player user, Locale userLocation, String[] item) {			
 			if (user.inventory.size() == 0){
 				System.out.println("No items to drop");
+				
 			} else { 				
 				for (int i = 0; i < user.inventory.size(); i++ ) {
 					if (item[1].equals(user.inventory.get(i).name.toUpperCase())) {
