@@ -16,18 +16,17 @@ public class Player {
 	}
 	
 	// This method allows player to grab all items and store them in the inventory
-		static void take(Player user, Locale userLocation) {
+		static void take(Player user, Locale userLocation, String[] item) {
 			int scoreToAdd = 0;
 
 			if (userLocation.items.size() == 0) {
-				System.out.print("Already found an item here\n");
+				System.out.print("Already found an item here\n");	
 			} else {
-				
-				for (int i = 0; i < 1; i++) {
-					if (userLocation.items.get(i).isDiscovered == false) {
+				// This small loop adds points to player for every item picked up	
+				for (int k = 0; k < userLocation.items.size(); k++) {
+					if (userLocation.items.get(k).isDiscovered == false) {
 						System.out.println("Maybe I should examine the room for an item");
-					} else {
-						// This small loop adds points to player for every item picked up
+					} else if(item[1].equals("ALL")) {
 						for (int l = 0; l < userLocation.items.size(); l++) {
 							scoreToAdd += userLocation.items.get(l).value;
 						}
@@ -39,11 +38,22 @@ public class Player {
 						System.out.println("Score +" + scoreToAdd);
 						System.out.println("Your total score is: " + user.score);
 						System.out.println("Your inventory: " + user.inventory.toString());
-						userLocation.visitCount ++;
+					} else {
+						for(int i = 0; i < userLocation.items.size(); i++) {
+							if (item[1].equals(userLocation.items.get(i).name.toUpperCase())) {
+								user.inventory.add(userLocation.items.get(i));
+								user.score += userLocation.items.get(i).value;
+								System.out.println("\nYou picked up the " + user.inventory.get(i).name + " here in the " + userLocation.name);
+								userLocation.items.remove(userLocation.items.get(i));
+								System.out.println("Score +5");
+								System.out.println("Your total score is: " + user.score);
+								System.out.println("Your inventory: " + user.inventory.toString());							}
+							}
+						}
 					}
 				}
 			}
-		}
+	
 		
 	// This method allows player to drop specified items or all items in the player inventory
 		static void drop(Player user, Locale userLocation, String[] item) {			
@@ -51,7 +61,6 @@ public class Player {
 				System.out.println("No items to drop");
 			} else { 				
 				for (int i = 0; i < user.inventory.size(); i++ ) {
-					System.out.println(item);
 					if (item[1].equals(user.inventory.get(i).name.toUpperCase())) {
 						userLocation.items.add(user.inventory.get(i));
 						System.out.println("\nYou dropped the " + user.inventory.get(i).name + " here in the " + userLocation.name);

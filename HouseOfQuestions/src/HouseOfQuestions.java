@@ -99,7 +99,7 @@ public class HouseOfQuestions {
 	// This method displays the game map if player has obtained the map
 	static void map(){
 		if (currentPlayer.inventory.size() != 0) {
-			String map = "Area Map";
+			String map = "map";
 			for (int i = 0; i < currentPlayer.inventory.size(); i++){
 				if (currentPlayer.inventory.get(i).name.equals(map)) {
 					System.out.println();
@@ -109,7 +109,7 @@ public class HouseOfQuestions {
 				}
 			}
 		} else {
-			System.out.println("You do not have any items");
+			System.out.println("You do not have a map");
 		}
 	}
 	
@@ -192,8 +192,8 @@ public class HouseOfQuestions {
 				System.out.println("\nYou dropped a crumb to make a trail");
 			} else if (userInput.equals("B")) {
 				HouseOfQuestions.back(playerTrail);
-			} else if (userInput.equals("T")) {
-				Player.take(currentPlayer, LOCALES[currentPlayer.location]);
+			} else if (inputSplit[0].equals("T")) {
+				Player.take(currentPlayer, LOCALES[currentPlayer.location], inputSplit);
 			} else if (inputSplit[0].equals("D")) {
 				Player.drop(currentPlayer, LOCALES[currentPlayer.location], inputSplit);
 			} else if (userInput.equals("X")) {
