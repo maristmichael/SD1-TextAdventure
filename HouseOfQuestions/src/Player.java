@@ -105,21 +105,23 @@ public class Player {
 		}
 		
 		// This method allows user to use a limited-use-item
-		static boolean use(Player user, LimitedUseItem limitedItem, String[] item) {
-			if (item[1].equals("bottle")) {
-				for (int i = 0; i < user.inventory.size(); i++) {
-					if (user.inventory.get(i).name.equals("bottle") && limitedItem.usesRemaining != 0) {
-						System.out.println("You drank the water inside the bottle");
-						limitedItem.usesRemaining --;
-						return true;
-					} else {
-						System.out.println(limitedItem.afterUse);
+		static void use(Player user, LimitedUseItem limitedItem, String[] item) {
+			if (item[1].equals("BOTTLE")) {
+				if (user.inventory.size() > 0) {
+					for (int i = 0; i < user.inventory.size(); i++) {
+						if(user.inventory.get(i).name.equals("bottle") && limitedItem.usesRemaining != 0) {
+							System.out.println("You drank the water inside the bottle");
+							limitedItem.usesRemaining --;
+							break;
+						} else if (limitedItem.usesRemaining == 0) {
+							System.out.println(limitedItem.afterUse);
+							break;
+						}
 					}
 				}
 			} else {
-				System.out.println("No item to that can be used in your inventory");
+				System.out.println("Not an item to that can be used in your inventory");
 			}
-			return false;
 		}
 	
 	// A more useful toString method
