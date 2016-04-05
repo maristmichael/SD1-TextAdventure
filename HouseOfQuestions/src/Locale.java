@@ -17,7 +17,13 @@ public class Locale {
 	public void placeItems(String name, String descrip, String discovered) {
 		Item newItem = new Item(name, descrip, discovered);
 		this.items.add(newItem);   
-	    }
+	}
+	
+	// This method creates and places new limited-use items into the Locale ArrayList
+	public void placeLimitedItems(String name, String descrip, String discovered, int uses, String afterUse) {
+		LimitedUseItem newItem = new LimitedUseItem(name, descrip, discovered, uses, afterUse);
+		this.items.add(newItem);
+	}
 	
 	// A more useful toString method
 	@Override

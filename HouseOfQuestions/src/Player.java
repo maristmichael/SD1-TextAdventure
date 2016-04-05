@@ -21,12 +21,14 @@ public class Player {
 
 			if (userLocation.items.size() == 0) {
 				System.out.print("Already found an item here\n");	
-			} else {
-				// This small loop adds points to player for every item picked up	
+			} else if(userLocation.items.size() != 0) {
 				for (int k = 0; k < userLocation.items.size(); k++) {
 					if (userLocation.items.get(k).isDiscovered == false) {
 						System.out.println("Maybe I should examine the room for an item");
+						break;
+					
 					} else if(item[1].equals("ALL")) {
+						
 						for (int l = 0; l < userLocation.items.size(); l++) {
 							scoreToAdd += userLocation.items.get(l).value;
 						}
@@ -38,21 +40,25 @@ public class Player {
 						System.out.println("Score +" + scoreToAdd);
 						System.out.println("Your total score is: " + user.score);
 						System.out.println("Your inventory: " + user.inventory.toString());
+						
+					} else if(item[1].equals(userLocation.items.get(k).name.toUpperCase())) {		
+						user.inventory.add(userLocation.items.get(k));
+						user.score += userLocation.items.get(k).value;
+						System.out.println("\nYou picked up the " + user.inventory.get(k).name + " here in the " + userLocation.name);
+						userLocation.items.remove(userLocation.items.get(k));
+						System.out.println("Score +5");
+						System.out.println("Your total score is: " + user.score);
+						System.out.println("Your inventory: " + user.inventory.toString());				
+						
 					} else {
-						for(int i = 0; i < userLocation.items.size(); i++) {
-							if (item[1].equals(userLocation.items.get(i).name.toUpperCase())) {
-								user.inventory.add(userLocation.items.get(i));
-								user.score += userLocation.items.get(i).value;
-								System.out.println("\nYou picked up the " + user.inventory.get(i).name + " here in the " + userLocation.name);
-								userLocation.items.remove(userLocation.items.get(i));
-								System.out.println("Score +5");
-								System.out.println("Your total score is: " + user.score);
-								System.out.println("Your inventory: " + user.inventory.toString());							}
-							}
-						}
+						System.out.println("Not an item available to pick up");
+						System.out.println(userLocation.items);
+						break;
 					}
+
 				}
 			}
+		}
 	
 		
 	// This method allows player to drop specified items or all items in the player inventory
@@ -64,12 +70,12 @@ public class Player {
 					if (item[1].equals(user.inventory.get(i).name.toUpperCase())) {
 						userLocation.items.add(user.inventory.get(i));
 						System.out.println("\nYou dropped the " + user.inventory.get(i).name + " here in the " + userLocation.name);
-						user.score -=5;
+						user.score -= userLocation.items.get(i).value;
 						user.inventory.remove(user.inventory.get(i));
 						System.out.println("Score -5");
 						System.out.println("Your total score is: " + user.score);
 						System.out.println("Your inventory: " + user.inventory.toString());	
-					} else if (item.equals("all")) {
+					} else if (item[1].equals("ALL")) {
 						userLocation.items.addAll(user.inventory);
 						user.inventory.clear();
 						user.score = 0;
@@ -96,6 +102,24 @@ public class Player {
 			if(userLocation.items.size() < 1) {
 				System.out.println("Nothing special to take in this room");
 			}
+		}
+		
+		// This method allows user to use a limited-use-item
+		static boolean use(Player user, LimitedUseItem limitedItem, String[] item) {
+			if (item[1].equals("bottle")) {
+				for (int i = 0; i < user.inventory.size(); i++) {
+					if (user.inventory.get(i).name.equals("bottle") && limitedItem.usesRemaining != 0) {
+						System.out.println("You drank the water inside the bottle");
+						limitedItem.usesRemaining --;
+						return true;
+					} else {
+						System.out.println(limitedItem.afterUse);
+					}
+				}
+			} else {
+				System.out.println("No item to that can be used in your inventory");
+			}
+			return false;
 		}
 	
 	// A more useful toString method

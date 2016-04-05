@@ -150,6 +150,7 @@ public class HouseOfQuestions {
 	// This method creates instances of Item and sets them in their proper location
 	static void setItems(){
 		LOCALES[0].placeItems("map", "A map of the house", "You spot a map on the floor");
+		LOCALES[0].placeLimitedItems("bottle", "A water bottle", "You see a bottle", 1, "No water left");
 		LOCALES[1].placeItems("guitar", "A nifty acoustic guitar", "You found a cool guitar");
 		LOCALES[2].placeItems("calculator","A calculator used for math classes", "You spot a nice calculator");
 		LOCALES[3].placeItems("beaker", "A beaker for measurement", "You see a fancy beaker on a lab table");
