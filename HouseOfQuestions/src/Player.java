@@ -20,14 +20,14 @@ public class Player {
 			int scoreToAdd = 0;
 
 			if (userLocation.items.size() == 0) {
-				System.out.print("Already found an item here\n");	
-			} else if(userLocation.items.size() != 0) {
+				System.out.print("Already found an item here\n");
+			} else {
 				for (int k = 0; k < userLocation.items.size(); k++) {
 					if (userLocation.items.get(k).isDiscovered == false) {
 						System.out.println("Maybe I should examine the room for an item");
 						break;
-					
-					} else if(item[1].equals("ALL")) {
+							
+					} else if (item[1].equals("ALL")) {
 						for (int l = 0; l < userLocation.items.size(); l++) {
 							scoreToAdd += userLocation.items.get(l).value;
 						}
@@ -39,24 +39,30 @@ public class Player {
 						System.out.println("Score +" + scoreToAdd);
 						System.out.println("Your total score is: " + user.score);
 						System.out.println("Your inventory: " + user.inventory.toString());
-						
-					} else if(item[1].equals(userLocation.items.get(k).name.toUpperCase())) {		
-						user.inventory.add(userLocation.items.get(k));
-						user.score += userLocation.items.get(k).value;
-						System.out.println("\nYou picked up the " + user.inventory.get(k).name + " here in the " + userLocation.name);
-						userLocation.items.remove(userLocation.items.get(k));
-						System.out.println("Score +5");
-						System.out.println("Your total score is: " + user.score);
-						System.out.println("Your inventory: " + user.inventory.toString());				
-						
-					} else {
+						break;
+							
+					} else { 
+						for (int l = 0; l < userLocation.items.size(); l++) {
+							if (item[1].equals(userLocation.items.get(l).name.toUpperCase())) {
+								user.inventory.add(userLocation.items.get(l));
+								user.score += userLocation.items.get(l).value;
+								System.out.println("\nYou picked up the " + user.inventory.get(l).name + " here in the " + userLocation.name);
+								userLocation.items.remove(userLocation.items.get(l));
+								System.out.println("Score +5");
+								System.out.println("Your total score is: " + user.score);
+								System.out.println("Your inventory: " + user.inventory.toString());
+							}
+						}
+						if (userLocation.items.size() == 0) {
+							break;
+						}
 						System.out.println("Not an item available to pick up");
-						System.out.println(userLocation.items);
 						break;
 					}
 				}
 			}
 		}
+		
 	
 		
 	// This method allows player to drop specified items or all items in the player inventory
@@ -66,23 +72,31 @@ public class Player {
 				
 			} else { 				
 				for (int i = 0; i < user.inventory.size(); i++ ) {
-					if (item[1].equals(user.inventory.get(i).name.toUpperCase())) {
-						userLocation.items.add(user.inventory.get(i));
-						System.out.println("\nYou dropped the " + user.inventory.get(i).name + " here in the " + userLocation.name);
-						user.score -= userLocation.items.get(i).value;
-						user.inventory.remove(user.inventory.get(i));
-						System.out.println("Score -5");
-						System.out.println("Your total score is: " + user.score);
-						System.out.println("Your inventory: " + user.inventory.toString());	
-					} else if (item[1].equals("ALL")) {
+					if (item[1].equals("ALL")) {
 						userLocation.items.addAll(user.inventory);
 						user.inventory.clear();
 						user.score = 0;
 						System.out.println("\nYou droped all your items");
 						System.out.println("Your total score is: " + user.score);
 					} else {
+						for (int m = 0; m < user.inventory.size(); m++) {
+							if (item[1].equals(user.inventory.get(m).name.toUpperCase())) {
+								userLocation.items.add(user.inventory.get(m));
+								System.out.println("\nYou dropped the " + user.inventory.get(i).name + " here in the " + userLocation.name);
+								user.score -= userLocation.items.get(m).value;
+								user.inventory.remove(user.inventory.get(m));
+								System.out.println("Score -5");
+								System.out.println("Your total score is: " + user.score);
+								System.out.println("Your inventory: " + user.inventory.toString());
+								break;
+							}
+
+						}
+						if (user.inventory.size() == 0) {
+							break;
+						}
 						System.out.print("\nYou don't have that item\n");
-						System.out.println("Your inventory: " + user.inventory.toString());	
+						System.out.println("Your inventory: " + user.inventory.toString());
 					}
 				}
 			}

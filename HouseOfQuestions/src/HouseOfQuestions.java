@@ -7,6 +7,7 @@
  */
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class HouseOfQuestions {
@@ -174,7 +175,7 @@ public class HouseOfQuestions {
 			System.out.print("What should I do?: ");
 			userInput = inputSource.nextLine().trim().toUpperCase();
 			String[] inputSplit = userInput.split(" ");
-
+			
 			// Game loops until user quits
 			if (userInput.equals("N")) {
 				HouseOfQuestions.move(N);
@@ -195,11 +196,23 @@ public class HouseOfQuestions {
 			} else if (userInput.equals("B")) {
 				HouseOfQuestions.back(playerTrail);
 			} else if (inputSplit[0].equals("T")) {
-				Player.take(currentPlayer, LOCALES[currentPlayer.location], inputSplit);
+				if (inputSplit.length == 1) {
+					System.out.println("What did you want to take?");
+				} else {
+					Player.take(currentPlayer, LOCALES[currentPlayer.location], inputSplit);
+				}
 			} else if (inputSplit[0].equals("D")) {
-				Player.drop(currentPlayer, LOCALES[currentPlayer.location], inputSplit);
+				if (inputSplit.length == 1) {
+					System.out.println("What did you want to drop?");
+				} else {
+					Player.drop(currentPlayer, LOCALES[currentPlayer.location], inputSplit);
+				}
 			} else if (inputSplit[0].equals("U")) {
-				Player.use(currentPlayer, bottle, inputSplit);
+				if (inputSplit.length == 1) {
+					System.out.println("What did you want to use?");
+				} else {
+					Player.use(currentPlayer, bottle, inputSplit);
+				}
 			} else if (userInput.equals("X")) {
 				Player.examine(LOCALES[currentPlayer.location]);
 			} else if (userInput.equals("M")) {
