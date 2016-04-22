@@ -20,7 +20,7 @@ public class Player {
 			int scoreToAdd = 0;
 
 			if (userLocation.items.size() == 0) {
-				System.out.print("Already found an item here\n");
+				System.out.print("No items in the room\n");
 			} else {
 				for (int k = 0; k < userLocation.items.size(); k++) {
 					if (userLocation.items.get(k).isDiscovered == false) {
@@ -41,22 +41,23 @@ public class Player {
 						System.out.println("Your inventory: " + user.inventory.toString());
 						break;
 							
-					} else { 
+					} else {
 						for (int l = 0; l < userLocation.items.size(); l++) {
 							if (item[1].equals(userLocation.items.get(l).name.toUpperCase())) {
 								user.inventory.add(userLocation.items.get(l));
 								user.score += userLocation.items.get(l).value;
 								System.out.println("\nYou picked up the " + user.inventory.get(l).name + " here in the " + userLocation.name);
-								userLocation.items.remove(userLocation.items.get(l));
 								System.out.println("Score +5");
 								System.out.println("Your total score is: " + user.score);
 								System.out.println("Your inventory: " + user.inventory.toString());
+								userLocation.items.remove(userLocation.items.get(l));
 							}
+	
 						}
 						if (userLocation.items.size() == 0) {
 							break;
 						}
-						System.out.println("Not an item available to pick up");
+						System.out.println("Not an item that can be picked up");
 						break;
 					}
 				}
@@ -112,7 +113,7 @@ public class Player {
 					System.out.println("The " + userLocation.items.get(i).name + " is in the room");
 				} 
 			}
-			if(userLocation.items.size() < 1) {
+			if (userLocation.items.size() < 1) {
 				System.out.println("Nothing special to take in this room");
 			}
 		}

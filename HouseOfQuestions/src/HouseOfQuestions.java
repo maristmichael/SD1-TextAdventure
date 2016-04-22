@@ -73,6 +73,7 @@ public class HouseOfQuestions {
 	
 	// This is the instance of the Player object 
 	static Player currentPlayer = new Player("", 0);
+	static BreadcrumbTrail playerTrail = new BreadcrumbTrail();
 	
 	// These variables handle input by user
 	public static Scanner inputSource = new Scanner(System.in);
@@ -127,8 +128,10 @@ public class HouseOfQuestions {
 		
 		if (!(nextLoc ==-1)) {
 			currentPlayer.location = nextLoc;
+			playerTrail.dropCrumb(currentPlayer.location);
+			System.out.println("You dropped a crumb to make a trail");
 		} else {
-			System.out.println("\nCannot go this way... Choose another path");
+			System.out.println("Cannot go this way... Choose another path");
 		}
 		System.out.println("\n"+HouseOfQuestions.locToScene());
 	}
@@ -136,14 +139,14 @@ public class HouseOfQuestions {
 	static void back(BreadcrumbTrail trail) {
 		if (trail.hasMoreCrumbs()) {
 			trail.pickupCrumb();
-			if(trail.currentCrumb() >= 0) {
+			if (trail.currentCrumb() >= 0) {
 				currentPlayer.location = trail.currentCrumb();
 				System.out.println("You followed your breadcrumb trail back a room");
 				System.out.println("\n" + HouseOfQuestions.locToScene());
 			} else {
 				currentPlayer.location = 0;
 				trail.dropCrumb(currentPlayer.location);
-				System.out.println("You reached your final crumb on the trail you made.");
+				System.out.println("You already at your final crumb on the trail you made.\n");
 				System.out.println("You are in the " + LOCALES[currentPlayer.location].name);
 			}
 		}
@@ -166,8 +169,8 @@ public class HouseOfQuestions {
 		HouseOfQuestions.setItems();
 		LimitedUseItem bottle = new LimitedUseItem("bottle", "A water bottle", "You see a bottle", 1, "No water left");
 		LOCALES[4].items.add(bottle);
-		BreadcrumbTrail playerTrail = new BreadcrumbTrail();
 		playerTrail.dropCrumb(currentPlayer.location);
+		System.out.println("You dropped your a crumb to make a trail\n");
 		
 		
 		while (true) {
@@ -179,20 +182,12 @@ public class HouseOfQuestions {
 			// Game loops until user quits
 			if (userInput.equals("N")) {
 				HouseOfQuestions.move(N);
-				playerTrail.dropCrumb(currentPlayer.location);
-				System.out.println("\nYou dropped a crumb to make a trail");
 			} else if (userInput.equals("S")) {
 				HouseOfQuestions.move(S);
-				playerTrail.dropCrumb(currentPlayer.location);
-				System.out.println("\nYou dropped a crumb to make a trail");
 			} else if (userInput.equals("W")) {
 				HouseOfQuestions.move(W);
-				playerTrail.dropCrumb(currentPlayer.location);
-				System.out.println("\nYou dropped a crumb to make a trail");
 			} else if (userInput.equals("E")) {
 				HouseOfQuestions.move(E);	
-				playerTrail.dropCrumb(currentPlayer.location);
-				System.out.println("\nYou dropped a crumb to make a trail");
 			} else if (userInput.equals("B")) {
 				HouseOfQuestions.back(playerTrail);
 			} else if (inputSplit[0].equals("T")) {

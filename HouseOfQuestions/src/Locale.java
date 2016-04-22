@@ -24,10 +24,4 @@ public class Locale {
 	public String toString() {
 		return this.description + "\n(You are in the " + this.name + ")";
 	}
-
-	public void remove(Item item) {
-		// TODO Auto-generated method stub
-		
-	};
-	
 }
