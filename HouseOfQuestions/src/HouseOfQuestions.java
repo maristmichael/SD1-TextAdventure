@@ -134,13 +134,17 @@ public class HouseOfQuestions {
 	static void move(int direction) {
 		int nextLoc = from(direction);
 		
-		if (nextLoc == 7 && !(currentPlayer.inventory.contains(calculator))) {
-			System.out.println("The door leading to the next room wont budge" + "\nMaybe I need to have an item...");
-			System.out.println("You are in the " + LOCALES[currentPlayer.location].name);
-		} else if(nextLoc == 7 && currentPlayer.inventory.contains(calculator)) {
-			System.out.println("The door suddenly opened allowing me to access the next room");
-			System.out.println("\n"+HouseOfQuestions.locToScene());
-		} else if(!(nextLoc ==-1)) {
+		if (!(nextLoc ==-1) && LOCALES[nextLoc] instanceof SecureLocale) {
+			if (SecureLocale.canEnter(currentPlayer, calculator)) {
+				currentPlayer.location = nextLoc;
+				System.out.println("The door suddenly opened allowing me to access the next room");
+				System.out.println("\n"+HouseOfQuestions.locToScene());
+			} else {
+				System.out.println("The door leading to the next room wont budge" + "\nMaybe I need to have an item...");
+				System.out.println("You are in the " + LOCALES[currentPlayer.location].name);
+			}
+			
+		} else if (!(nextLoc ==-1)) {
 			currentPlayer.location = nextLoc;
 			LOCALES[currentPlayer.location].visitCount++;
 			playerTrail.dropCrumb(currentPlayer.location);
