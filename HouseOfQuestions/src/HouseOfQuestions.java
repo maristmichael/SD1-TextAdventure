@@ -194,7 +194,14 @@ public class HouseOfQuestions {
 	
 	// This method checks to see if player's action count is zero, and if so, the player loses.
 	static void outOfActions() {
-		
+		if (currentPlayer.actionCount == 0) {
+			System.out.println("\n" +"Unfortunately you have ran out of actions to take." + "\nYOU LOSE :(");
+			System.out.println("\nCopyright Michael Gutierrez");
+			System.out.println("===========================");
+			System.out.println("Under the supervision of Professor Johnson");
+			userInput = inputSource.nextLine();
+			inputSource.close();
+		}
 	}
 	// This method creates instances of Item and sets them in their proper location
 	static void setItems(){
@@ -221,6 +228,7 @@ public class HouseOfQuestions {
 		while (true) {
 			// User input that is case-insensitive
 			visitVictoryCheck();
+			outOfActions();
 			System.out.println("Move count: " + currentPlayer.actionCount);
 			System.out.print("What should I do?: ");
 			userInput = inputSource.nextLine().trim().toUpperCase();
