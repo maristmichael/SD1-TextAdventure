@@ -128,6 +128,7 @@ public class HouseOfQuestions {
 		
 		if (!(nextLoc ==-1)) {
 			currentPlayer.location = nextLoc;
+			LOCALES[currentPlayer.location].visitCount++;
 			playerTrail.dropCrumb(currentPlayer.location);
 			System.out.println("You dropped a crumb to make a trail");
 		} else {
@@ -136,6 +137,7 @@ public class HouseOfQuestions {
 		System.out.println("\n"+HouseOfQuestions.locToScene());
 	}
 	
+	// This method uses a stack interface in order for player to back track
 	static void back(BreadcrumbTrail trail) {
 		if (trail.hasMoreCrumbs()) {
 			trail.pickupCrumb();
@@ -152,6 +154,9 @@ public class HouseOfQuestions {
 		}
 	}
 	
+	static void victoryCheck() {
+		
+	}
 	// This method creates instances of Item and sets them in their proper location
 	static void setItems(){
 		LOCALES[0].placeItems("map", "A map of the house", "You spot a map on the floor");
@@ -167,6 +172,7 @@ public class HouseOfQuestions {
 	public static void gameStart() {
 		String locationScene = "";
 		HouseOfQuestions.setItems();
+		LOCALES[currentPlayer.location].visitCount++;
 		LimitedUseItem bottle = new LimitedUseItem("bottle", "A water bottle", "You see a bottle", 1, "No water left");
 		LOCALES[4].items.add(bottle);
 		playerTrail.dropCrumb(currentPlayer.location);
