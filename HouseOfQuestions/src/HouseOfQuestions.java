@@ -143,13 +143,14 @@ public class HouseOfQuestions {
 		if (trail.hasMoreCrumbs()) {
 			trail.pickupCrumb();
 			if (trail.currentCrumb() >= 0) {
+				currentPlayer.actionCount--;
 				currentPlayer.location = trail.currentCrumb();
 				System.out.println("You followed your breadcrumb trail back a room");
 				System.out.println("\n" + HouseOfQuestions.locToScene());
 			} else {
 				currentPlayer.location = 0;
 				trail.dropCrumb(currentPlayer.location);
-				System.out.println("You already at your final crumb on the trail you made.\n");
+				System.out.println("Your already at your final crumb on the trail you made.\n");
 				System.out.println("You are in the " + LOCALES[currentPlayer.location].name);
 			}
 		}
@@ -220,6 +221,7 @@ public class HouseOfQuestions {
 		while (true) {
 			// User input that is case-insensitive
 			visitVictoryCheck();
+			System.out.println("Move count: " + currentPlayer.actionCount);
 			System.out.print("What should I do?: ");
 			userInput = inputSource.nextLine().trim().toUpperCase();
 			String[] inputSplit = userInput.split(" ");
@@ -254,7 +256,7 @@ public class HouseOfQuestions {
 					Player.use(currentPlayer, bottle, inputSplit);
 				}
 			} else if (userInput.equals("X")) {
-				Player.examine(LOCALES[currentPlayer.location]);
+				Player.examine(currentPlayer,LOCALES[currentPlayer.location]);
 			} else if (userInput.equals("M")) {
 				HouseOfQuestions.map();
 			} else if (userInput.equals("H")) {
@@ -286,6 +288,7 @@ public class HouseOfQuestions {
 		currentPlayer.name = enteredName;
 		System.out.println("\nYou, " + currentPlayer.name + ", wake up to find yourself inside of the "+
 			"'House of Questions'\n"+"Nothing else to do but explore...\n");
+		System.out.println("You have a limited amount of moves you can use\n");
 		System.out.println(HouseOfQuestions.locToScene() + "\n");
 	}
 	

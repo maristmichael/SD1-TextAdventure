@@ -32,6 +32,7 @@ public class Player {
 						break;
 							
 					} else if (item[1].equals("ALL")) {
+						user.actionCount--;
 						for (int l = 0; l < userLocation.items.size(); l++) {
 							scoreToAdd += userLocation.items.get(l).value;
 						}
@@ -48,6 +49,7 @@ public class Player {
 					} else {
 						for (int l = 0; l < userLocation.items.size(); l++) {
 							if (item[1].equals(userLocation.items.get(l).name.toUpperCase())) {
+								user.actionCount--;
 								user.inventory.add(userLocation.items.get(l));
 								user.score += userLocation.items.get(l).value;
 								System.out.println("\nYou picked up the " + user.inventory.get(l).name + " here in the " + userLocation.name);
@@ -78,6 +80,7 @@ public class Player {
 			} else { 				
 				for (int i = 0; i < user.inventory.size(); i++ ) {
 					if (item[1].equals("ALL")) {
+						user.actionCount--;
 						userLocation.items.addAll(user.inventory);
 						user.inventory.clear();
 						user.score = 0;
@@ -86,6 +89,7 @@ public class Player {
 					} else {
 						for (int m = 0; m < user.inventory.size(); m++) {
 							if (item[1].equals(user.inventory.get(m).name.toUpperCase())) {
+								user.actionCount--;
 								userLocation.items.add(user.inventory.get(m));
 								System.out.println("\nYou dropped the " + user.inventory.get(i).name + " here in the " + userLocation.name);
 								user.score -= userLocation.items.get(m).value;
@@ -108,12 +112,13 @@ public class Player {
 		}
 		
 		// This method allows user to examine room in order to discover items to pick up
-		static void examine(Locale userLocation) {
+		static void examine(Player user, Locale userLocation) {
 			for (int i = 0; i < userLocation.items.size(); i++) {
+				user.actionCount--;
 				if (userLocation.items.get(i).isDiscovered == false) {
 					userLocation.items.get(i).isDiscovered = true;
 					System.out.println(userLocation.items.get(i).discovered);
-				} else if(userLocation.items.size() != 0) {
+				} else if( userLocation.items.size() != 0) {
 					System.out.println("The " + userLocation.items.get(i).name + " is in the room");
 				} 
 			}
@@ -125,6 +130,7 @@ public class Player {
 		// This method allows user to use a limited-use-item
 		static void use(Player user, LimitedUseItem limitedItem, String[] item) {
 			if (item[1].equals("BOTTLE")) {
+				user.actionCount--;
 				if (user.inventory.size() > 0) {
 					for (int i = 0; i < user.inventory.size(); i++) {
 						if(user.inventory.get(i).name.equals("bottle") && limitedItem.usesRemaining != 0) {
