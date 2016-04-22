@@ -8,6 +8,7 @@ public class Player {
 	int score;
 	ArrayList<Item> inventory;
 	boolean ignoreVisitVictory;
+	int actionCount;
 	
 	public Player(String name, int location) {
 		this.name = name;
@@ -15,6 +16,7 @@ public class Player {
 		this.inventory = new ArrayList<Item>();
 		this.location = location;
 		this.ignoreVisitVictory = false;
+		this.actionCount = 50;
 	}
 	
 	// This method allows player to grab all items and store them in the inventory

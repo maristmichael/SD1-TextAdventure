@@ -130,6 +130,7 @@ public class HouseOfQuestions {
 			currentPlayer.location = nextLoc;
 			LOCALES[currentPlayer.location].visitCount++;
 			playerTrail.dropCrumb(currentPlayer.location);
+			currentPlayer.actionCount--;
 			System.out.println("You dropped a crumb");
 		} else {
 			System.out.println("Cannot go this way... Choose another path");
@@ -154,7 +155,8 @@ public class HouseOfQuestions {
 		}
 	}
 	
-	static void victoryCheck() {
+	// This method checks to see if player has visited every location, and if so, player can choose victory.
+	static void visitVictoryCheck() {
 		int locsVisited = 0;
 		
 		for (int i = 0; i < LOCALES.length; i++) {
@@ -188,6 +190,11 @@ public class HouseOfQuestions {
 			}
 		}
 	}
+	
+	// This method checks to see if player's action count is zero, and if so, the player loses.
+	static void outOfActions() {
+		
+	}
 	// This method creates instances of Item and sets them in their proper location
 	static void setItems(){
 		LOCALES[0].placeItems("map", "A map of the house", "You spot a map on the floor");
@@ -212,7 +219,7 @@ public class HouseOfQuestions {
 		
 		while (true) {
 			// User input that is case-insensitive
-			victoryCheck();
+			visitVictoryCheck();
 			System.out.print("What should I do?: ");
 			userInput = inputSource.nextLine().trim().toUpperCase();
 			String[] inputSplit = userInput.split(" ");
