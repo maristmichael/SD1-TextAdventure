@@ -12,6 +12,14 @@ import java.util.Scanner;
 
 public class HouseOfQuestions {
 	
+	static Item map        = new Item("map", "A map of the house", "You spot a map on the floor");
+	static Item guitar     = new Item("guitar", "A nifty acoustic guitar", "You found a cool guitar");
+	static Item calculator = new Item("calculator","A calculator used for math classes", "You spot a nice calculator");
+	static Item beaker     = new Item("beaker", "A beaker for measurement", "You see a fancy beaker on a lab table");
+	static Item painting   = new Item("painting", "Van Gogh's famous famous painting","A familiar painting catches your eyes");
+	static Item novel      = new Item("novel", "Great Gatsby, a famous book by F.Scott Fitzgerald", "You find your favorite novel of all time");
+	static Item textbook   = new Item("textook", "A thick book containing U.S. history", "You see a big and textbook on the table");
+	
 	// These are constant variables representing directions for matrix
 	public static final int N = 0;
 	public static final int S = 1;
@@ -21,12 +29,13 @@ public class HouseOfQuestions {
 	// This is a String array containing Locale descriptions
 	public static final String[] LocDescrip = {
 		"This is the starting area, there are several paths to take",
-		"In this room, you hear many melodies emanating from the walls.",
+		"In this room, you hear many melodies emanating from the walls",
 		"This is a room that has walls written with math equations",
 		"You enter a room littered with many scientific journals and books",
 		"This room contains many philosophical rhetoric inscribed on the walls",
 		"What a beautiful room! It has many works of art scattered around",
-		"You enter a room with many dictionaries and novels all stacked neatly",
+		"You enter a room with many dictionaries and novels all stacked neatly" + 
+				"\nThe next path is close off by a metal door inscribed with numbers with no way to open it",
 		"You are now in a room with a giant globe with many history books surrounding it"
 		};
 	
@@ -39,7 +48,7 @@ public class HouseOfQuestions {
 		new Locale("Philosophy Room", LocDescrip[4]),
 		new Locale("Art Room", LocDescrip[5]),
 		new Locale("English Room", LocDescrip[6]),
-		new Locale("History Room", LocDescrip[7])
+		new SecureLocale("History Room", LocDescrip[7], calculator)
 	};
 	
 	// This is the navigation matrix
@@ -78,7 +87,6 @@ public class HouseOfQuestions {
 	// These variables handle input by user
 	public static Scanner inputSource = new Scanner(System.in);
 	public static String userInput;
-	
 	
 	// This method looks at player's location and displays appropriate description
 	static String locToScene() {
@@ -126,16 +134,23 @@ public class HouseOfQuestions {
 	static void move(int direction) {
 		int nextLoc = from(direction);
 		
-		if (!(nextLoc ==-1)) {
+		if (nextLoc == 7 && !(currentPlayer.inventory.contains(calculator))) {
+			System.out.println("The door leading to the next room wont budge" + "\nMaybe I need to have an item...");
+			System.out.println("You are in the " + LOCALES[currentPlayer.location].name);
+		} else if(nextLoc == 7 && currentPlayer.inventory.contains(calculator)) {
+			System.out.println("The door suddenly opened allowing me to access the next room");
+			System.out.println("\n"+HouseOfQuestions.locToScene());
+		} else if(!(nextLoc ==-1)) {
 			currentPlayer.location = nextLoc;
 			LOCALES[currentPlayer.location].visitCount++;
 			playerTrail.dropCrumb(currentPlayer.location);
 			currentPlayer.actionCount--;
 			System.out.println("You dropped a crumb");
+			System.out.println("\n"+HouseOfQuestions.locToScene());
 		} else {
 			System.out.println("Cannot go this way... Choose another path");
+			System.out.println("You are in the " + LOCALES[currentPlayer.location].name);
 		}
-		System.out.println("\n"+HouseOfQuestions.locToScene());
 	}
 	
 	// This method uses a stack interface in order for player to back track
@@ -204,14 +219,15 @@ public class HouseOfQuestions {
 		}
 	}
 	// This method creates instances of Item and sets them in their proper location
-	static void setItems(){
-		LOCALES[0].placeItems("map", "A map of the house", "You spot a map on the floor");
-		LOCALES[1].placeItems("guitar", "A nifty acoustic guitar", "You found a cool guitar");
-		LOCALES[2].placeItems("calculator","A calculator used for math classes", "You spot a nice calculator");
-		LOCALES[3].placeItems("beaker", "A beaker for measurement", "You see a fancy beaker on a lab table");
-		LOCALES[5].placeItems("painting", "Van Gogh's famous famous painting","A familiar painting catches your eyes");
-		LOCALES[6].placeItems("novel", "Great Gatsby, a famous book by F.Scott Fitzgerald", "You find your favorite novel of all time");
-		LOCALES[7].placeItems("textook", "A thick book containing U.S. history", "You see a big and textbook on the table");
+	
+	static void setItems() {
+		LOCALES[0].placeItems(map);
+		LOCALES[1].placeItems(guitar);
+		LOCALES[2].placeItems(calculator);
+		LOCALES[3].placeItems(beaker);
+		LOCALES[5].placeItems(painting);
+		LOCALES[6].placeItems(novel);
+		LOCALES[7].placeItems(textbook);
 	}
 	
 	// This method starts the game loop
