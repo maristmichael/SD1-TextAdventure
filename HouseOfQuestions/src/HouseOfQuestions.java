@@ -130,7 +130,7 @@ public class HouseOfQuestions {
 			currentPlayer.location = nextLoc;
 			LOCALES[currentPlayer.location].visitCount++;
 			playerTrail.dropCrumb(currentPlayer.location);
-			System.out.println("You dropped a crumb to make a trail");
+			System.out.println("You dropped a crumb");
 		} else {
 			System.out.println("Cannot go this way... Choose another path");
 		}
@@ -155,7 +155,38 @@ public class HouseOfQuestions {
 	}
 	
 	static void victoryCheck() {
+		int locsVisited = 0;
 		
+		for (int i = 0; i < LOCALES.length; i++) {
+			if (LOCALES[i].visitCount != 0) {
+				locsVisited++;
+			}		
+		}
+		
+		if (currentPlayer.ignoreVisitVictory == false) {
+			if (locsVisited == LOCALES.length) {
+				System.out.println("You have visited every location of the House Of Questions");
+				System.out.print("Do you want to leave the house and be done with it?" +"\nY or N?: ");
+				
+				while (true) {
+				userInput = inputSource.nextLine().trim().toUpperCase();
+					if (userInput.equals("Y")) {
+						System.out.println("\n" +"CONGRATULATIONS"  + "\nYou have won the game via visiting every location.");
+						System.out.println("\nCopyright Michael Gutierrez");
+						System.out.println("===========================");
+						System.out.println("Under the supervision of Professor Johnson");
+						inputSource.close();
+					} else if (userInput.equals("N")) {
+						currentPlayer.ignoreVisitVictory = true;
+						System.out.println("");
+						break;
+					} else {
+						System.out.print("Not a valid command\n" + "Y or N?");
+						continue;
+					}
+				}
+			}
+		}
 	}
 	// This method creates instances of Item and sets them in their proper location
 	static void setItems(){
@@ -176,11 +207,12 @@ public class HouseOfQuestions {
 		LimitedUseItem bottle = new LimitedUseItem("bottle", "A water bottle", "You see a bottle", 1, "No water left");
 		LOCALES[4].items.add(bottle);
 		playerTrail.dropCrumb(currentPlayer.location);
-		System.out.println("You dropped your a crumb to make a trail\n");
+		System.out.println("You dropped a breadcrumb to make a trail if you get lost\n");
 		
 		
 		while (true) {
 			// User input that is case-insensitive
+			victoryCheck();
 			System.out.print("What should I do?: ");
 			userInput = inputSource.nextLine().trim().toUpperCase();
 			String[] inputSplit = userInput.split(" ");
@@ -227,7 +259,7 @@ public class HouseOfQuestions {
 				"Enter 'b' to follow your crumb trail back to a previos room\n";
 			} else if (userInput.equals("Q")) {
 				break;
-			}else {
+			} else {
 				System.out.println("Not a valid comman\n");
 				continue;
 			}	
