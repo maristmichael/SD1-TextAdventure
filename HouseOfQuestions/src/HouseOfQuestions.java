@@ -19,7 +19,7 @@ public class HouseOfQuestions {
 	static Item painting   = new Item("painting", "Van Gogh's famous famous painting","A familiar painting catches your eyes");
 	static Item novel      = new Item("novel", "Great Gatsby, a famous book by F.Scott Fitzgerald", "You find your favorite novel of all time");
 	static Item textbook   = new Item("textook", "A thick book containing U.S. history", "You see a big and textbook on the table");
-	
+	static LimitedUseItem bottle = new LimitedUseItem("bottle", "A water bottle", "You see a bottle", 1, "No water left");
 	// These are constant variables representing directions for matrix
 	public static final int N = 0;
 	public static final int S = 1;
@@ -35,7 +35,7 @@ public class HouseOfQuestions {
 		"This room contains many philosophical rhetoric inscribed on the walls",
 		"What a beautiful room! It has many works of art scattered around",
 		"You enter a room with many dictionaries and novels all stacked neatly" + 
-				"\nThe next path is close off by a metal door inscribed with numbers with no way to open it",
+				"\nThe next path is closed off by a metal door inscribed with numbers with no way to open it by hand",
 		"You are now in a room with a giant globe with many history books surrounding it"
 		};
 	
@@ -90,8 +90,7 @@ public class HouseOfQuestions {
 	
 	// This method looks at player's location and displays appropriate description
 	static String locToScene() {
-		int locNum = currentPlayer.location;
-		return LOCALES[locNum].toString();
+		return LOCALES[currentPlayer.location].toString();
 	}
 	
 	// This method converts the directions into integers to navigate the matrix
@@ -108,7 +107,7 @@ public class HouseOfQuestions {
 	}
 	
 	// This method displays the game map if player has obtained the map
-	static void map(){
+	static void showMap(){
 		if (currentPlayer.inventory.size() != 0) {
 			String map = "map";
 			for (int i = 0; i < currentPlayer.inventory.size(); i++){
@@ -149,7 +148,6 @@ public class HouseOfQuestions {
 			LOCALES[currentPlayer.location].visitCount++;
 			playerTrail.dropCrumb(currentPlayer.location);
 			currentPlayer.actionCount--;
-			System.out.println("You dropped a crumb");
 			System.out.println("\n"+HouseOfQuestions.locToScene());
 		} else {
 			System.out.println("Cannot go this way... Choose another path");
@@ -229,21 +227,19 @@ public class HouseOfQuestions {
 		LOCALES[1].placeItems(guitar);
 		LOCALES[2].placeItems(calculator);
 		LOCALES[3].placeItems(beaker);
+		LOCALES[4].items.add(bottle);
 		LOCALES[5].placeItems(painting);
 		LOCALES[6].placeItems(novel);
 		LOCALES[7].placeItems(textbook);
+		
 	}
 	
 	// This method starts the game loop
 	public static void gameStart() {
 		String locationScene = "";
-		HouseOfQuestions.setItems();
+		setItems();
 		LOCALES[currentPlayer.location].visitCount++;
-		LimitedUseItem bottle = new LimitedUseItem("bottle", "A water bottle", "You see a bottle", 1, "No water left");
-		LOCALES[4].items.add(bottle);
 		playerTrail.dropCrumb(currentPlayer.location);
-		System.out.println("You dropped a breadcrumb to make a trail if you get lost\n");
-		
 		
 		while (true) {
 			// User input that is case-insensitive
@@ -256,15 +252,29 @@ public class HouseOfQuestions {
 			
 			// Game loops until user quits
 			if (userInput.equals("N")) {
-				HouseOfQuestions.move(N);
+				move(N);
 			} else if (userInput.equals("S")) {
-				HouseOfQuestions.move(S);
+				move(S);
 			} else if (userInput.equals("W")) {
-				HouseOfQuestions.move(W);
+				move(W);
 			} else if (userInput.equals("E")) {
-				HouseOfQuestions.move(E);	
+				move(E);	
 			} else if (userInput.equals("B")) {
-				HouseOfQuestions.back(playerTrail);
+				back(playerTrail);
+			} else if (userInput.equals("X")) {
+				Player.examine(currentPlayer,LOCALES[currentPlayer.location]);
+			} else if (userInput.equals("M")) {
+				showMap();
+			} else if (userInput.equals("H")) {
+				locationScene = "\nExplore by entering 'n', 's', 'e', 'w'\n" + 
+				"Enter 'q' to quit the game.\n" + 
+				"Enter 't' to take all items that may be in a room.\n" + 
+				"Enter 'd' to drop an item by entering the exact name of it.\n" +
+				"Enter 'm' to display the game map if you found it.\n" + 
+				"Enter 'b' to follow your crumb trail back to a previos room\n";
+			} else if (userInput.equals("Q")) {
+				break;
+				
 			} else if (inputSplit[0].equals("T")) {
 				if (inputSplit.length == 1) {
 					System.out.println("What did you want to take?");
@@ -276,26 +286,13 @@ public class HouseOfQuestions {
 					System.out.println("What did you want to drop?");
 				} else {
 					Player.drop(currentPlayer, LOCALES[currentPlayer.location], inputSplit);
-				}
+				}	
 			} else if (inputSplit[0].equals("U")) {
 				if (inputSplit.length == 1) {
 					System.out.println("What did you want to use?");
 				} else {
 					Player.use(currentPlayer, bottle, inputSplit);
 				}
-			} else if (userInput.equals("X")) {
-				Player.examine(currentPlayer,LOCALES[currentPlayer.location]);
-			} else if (userInput.equals("M")) {
-				HouseOfQuestions.map();
-			} else if (userInput.equals("H")) {
-				locationScene = "\nExplore by entering 'n', 's', 'e', 'w'\n" + 
-				"Enter 'q' to quit the game.\n" + 
-				"Enter 't' to take all items that may be in a room.\n" + 
-				"Enter 'd' to drop an item by entering the exact name of it.\n" +
-				"Enter 'm' to display the game map if you found it.\n" + 
-				"Enter 'b' to follow your crumb trail back to a previos room\n";
-			} else if (userInput.equals("Q")) {
-				break;
 			} else {
 				System.out.println("Not a valid comman\n");
 				continue;

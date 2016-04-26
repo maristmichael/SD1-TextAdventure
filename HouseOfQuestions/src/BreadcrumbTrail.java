@@ -11,6 +11,7 @@ public class BreadcrumbTrail implements BreadcrumbStack {
 	public void dropCrumb(int x) {
 		Breadcrumb newCrumb = new Breadcrumb(x, this.top);
 		this.top = newCrumb;
+		System.out.println("You dropped a breadcrumb in case you're lost\n");
 	}
 	
 	@Override

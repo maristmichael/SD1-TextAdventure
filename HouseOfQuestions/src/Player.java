@@ -19,9 +19,33 @@ public class Player {
 		this.actionCount = 50;
 	}
 	
+	
+	static int updateScore(Player user, Locale userLocation, boolean singleItem) {
+		int scoreToAdd = 0;
+		if (singleItem == false) {
+			for (int l = 0; l < userLocation.items.size(); l++) {
+				scoreToAdd += userLocation.items.get(l).value;
+			}
+			System.out.println("Score +" + scoreToAdd);
+			System.out.println("Your total score is: " + user.score);
+			System.out.println("Your inventory: " + user.inventory.toString());
+			return scoreToAdd;
+			
+		} else {
+			for (int l = 0; l < userLocation.items.size(); l++) {
+				scoreToAdd += userLocation.items.get(l).value;
+				user.score += scoreToAdd;
+				System.out.println("\nYou picked up the " + user.inventory.get(l).name + " here in the " + userLocation.name);
+				System.out.println("Score +" + scoreToAdd);
+				System.out.println("Your total score is: " + user.score);
+				System.out.println("Your inventory: " + user.inventory.toString());
+			}
+			return scoreToAdd;
+		}	
+	}
+	
 	// This method allows player to grab all items and store them in the inventory
 		static void take(Player user, Locale userLocation, String[] item) {
-			int scoreToAdd = 0;
 
 			if (userLocation.items.size() == 0) {
 				System.out.print("No items in the room\n");
@@ -33,17 +57,8 @@ public class Player {
 							
 					} else if (item[1].equals("ALL")) {
 						user.actionCount--;
-						for (int l = 0; l < userLocation.items.size(); l++) {
-							scoreToAdd += userLocation.items.get(l).value;
-						}
-						user.inventory.addAll(userLocation.items);
-						System.out.println("\nYou picked up a(n): " + userLocation.items);
-						System.out.println("Your inventory: " + user.inventory.toString());
+						updateScore(user, userLocation, false);
 						userLocation.items.clear();
-						user.score += scoreToAdd;
-						System.out.println("Score +" + scoreToAdd);
-						System.out.println("Your total score is: " + user.score);
-						System.out.println("Your inventory: " + user.inventory.toString());
 						break;
 							
 					} else {
@@ -51,11 +66,7 @@ public class Player {
 							if (item[1].equals(userLocation.items.get(l).name.toUpperCase())) {
 								user.actionCount--;
 								user.inventory.add(userLocation.items.get(l));
-								user.score += userLocation.items.get(l).value;
-								System.out.println("\nYou picked up the " + user.inventory.get(l).name + " here in the " + userLocation.name);
-								System.out.println("Score +5");
-								System.out.println("Your total score is: " + user.score);
-								System.out.println("Your inventory: " + user.inventory.toString());
+								updateScore(user, userLocation, true);
 								userLocation.items.remove(userLocation.items.get(l));
 							}
 	
