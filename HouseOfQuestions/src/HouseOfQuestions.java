@@ -6,19 +6,22 @@
  *
  */
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
 public class HouseOfQuestions {
+
 	
-	static Item map        = new Item("map", "A map of the house", "You spot a map on the floor");
+	
+ 	static Item map        = new Item("map", "A map of the house", "You spot a map on the floor");
 	static Item guitar     = new Item("guitar", "A nifty acoustic guitar", "You found a cool guitar");
 	static Item calculator = new Item("calculator","A calculator used for math classes", "You spot a nice calculator");
 	static Item beaker     = new Item("beaker", "A beaker for measurement", "You see a fancy beaker on a lab table");
 	static Item painting   = new Item("painting", "Van Gogh's famous famous painting","A familiar painting catches your eyes");
 	static Item novel      = new Item("novel", "Great Gatsby, a famous book by F.Scott Fitzgerald", "You find your favorite novel of all time");
-	static Item textbook   = new Item("textook", "A thick book containing U.S. history", "You see a big and textbook on the table");
+	static Item textbook   = new Item("textbook", "A thick book containing U.S. history", "You see a big and textbook on the table");
 	static LimitedUseItem bottle = new LimitedUseItem("bottle", "A water bottle", "You see a bottle", 1, "No water left");
 	// These are constant variables representing directions for matrix
 	public static final int N = 0;
@@ -108,16 +111,8 @@ public class HouseOfQuestions {
 	
 	// This method displays the game map if player has obtained the map
 	static void showMap(){
-		if (currentPlayer.inventory.size() != 0) {
-			String map = "map";
-			for (int i = 0; i < currentPlayer.inventory.size(); i++){
-				if (currentPlayer.inventory.get(i).name.equals(map)) {
-					System.out.println();
-					System.out.println(gameMap);
-				} else {
-					System.out.println("You do not have a map yet");
-				}
-			}
+		if (currentPlayer.inventory.contains(map)) {
+					System.out.println("\n" + gameMap);
 		} else {
 			System.out.println("You do not have a map");
 		}
@@ -135,6 +130,7 @@ public class HouseOfQuestions {
 		
 		if (!(nextLoc ==-1) && LOCALES[nextLoc] instanceof SecureLocale) {
 			if (SecureLocale.canEnter(currentPlayer, calculator)) {
+				LOCALES[currentPlayer.location].visitCount++;
 				currentPlayer.location = nextLoc;
 				System.out.println("The door suddenly opened allowing me to access the next room");
 				System.out.println("\n"+HouseOfQuestions.locToScene());
@@ -189,7 +185,7 @@ public class HouseOfQuestions {
 				System.out.print("Do you want to leave the house and be done with it?" +"\nY or N?: ");
 				
 				while (true) {
-				userInput = inputSource.nextLine().trim().toUpperCase();
+					userInput = inputSource.nextLine().trim().toUpperCase();
 					if (userInput.equals("Y")) {
 						System.out.println("\n" +"CONGRATULATIONS"  + "\nYou have won the game via visiting every location.");
 						System.out.println("\nCopyright Michael Gutierrez");
