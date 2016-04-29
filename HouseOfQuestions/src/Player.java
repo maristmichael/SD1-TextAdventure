@@ -27,9 +27,9 @@ public class Player {
 				scoreChange += userLocation.items.get(l).value;
 			}
 			user.score += scoreChange;
-			System.out.println("Score +" + scoreChange);
+			System.out.println("\nScore +" + scoreChange);
 			System.out.println("Your total score is: " + user.score);
-			System.out.println("Your inventory: " + user.inventory.toString());
+			System.out.println("Total score: " + user.inventory.toString());
 			return scoreChange;
 			
 		} else if (singleItem == false && gainPoints == false) {
@@ -37,24 +37,23 @@ public class Player {
 				scoreChange -= user.inventory.get(l).value;
 			}
 			user.score += scoreChange;
-			System.out.println("Score " + scoreChange);
-			System.out.println("Your total score is: " + user.score);
+			System.out.println("\nScore " + scoreChange);
+			System.out.println("Total score: " + user.score);
 			return scoreChange;
 				
 		} else if (singleItem == true && gainPoints == true) {
 			scoreChange += userLocation.items.get(itemNum).value;
 			user.score += scoreChange;
-			System.out.println("Score +" + scoreChange);
-			System.out.println("Your total score is: " + user.score);
+			System.out.println("\nScore +" + scoreChange);
+			System.out.println("Total score: " + user.score);
 			System.out.println("Your inventory: " + user.inventory.toString());
 			return scoreChange;
 			
 		} else if (singleItem == true && gainPoints == false) {
 			scoreChange -= user.inventory.get(itemNum).value;
-			System.out.println(scoreChange);
 			user.score += scoreChange;
-			System.out.println("Score " + scoreChange);
-			System.out.println("Your total score is: " + user.score);
+			System.out.println("\nScore " + scoreChange);
+			System.out.println("Total score: " + user.score);
 			return scoreChange;
 		}
 		return scoreChange;
@@ -66,6 +65,7 @@ public class Player {
 			if (item[1].equals("ALL")) {
 				user.actionCount--;
 				user.inventory.addAll(userLocation.items);
+				System.out.println("\nYou picked up everything you could find in the room");
 				updateScore(user, userLocation, false, true, 0);
 				userLocation.items.clear();
 			} else if (userLocation.items.size() == 0) {
@@ -95,8 +95,8 @@ public class Player {
 					if (item[1].equals(userLocation.items.get(i).name.toUpperCase())) {
 						user.actionCount--;
 						user.inventory.add(userLocation.items.get(i));
-						updateScore(user, userLocation, true, true, i);
 						System.out.println("\nYou picked up the " + userLocation.items.get(i).name);
+						updateScore(user, userLocation, true, true, i);
 						userLocation.items.remove(userLocation.items.get(i));
 					}
 				}
@@ -114,6 +114,7 @@ public class Player {
 			if (item[1].equals("ALL")) {
 				user.actionCount--;
 				userLocation.items.addAll(user.inventory);
+				System.out.println("\nYou dropped everything in your inventory here in the " + userLocation.name);
 				updateScore(user, userLocation, false, false, 0);
 				user.inventory.clear();
 				System.out.println("Your inventory: " + user.inventory.toString());
@@ -163,12 +164,12 @@ public class Player {
 				user.actionCount--;
 				if (userLocation.items.get(i).isDiscovered == false) {
 					userLocation.items.get(i).isDiscovered = true;
-					System.out.println(userLocation.items.get(i).discovered);
+					System.out.println("\n" + userLocation.items.get(i).discovered);
 				} else if( userLocation.items.size() != 0) {
-					System.out.println("The " + userLocation.items.get(i).name + " is in the room");
+					System.out.println("\nThe " + userLocation.items.get(i).name + " is in the room");
 				} 
 			}
-			if (userLocation.items.size() < 1) {
+			if (userLocation.items.size() == 0) {
 				System.out.println("Nothing special to take in this room");
 			}
 		}
@@ -176,21 +177,19 @@ public class Player {
 		// This method allows user to use a limited-use-item
 		static void use(Player user, LimitedUseItem limitedItem, String[] item) {
 			if (item[1].equals("BOTTLE")) {
-				user.actionCount--;
-				if (user.inventory.size() > 0) {
-					for (int i = 0; i < user.inventory.size(); i++) {
-						if(user.inventory.get(i).name.equals("bottle") && limitedItem.usesRemaining != 0) {
-							System.out.println("You drank the water inside the bottle");
-							limitedItem.usesRemaining --;
-							break;
-						} else if (limitedItem.usesRemaining == 0) {
-							System.out.println(limitedItem.afterUse);
-							break;
-						}
+				for (int i = 0; i < user.inventory.size(); i++) {
+					if(user.inventory.get(i).name.equals("bottle") && limitedItem.usesRemaining != 0) {
+						user.actionCount--;
+						System.out.println("You drank the water inside the bottle");
+						limitedItem.usesRemaining --;
+						break;
+					} else if (limitedItem.usesRemaining == 0) {
+						System.out.println(limitedItem.afterUse);
+						break;
 					}
 				}
-			} else {
-				System.out.println("Not an item to that can be used in your inventory");
+			} else { 
+				System.out.println("\nNot an item that can be used");
 			}
 		}
 	

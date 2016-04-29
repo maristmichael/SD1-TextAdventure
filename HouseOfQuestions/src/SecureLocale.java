@@ -11,8 +11,16 @@ public class SecureLocale extends Locale {
 		return false;
 	}
 	
-	public SecureLocale(String name, String description, Item requiredItem) {
-		super(name, description);
-		this.requiredItem = requiredItem;
+	public static boolean canEnter(Locale[] locations) {
+		for (int i = 0; i < locations.length; i++){
+			if (locations[i].questionCheck == false) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public SecureLocale(String name, String description, boolean questionCheck) {
+		super(name, description, questionCheck);
 	}
 }

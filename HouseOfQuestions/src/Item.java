@@ -19,4 +19,21 @@ public class Item {
 		return this.name;
 	}
 	
+	public static boolean hasLimitedItem(Player user){
+		for(int i = 0; i < user.inventory.size(); i++) {
+			if (user.inventory.get(i) instanceof LimitedUseItem) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public static LimitedUseItem returnLimitedItem(Player user){
+		for(int i = 0; i < user.inventory.size(); i++) {
+			if (user.inventory.get(i) instanceof LimitedUseItem) {
+				return (LimitedUseItem) user.inventory.get(i);
+			}
+		}
+		return null;
+	}
 }

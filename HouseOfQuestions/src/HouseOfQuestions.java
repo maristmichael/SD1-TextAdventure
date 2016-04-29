@@ -13,8 +13,6 @@ import java.util.Scanner;
 
 public class HouseOfQuestions {
 
-	
-	
  	static Item map        = new Item("map", "A map of the house", "You spot a map on the floor");
 	static Item guitar     = new Item("guitar", "A nifty acoustic guitar", "You found a cool guitar");
 	static Item calculator = new Item("calculator","A calculator used for math classes", "You spot a nice calculator");
@@ -22,7 +20,8 @@ public class HouseOfQuestions {
 	static Item painting   = new Item("painting", "Van Gogh's famous famous painting","A familiar painting catches your eyes");
 	static Item novel      = new Item("novel", "Great Gatsby, a famous book by F.Scott Fitzgerald", "You find your favorite novel of all time");
 	static Item textbook   = new Item("textbook", "A thick book containing U.S. history", "You see a big and textbook on the table");
-	static LimitedUseItem bottle = new LimitedUseItem("bottle", "A water bottle", "You see a bottle", 1, "No water left");
+	static final LimitedUseItem bottle = new LimitedUseItem("bottle", "A water bottle", "You see a bottle", 1, "No water left");
+	
 	// These are constant variables representing directions for matrix
 	public static final int N = 0;
 	public static final int S = 1;
@@ -33,55 +32,62 @@ public class HouseOfQuestions {
 	public static final String[] LocDescrip = {
 		"This is the starting area, there are several paths to take",
 		"In this room, you hear many melodies emanating from the walls",
+		"You have entered the secret room, its wall completely white and has " + 
+				"a wall inscribed with the answers to the questions you answered",
 		"This is a room that has walls written with math equations",
+		"Suprisingly you found the kitchen though it doesn't look like it has much to eat",
 		"You enter a room littered with many scientific journals and books",
 		"This room contains many philosophical rhetoric inscribed on the walls",
 		"What a beautiful room! It has many works of art scattered around",
 		"You enter a room with many dictionaries and novels all stacked neatly" + 
 				"\nThe next path is closed off by a metal door inscribed with numbers with no way to open it by hand",
 		"You are now in a room with a giant globe with many history books surrounding it"
-		};
+	};
 	
 	// This is a Locale array with instances of locations
 	public final static Locale[] LOCALES = {
-		new Locale("Starting Room", LocDescrip[0]),
-		new Locale("Music Room", LocDescrip[1]),
-		new Locale("Math Room", LocDescrip[2]),
-		new Locale("Science Room", LocDescrip[3]),
-		new Locale("Philosophy Room", LocDescrip[4]),
-		new Locale("Art Room", LocDescrip[5]),
-		new Locale("English Room", LocDescrip[6]),
-		new SecureLocale("History Room", LocDescrip[7], calculator)
+		new Locale("Starting Room", LocDescrip[0], false),
+		new Locale("Music Room", LocDescrip[1], false),
+		new SecureLocale("Result Room", LocDescrip[2], true),
+		new Locale("Math Room", LocDescrip[3], false),
+		new Locale("Kitchen", LocDescrip[4], true),
+		new Locale("Science Room", LocDescrip[5], false),
+		new Locale("Philosophy Room", LocDescrip[6], false),
+		new Locale("Art Room", LocDescrip[7], false),
+		new Locale("English Room", LocDescrip[8], false),
+		new SecureLocale("History Room", LocDescrip[9], false)
 	};
 	
 	// This is the navigation matrix
 	public final static int [][] MAP = {
 			  /*{N,S,W,E}*/
-		/*0*/	{1,-1,2,5},  // From Start --> Math(W), Music(N), or Art(E)
-	 	/*1*/	{-1,0,-1,-1},// From Music --> Start(S)
-	 	/*2*/	{-1,3,-1,0}, // From Math --> Start(E), or Science(S)
-	 	/*3*/	{2,4,-1,-1}, // From Science --> Math(N), or Philosophy(S)
-	 	/*4*/	{3,-1,-1,-1},// From Philosophy --> Science(N)
-	 	/*5*/	{6,-1,0,-1}, // From Art --> English (N), or Start(E)
-	 	/*6*/	{7,5,-1,-1}, // From English --> History(N), or Art(S)
-	 	/*7*/	{-1,6,-1,-1} // From History --> English(S)
+		/*0*/	{1,2,3,7},   // From Start   --> Math(W), Music(N), Art(E), Result(S)
+	 	/*1*/	{-1,0,-1,-1},// From Music   --> Start(S)
+	 	/*2*/	{0,-1,-1,-1},// From Result  --> Start(N)
+	 	/*3*/	{4,5,-1,0}, // From Math    --> Start(E), Kitchen(N), Science(S)
+	 	/*4*/	{-1,3,-1,-1},// From Kitchen --> Math(S)
+	 	/*5*/	{3,6,-1,-1}, // From Science --> Math(N), Philosophy(S)
+	 	/*6*/	{5,-1,-1,-1},// From Philosophy --> Science(N)
+	 	/*7*/	{8,-1,0,-1}, // From Art     --> English (N), Start(E)
+	 	/*8*/	{9,7,-1,-1}, // From English --> History(N), Art(S)
+	 	/*9*/	{-1,8,-1,-1} // From History --> English(S)
 	};
 	
 	// This is a String variable holding the game map
 	public static String gameMap = 
-		"                    History \n" +
-		"                       |    \n" +
-		"                       |    \n" +
-		"          Music     English \n" +
-		"            |          |    \n" +
-		"            |          |    \n" +
-		"   Math----Start------Art   \n" +
-		"     |                      \n" +
-		"     |                      \n" +
-		"   Science                  \n" +
-		"     |                      \n" +
-		"     |                      \n" +
-		"   Philosophy               \n";
+		"                     History \n" +
+		"                         |   \n" +
+		"                         |   \n" +
+		"  Kitchen     Music  English \n" +
+		"     |         |         |   \n" +
+		"     |         |         |   \n" +
+		"   Math------Start------Art  \n" +
+		"     |         |             \n" +
+		"     |         |             \n" +
+		"  Science     Result         \n" +
+		"     |                       \n" +
+		"     |                       \n" +
+		"   Philosophy                \n";
 	
 	// This is the instance of the Player object 
 	static Player currentPlayer = new Player("", 0);
@@ -135,7 +141,7 @@ public class HouseOfQuestions {
 				System.out.println("The door suddenly opened allowing me to access the next room");
 				System.out.println("\n"+HouseOfQuestions.locToScene());
 			} else {
-				System.out.println("The door leading to the next room wont budge" + "\nMaybe I need to have an item...");
+				System.out.println("\nThe door leading to the next room wont budge" + "\nMaybe I need to have an item...");
 				System.out.println("You are in the " + LOCALES[currentPlayer.location].name);
 			}
 			
@@ -216,18 +222,17 @@ public class HouseOfQuestions {
 			inputSource.close();
 		}
 	}
-	// This method creates instances of Item and sets them in their proper location
 	
+	// This method creates instances of Item and sets them in their proper location
 	static void setItems() {
 		LOCALES[0].placeItems(map);
 		LOCALES[1].placeItems(guitar);
-		LOCALES[2].placeItems(calculator);
-		LOCALES[3].placeItems(beaker);
+		LOCALES[3].placeItems(calculator);
 		LOCALES[4].items.add(bottle);
-		LOCALES[5].placeItems(painting);
-		LOCALES[6].placeItems(novel);
-		LOCALES[7].placeItems(textbook);
-		
+		LOCALES[5].placeItems(beaker);
+		LOCALES[7].placeItems(painting);
+		LOCALES[8].placeItems(novel);
+		LOCALES[9].placeItems(textbook);
 	}
 	
 	// This method starts the game loop
@@ -238,10 +243,12 @@ public class HouseOfQuestions {
 		playerTrail.dropCrumb(currentPlayer.location);
 		
 		while (true) {
+			
 			// User input that is case-insensitive
 			visitVictoryCheck();
 			outOfActions();
-			System.out.println("Move count: " + currentPlayer.actionCount);
+			System.out.println("Move count: " + currentPlayer.actionCount + "\n");
+			System.out.println("**************************");
 			System.out.print("What should I do?: ");
 			userInput = inputSource.nextLine().trim().toUpperCase();
 			String[] inputSplit = userInput.split(" ");
@@ -277,18 +284,23 @@ public class HouseOfQuestions {
 				} else {
 					Player.take(currentPlayer, LOCALES[currentPlayer.location], inputSplit);
 				}
+				
 			} else if (inputSplit[0].equals("D")) {
 				if (inputSplit.length == 1) {
 					System.out.println("What did you want to drop?");
 				} else {
 					Player.drop(currentPlayer, LOCALES[currentPlayer.location], inputSplit);
-				}	
+				}
+				
 			} else if (inputSplit[0].equals("U")) {
 				if (inputSplit.length == 1) {
-					System.out.println("What did you want to use?");
+					System.out.println("\nWhat did you want to use?");
+				} else if (Item.hasLimitedItem(currentPlayer)) {
+					Player.use(currentPlayer, Item.returnLimitedItem(currentPlayer), inputSplit);
 				} else {
-					Player.use(currentPlayer, bottle, inputSplit);
+					System.out.println("\nNo item in your inventory that can be used");
 				}
+				
 			} else {
 				System.out.println("Not a valid comman\n");
 				continue;
