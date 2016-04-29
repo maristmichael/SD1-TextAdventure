@@ -235,6 +235,23 @@ public class HouseOfQuestions {
 		LOCALES[9].placeItems(textbook);
 	}
 	
+	static void setQuizAndAnswers() {
+		LOCALES[1].setQuestion("What genre of music does Michael Jackson perform?: ");
+		LOCALES[1].setAnswer("pop");
+		LOCALES[3].setQuestion("What is 761 − 347?: ");
+		LOCALES[3].setAnswer("414");
+		LOCALES[5].setQuestion("What eye color is typically dominant in humans?: ");
+		LOCALES[5].setAnswer("brown");
+		LOCALES[5].setQuestion("Who is Socrates's famous student: ");
+		LOCALES[5].setAnswer("plato");
+		LOCALES[7].setQuestion("In what city is the Statue of David located at?: ");
+		LOCALES[7].setAnswer("florence");
+		LOCALES[8].setQuestion("What is the word that is defined as 'a time of intense difficulty': ");
+		LOCALES[8].setAnswer("crisis");
+		LOCALES[9].setQuestion("Currently, how many amendments are in the U.S. constitution?: ");
+		LOCALES[9].setAnswer("27");
+	}
+	
 	// This method starts the game loop
 	public static void gameStart() {
 		String locationScene = "";
