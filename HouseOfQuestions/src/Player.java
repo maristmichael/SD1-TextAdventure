@@ -63,11 +63,18 @@ public class Player {
 		static void take(Player user, Locale userLocation, String[] item) {
 			
 			if (item[1].equals("ALL")) {
-				user.actionCount--;
-				user.inventory.addAll(userLocation.items);
-				System.out.println("\nYou picked up everything you could find in the room");
-				updateScore(user, userLocation, false, true, 0);
-				userLocation.items.clear();
+				for (int k = 0; k < userLocation.items.size(); k++) {
+					if (userLocation.items.get(k).isDiscovered == false) {
+						System.out.println("Maybe I should examine the room for an item");
+						break;
+					} else {
+						user.actionCount--;
+						user.inventory.addAll(userLocation.items);
+						System.out.println("\nYou picked up everything you could find in the room");
+						updateScore(user, userLocation, false, true, 0);
+						userLocation.items.clear();
+					}
+				}
 			} else if (userLocation.items.size() == 0) {
 				System.out.print("No items in the room\n");
 				
@@ -160,6 +167,15 @@ public class Player {
 		
 		// This method allows user to examine room in order to discover items to pick up
 		static void examine(Player user, Locale userLocation) {
+			userLocation.questionFound = true;
+			if (userLocation.questionCount != 0 && userLocation.question != null) {
+				System.out.println("\nThere is a question inscribed in the wall\n" + userLocation.question);
+			} else if (userLocation.questionCheck == true && userLocation.question != null) {
+				System.out.println("\nThere is a check mark now, next to the question");
+			} else if (userLocation.questionCount == 0) {
+				System.out.println("\nThe question on the wall dissapeared after you yelled a few times");
+			}
+			
 			for (int i = 0; i < userLocation.items.size(); i++) {
 				user.actionCount--;
 				if (userLocation.items.get(i).isDiscovered == false) {
@@ -192,6 +208,26 @@ public class Player {
 				System.out.println("\nNot an item that can be used");
 			}
 		}
+		
+		static void yell(Player user, Locale userLocation, String[] text) {
+			user.actionCount--;
+			System.out.println("\nYou yelled out '" + text[1] + "'");
+	
+			if (userLocation.questionFound == false) {
+				System.out.println("Nothing happened");
+			
+			} else {
+				if (text[1].equals(userLocation.answer) && userLocation.questionCheck == false && userLocation.questionCount != 0) {
+					userLocation.questionCheck = true;
+					System.out.println("A checkmark appeared to next the question written on the wall");
+				} else if (text[1].equals(userLocation.answer) && userLocation.questionCheck == true) {
+					System.out.println("You already got the answer to the room");
+				} else if (userLocation.questionCount == 0) {
+					System.out.println("The question on the wall dissapeared");
+				}
+			}
+		}
+	
 	
 	// A more useful toString method
 	@Override

@@ -20,7 +20,7 @@ public class SecureLocale extends Locale {
 		return true;
 	}
 	
-	public SecureLocale(String name, String description, boolean questionCheck) {
-		super(name, description, questionCheck);
+	public SecureLocale(String name, String description, boolean questionCheck, boolean questionFound) {
+		super(name, description, questionCheck, questionFound);
 	}
 }

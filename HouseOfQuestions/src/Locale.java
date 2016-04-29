@@ -9,14 +9,16 @@ public class Locale {
 	int visitCount;
 	int questionCount;
 	boolean questionCheck;
+	boolean questionFound;
 	
-	public Locale(String name, String description, boolean questionCheck) {
+	public Locale(String name, String description, boolean questionCheck, boolean questionFound) {
 		this.name = name;
 		this.description = description;
 		this.items = new ArrayList<Item>();
 		this.visitCount = 0;
 		this.questionCheck = questionCheck;
 		this.questionCount = 3;
+		this.questionFound = questionFound;
 	};
 	
 	// This method creates and places new items into the Locale ArrayList

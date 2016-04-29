@@ -20,6 +20,7 @@ public class HouseOfQuestions {
 	static Item painting   = new Item("painting", "Van Gogh's famous famous painting","A familiar painting catches your eyes");
 	static Item novel      = new Item("novel", "Great Gatsby, a famous book by F.Scott Fitzgerald", "You find your favorite novel of all time");
 	static Item textbook   = new Item("textbook", "A thick book containing U.S. history", "You see a big and textbook on the table");
+	static Item beard	   = new Item("beard", "A fake beard to wear for philosophizing", "You see a beard on the floor");
 	static final LimitedUseItem bottle = new LimitedUseItem("bottle", "A water bottle", "You see a bottle", 1, "No water left");
 	
 	// These are constant variables representing directions for matrix
@@ -46,16 +47,16 @@ public class HouseOfQuestions {
 	
 	// This is a Locale array with instances of locations
 	public final static Locale[] LOCALES = {
-		new Locale("Starting Room", LocDescrip[0], false),
-		new Locale("Music Room", LocDescrip[1], false),
-		new SecureLocale("Result Room", LocDescrip[2], true),
-		new Locale("Math Room", LocDescrip[3], false),
-		new Locale("Kitchen", LocDescrip[4], true),
-		new Locale("Science Room", LocDescrip[5], false),
-		new Locale("Philosophy Room", LocDescrip[6], false),
-		new Locale("Art Room", LocDescrip[7], false),
-		new Locale("English Room", LocDescrip[8], false),
-		new SecureLocale("History Room", LocDescrip[9], false)
+		new Locale("Starting Room", LocDescrip[0], true, true),
+		new Locale("Music Room", LocDescrip[1], false, false),
+		new SecureLocale("Result Room", LocDescrip[2], true, true),
+		new Locale("Math Room", LocDescrip[3], false, false),
+		new Locale("Kitchen", LocDescrip[4], true, true),
+		new Locale("Science Room", LocDescrip[5], false, false),
+		new Locale("Philosophy Room", LocDescrip[6], false, false),
+		new Locale("Art Room", LocDescrip[7], false, false),
+		new Locale("English Room", LocDescrip[8], false, false),
+		new SecureLocale("History Room", LocDescrip[9], false, false)
 	};
 	
 	// This is the navigation matrix
@@ -134,7 +135,7 @@ public class HouseOfQuestions {
 	static void move(int direction) {
 		int nextLoc = from(direction);
 		
-		if (!(nextLoc ==-1) && LOCALES[nextLoc] instanceof SecureLocale) {
+		if (!(nextLoc ==-1) && LOCALES[nextLoc] instanceof SecureLocale && LOCALES[nextLoc] == LOCALES[9]) {
 			if (SecureLocale.canEnter(currentPlayer, calculator)) {
 				LOCALES[currentPlayer.location].visitCount++;
 				currentPlayer.location = nextLoc;
@@ -142,6 +143,16 @@ public class HouseOfQuestions {
 				System.out.println("\n"+HouseOfQuestions.locToScene());
 			} else {
 				System.out.println("\nThe door leading to the next room wont budge" + "\nMaybe I need to have an item...");
+				System.out.println("You are in the " + LOCALES[currentPlayer.location].name);
+			}
+		} else if (!(nextLoc ==-1) && LOCALES[nextLoc] instanceof SecureLocale && LOCALES[nextLoc] == LOCALES[2]) {
+			if (SecureLocale.canEnter(LOCALES)) {
+				LOCALES[currentPlayer.location].visitCount++;
+				currentPlayer.location = nextLoc;
+				System.out.println("The wall magically dissapeared before your eyes, allowing you to enter the room");
+				System.out.println("\n"+HouseOfQuestions.locToScene());
+			}  else {
+				System.out.println("\nThere is a wall blocking your path");
 				System.out.println("You are in the " + LOCALES[currentPlayer.location].name);
 			}
 			
@@ -230,6 +241,7 @@ public class HouseOfQuestions {
 		LOCALES[3].placeItems(calculator);
 		LOCALES[4].items.add(bottle);
 		LOCALES[5].placeItems(beaker);
+		LOCALES[6].placeItems(beard);
 		LOCALES[7].placeItems(painting);
 		LOCALES[8].placeItems(novel);
 		LOCALES[9].placeItems(textbook);
@@ -237,17 +249,17 @@ public class HouseOfQuestions {
 	
 	static void setQuizAndAnswers() {
 		LOCALES[1].setQuestion("What genre of music does Michael Jackson perform?: ");
-		LOCALES[1].setAnswer("pop");
+		LOCALES[1].setAnswer("POP");
 		LOCALES[3].setQuestion("What is 761 − 347?: ");
 		LOCALES[3].setAnswer("414");
 		LOCALES[5].setQuestion("What eye color is typically dominant in humans?: ");
-		LOCALES[5].setAnswer("brown");
-		LOCALES[5].setQuestion("Who is Socrates's famous student: ");
-		LOCALES[5].setAnswer("plato");
+		LOCALES[5].setAnswer("BROWN");
+		LOCALES[6].setQuestion("Who is Socrates's famous student: ");
+		LOCALES[6].setAnswer("PLATO");
 		LOCALES[7].setQuestion("In what city is the Statue of David located at?: ");
-		LOCALES[7].setAnswer("florence");
+		LOCALES[7].setAnswer("FLORENCE");
 		LOCALES[8].setQuestion("What is the word that is defined as 'a time of intense difficulty': ");
-		LOCALES[8].setAnswer("crisis");
+		LOCALES[8].setAnswer("CRISIS");
 		LOCALES[9].setQuestion("Currently, how many amendments are in the U.S. constitution?: ");
 		LOCALES[9].setAnswer("27");
 	}
@@ -256,6 +268,7 @@ public class HouseOfQuestions {
 	public static void gameStart() {
 		String locationScene = "";
 		setItems();
+		setQuizAndAnswers();
 		LOCALES[currentPlayer.location].visitCount++;
 		playerTrail.dropCrumb(currentPlayer.location);
 		
@@ -288,10 +301,13 @@ public class HouseOfQuestions {
 			} else if (userInput.equals("H")) {
 				locationScene = "\nExplore by entering 'n', 's', 'e', 'w'\n" + 
 				"Enter 'q' to quit the game.\n" + 
-				"Enter 't' to take all items that may be in a room.\n" + 
+				"Enter 't' to take an item that may be in a room.\n" + 
 				"Enter 'd' to drop an item by entering the exact name of it.\n" +
+				"Enter 'u' to use an item.\n" +
+				"Enter 'x' to examine the room your currently at.\n" +
+				"Enter 'y' to yell something out loud.\n" +
 				"Enter 'm' to display the game map if you found it.\n" + 
-				"Enter 'b' to follow your crumb trail back to a previos room\n";
+				"Enter 'b' to follow your crumb trail back to a previos room.\n";
 			} else if (userInput.equals("Q")) {
 				break;
 				
@@ -316,6 +332,13 @@ public class HouseOfQuestions {
 					Player.use(currentPlayer, Item.returnLimitedItem(currentPlayer), inputSplit);
 				} else {
 					System.out.println("\nNo item in your inventory that can be used");
+				}
+				
+			} else if (inputSplit[0].equals("Y")) {
+				if (inputSplit.length == 1) {
+					System.out.println("\nWhat did you want to yell?"); 
+				} else {
+					Player.yell(currentPlayer,LOCALES[currentPlayer.location], inputSplit);
 				}
 				
 			} else {
