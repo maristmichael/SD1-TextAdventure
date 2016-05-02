@@ -15,13 +15,15 @@ public class HouseOfQuestions {
 
  	static Item map        = new Item("map", "A map of the house", "You spot a map on the floor");
 	static Item guitar     = new Item("guitar", "A nifty acoustic guitar", "You found a cool guitar");
-	static Item calculator = new Item("calculator","A calculator used for math classes", "You spot a nice calculator");
-	static Item beaker     = new Item("beaker", "A beaker for measurement", "You see a fancy beaker on a lab table");
+	static Item batteries  = new Item("batteries", "a pair of Double-A batteries", "You see a pair of batteries on a lab table");
 	static Item painting   = new Item("painting", "Van Gogh's famous famous painting","A familiar painting catches your eyes");
 	static Item novel      = new Item("novel", "Great Gatsby, a famous book by F.Scott Fitzgerald", "You find your favorite novel of all time");
 	static Item textbook   = new Item("textbook", "A thick book containing U.S. history", "You see a big and textbook on the table");
 	static Item beard	   = new Item("beard", "A fake beard to wear for philosophizing", "You see a beard on the floor");
-	static final LimitedUseItem bottle = new LimitedUseItem("bottle", "A water bottle", "You see a bottle", 1, "No water left");
+	static LimitedUseItem bottle     = new LimitedUseItem("bottle", "A water bottle", "You see a bottle", 3, "You drank some of the water");
+	static LimitedUseItem calculator = new LimitedUseItem("calculator","A nifty TI-84 calculator", "You spot a nice calculator",
+														  4,"The calulator turned off, the batteries must be drained");
+
 	
 	// These are constant variables representing directions for matrix
 	public static final int N = 0;
@@ -41,7 +43,7 @@ public class HouseOfQuestions {
 		"This room contains many philosophical rhetoric inscribed on the walls",
 		"What a beautiful room! It has many works of art scattered around",
 		"You enter a room with many dictionaries and novels all stacked neatly" + 
-				"\nThe next path is closed off by a metal door inscribed with numbers with no way to open it by hand",
+				"\nThe next path is closed off by a metal door inscribed with a drawing of a calculator",
 		"You are now in a room with a giant globe with many history books surrounding it"
 	};
 	
@@ -65,7 +67,7 @@ public class HouseOfQuestions {
 		/*0*/	{1,2,3,7},   // From Start   --> Math(W), Music(N), Art(E), Result(S)
 	 	/*1*/	{-1,0,-1,-1},// From Music   --> Start(S)
 	 	/*2*/	{0,-1,-1,-1},// From Result  --> Start(N)
-	 	/*3*/	{4,5,-1,0}, // From Math    --> Start(E), Kitchen(N), Science(S)
+	 	/*3*/	{4,5,-1,0},  // From Math    --> Start(E), Kitchen(N), Science(S)
 	 	/*4*/	{-1,3,-1,-1},// From Kitchen --> Math(S)
 	 	/*5*/	{3,6,-1,-1}, // From Science --> Math(N), Philosophy(S)
 	 	/*6*/	{5,-1,-1,-1},// From Philosophy --> Science(N)
@@ -75,20 +77,23 @@ public class HouseOfQuestions {
 	};
 	
 	// This is a String variable holding the game map
-	public static String gameMap = 
-		"                     History \n" +
-		"                         |   \n" +
-		"                         |   \n" +
-		"  Kitchen     Music  English \n" +
-		"     |         |         |   \n" +
-		"     |         |         |   \n" +
-		"   Math------Start------Art  \n" +
-		"     |         |             \n" +
-		"     |         |             \n" +
-		"  Science     Result         \n" +
-		"     |                       \n" +
-		"     |                       \n" +
-		"   Philosophy                \n";
+	public static void showMap(){ 
+		System.out.println(
+			"                     History \n" +
+			"                         |   \n" +
+			"                         |   \n" +
+			"  Kitchen     Music  English \n" +
+			"     |         |         |   \n" +
+			"     |         |         |   \n" +
+			"   Math------Start------Art  \n" +
+			"     |         |             \n" +
+			"     |         |             \n" +
+			"  Science     Result         \n" +
+			"     |                       \n" +
+			"     |                       \n" +
+			"   Philosophy                \n"
+		);
+	}
 	
 	// This is the instance of the Player object 
 	static Player currentPlayer = new Player("", 0);
@@ -117,12 +122,24 @@ public class HouseOfQuestions {
 	}
 	
 	// This method displays the game map if player has obtained the map
-	static void showMap(){
+	static void displayMap(){
 		if (currentPlayer.inventory.contains(map)) {
-					System.out.println("\n" + gameMap);
+			showMap();
 		} else {
 			System.out.println("You do not have a map");
 		}
+	}
+	
+	static String showHelp() {
+		return "\nExplore by entering 'n', 's', 'e', 'w'\n" + 
+				"Enter 'q' to quit the game.\n" + 
+				"Enter 't' to take an item that may be in a room.\n" + 
+				"Enter 'd' to drop an item by entering the exact name of it.\n" +
+				"Enter 'u' to use an item.\n" +
+				"Enter 'x' to examine the room your currently at.\n" +
+				"Enter 'y' to yell something out loud.\n" +
+				"Enter 'm' to display the game map if you found it.\n" + 
+				"Enter 'b' to follow your crumb trail back to a previos room.\n";
 	}
 	
 	// This method looks at player's current location 
@@ -222,6 +239,41 @@ public class HouseOfQuestions {
 		}
 	}
 	
+	static void questionVictoryCheck() {
+		boolean check = false;
+		for (int i = 0; i < LOCALES.length; i++) {
+			if (LOCALES[i].questionCheck == false) {
+				check = false;
+				break;
+			}
+			check = true;
+		}
+		if (check == true) {
+				System.out.print("Final Question: Did you like this game?: ");
+				while(true) {
+					userInput = inputSource.nextLine().trim().toUpperCase();
+					if(userInput.equals("YES")) {
+						System.out.println("YOU " + currentPlayer.name.toUpperCase()+ " WIN!!!!!!!!!\n\n\n");
+						inputSource.close();
+					} else if (userInput.equals("NO")) {
+						System.out.println("YOU LOOOSE\n\n\n");
+						inputSource.close();
+					} else {
+						System.out.println("Not a valid answer");
+						continue;
+					}
+				}
+				
+			}
+		}
+		
+	public Item findItem(Player user, Item item){
+		if (user.inventory.contains(item)){
+			return item;
+		}
+		return null;
+	}
+	
 	// This method checks to see if player's action count is zero, and if so, the player loses.
 	static void outOfActions() {
 		if (currentPlayer.actionCount == 0) {
@@ -240,7 +292,7 @@ public class HouseOfQuestions {
 		LOCALES[1].placeItems(guitar);
 		LOCALES[3].placeItems(calculator);
 		LOCALES[4].items.add(bottle);
-		LOCALES[5].placeItems(beaker);
+		LOCALES[5].placeItems(batteries);
 		LOCALES[6].placeItems(beard);
 		LOCALES[7].placeItems(painting);
 		LOCALES[8].placeItems(novel);
@@ -277,6 +329,7 @@ public class HouseOfQuestions {
 			// User input that is case-insensitive
 			visitVictoryCheck();
 			outOfActions();
+			questionVictoryCheck();
 			System.out.println("Move count: " + currentPlayer.actionCount + "\n");
 			System.out.println("**************************");
 			System.out.print("What should I do?: ");
@@ -299,15 +352,7 @@ public class HouseOfQuestions {
 			} else if (userInput.equals("M")) {
 				showMap();
 			} else if (userInput.equals("H")) {
-				locationScene = "\nExplore by entering 'n', 's', 'e', 'w'\n" + 
-				"Enter 'q' to quit the game.\n" + 
-				"Enter 't' to take an item that may be in a room.\n" + 
-				"Enter 'd' to drop an item by entering the exact name of it.\n" +
-				"Enter 'u' to use an item.\n" +
-				"Enter 'x' to examine the room your currently at.\n" +
-				"Enter 'y' to yell something out loud.\n" +
-				"Enter 'm' to display the game map if you found it.\n" + 
-				"Enter 'b' to follow your crumb trail back to a previos room.\n";
+				locationScene = showHelp();
 			} else if (userInput.equals("Q")) {
 				break;
 				
@@ -329,7 +374,7 @@ public class HouseOfQuestions {
 				if (inputSplit.length == 1) {
 					System.out.println("\nWhat did you want to use?");
 				} else if (Item.hasLimitedItem(currentPlayer)) {
-					Player.use(currentPlayer, Item.returnLimitedItem(currentPlayer), inputSplit);
+					Player.use(currentPlayer, LOCALES, Item.returnLimitedItem(currentPlayer), inputSplit);
 				} else {
 					System.out.println("\nNo item in your inventory that can be used");
 				}

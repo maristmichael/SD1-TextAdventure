@@ -59,6 +59,14 @@ public class Player {
 		return scoreChange;
 	}
 	
+	public static boolean findUserLoc(Player user, Locale[] LOCALES, int locNum) {
+		if (LOCALES[user.location] == LOCALES[locNum]){
+			return true;
+		}
+		return false;
+	}
+	
+	
 	// This method allows player to grab all items and store them in the inventory
 		static void take(Player user, Locale userLocation, String[] item) {
 			
@@ -191,22 +199,52 @@ public class Player {
 		}
 		
 		// This method allows user to use a limited-use-item
-		static void use(Player user, LimitedUseItem limitedItem, String[] item) {
+		static void use(Player user, Locale[] LOCALES, LimitedUseItem limitedItem, String[] item) {
 			if (item[1].equals("BOTTLE")) {
-				for (int i = 0; i < user.inventory.size(); i++) {
-					if(user.inventory.get(i).name.equals("bottle") && limitedItem.usesRemaining != 0) {
-						user.actionCount--;
-						System.out.println("You drank the water inside the bottle");
-						limitedItem.usesRemaining --;
-						break;
-					} else if (limitedItem.usesRemaining == 0) {
-						System.out.println(limitedItem.afterUse);
-						break;
-					}
-				}
+				useBottle(user, item, limitedItem);
+			} else if (item[1].equals("CALCULATOR")) {
+				useCalculator(user, LOCALES, item, limitedItem);
 			} else { 
 				System.out.println("\nNot an item that can be used");
 			}
+		}
+		
+		
+		static void useBottle(Player user, String[] item, LimitedUseItem limitedItem) {
+			for (int i = 0; i < user.inventory.size(); i++) {
+				if(user.inventory.get(i).name.equals(item[1].toLowerCase()) && limitedItem.usesRemaining != 0) {
+					user.actionCount--;
+					System.out.println("You drank the water inside the bottle");
+					limitedItem.usesRemaining --;
+					break;
+				} else if (limitedItem.usesRemaining == 0) {
+					System.out.println(limitedItem.afterUse);
+					break;
+				}
+			}
+		}
+		
+		static void useCalculator(Player user, Locale[] LOCALES, String[] item, LimitedUseItem limitedItem) {
+			for (int i= 0; i < user.inventory.size(); i++) {
+				if (user.inventory.get(i).name.equals(item[1].toLowerCase()) && limitedItem.usesRemaining != 0) {
+					for (int m = 0; m < user.inventory.size(); m++) {
+						if (user.inventory.get(m).name.equals("batteries") && findUserLoc(user,LOCALES,3) == true) {
+							user.actionCount--;
+							System.out.print("You calculated the equation on the wall 761 − 347 = 414");
+							return;
+						} else if (user.inventory.get(m).name.equals("batteries")) {
+							user.actionCount--;
+							System.out.println("You are playing with the calculator, weirdo...");
+							return;
+						}
+					}
+					
+				} else if (limitedItem.usesRemaining == 0) {
+					System.out.println(limitedItem.afterUse);
+					return;
+				}
+			}
+			System.out.println("The calulator doesn't turn on, maybe there are batteries to find...");
 		}
 		
 		static void yell(Player user, Locale userLocation, String[] text) {
@@ -215,7 +253,6 @@ public class Player {
 	
 			if (userLocation.questionFound == false) {
 				System.out.println("Nothing happened");
-			
 			} else {
 				if (text[1].equals(userLocation.answer) && userLocation.questionCheck == false && userLocation.questionCount != 0) {
 					userLocation.questionCheck = true;
