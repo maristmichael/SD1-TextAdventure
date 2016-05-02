@@ -26,18 +26,19 @@ public class Locale {
 		this.items.add(name);   
 	}
 	
-	// A more useful toString method
-	@Override
-	public String toString() {
-		return this.description + "\n(You are in the " + this.name + ")";
-	}
-	
-	
+	// This method sets the room's question
 	public void setQuestion(String question) {
 		this.question = question;
 	}
 	
+	// This method sets the room's answer
 	public void setAnswer(String answer) {
 		this.answer = answer;
 	}
+	
+	// A more useful toString method
+		@Override
+		public String toString() {
+			return this.description + "\n*You are in the " + this.name + "*";
+		}
 }

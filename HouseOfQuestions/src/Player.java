@@ -16,7 +16,7 @@ public class Player {
 		this.inventory = new ArrayList<Item>();
 		this.location = location;
 		this.ignoreVisitVictory = false;
-		this.actionCount = 50;
+		this.actionCount = 20;
 	}
 	
 	
@@ -66,6 +66,10 @@ public class Player {
 		return false;
 	}
 	
+	public static Locale returnUserLoc(Player user, Locale [] LOCALES) {
+		return LOCALES[user.location];
+	}
+	
 	
 	// This method allows player to grab all items and store them in the inventory
 		static void take(Player user, Locale userLocation, String[] item) {
@@ -76,7 +80,6 @@ public class Player {
 						System.out.println("Maybe I should examine the room for an item");
 						break;
 					} else {
-						user.actionCount--;
 						user.inventory.addAll(userLocation.items);
 						System.out.println("\nYou picked up everything you could find in the room");
 						updateScore(user, userLocation, false, true, 0);
@@ -92,7 +95,6 @@ public class Player {
 						System.out.println("Maybe I should examine the room for an item");
 						break;
 					} else if (item[1].equals(userLocation.items.get(k).name.toUpperCase())) {
-						user.actionCount--;
 						user.inventory.add(userLocation.items.get(k));
 						System.out.println("\nYou picked up the " + userLocation.items.get(k).name);
 						updateScore(user, userLocation,true, true, k);
@@ -108,7 +110,6 @@ public class Player {
 				int itemCount = userLocation.items.size();
 				for (int i = 0; i < userLocation.items.size(); i++) {
 					if (item[1].equals(userLocation.items.get(i).name.toUpperCase())) {
-						user.actionCount--;
 						user.inventory.add(userLocation.items.get(i));
 						System.out.println("\nYou picked up the " + userLocation.items.get(i).name);
 						updateScore(user, userLocation, true, true, i);
@@ -127,7 +128,6 @@ public class Player {
 	// This method allows player to drop specified items or all items in the player inventory
 		static void drop(Player user, Locale userLocation, String[] item) {			
 			if (item[1].equals("ALL")) {
-				user.actionCount--;
 				userLocation.items.addAll(user.inventory);
 				System.out.println("\nYou dropped everything in your inventory here in the " + userLocation.name);
 				updateScore(user, userLocation, false, false, 0);
@@ -138,7 +138,6 @@ public class Player {
 			} else if (user.inventory.size() == 1) { 				
 				for (int m = 0; m < user.inventory.size(); m++) {
 					if (item[1].equals(user.inventory.get(m).name.toUpperCase())) {
-						user.actionCount--;
 						userLocation.items.add(user.inventory.get(m));
 						System.out.println("\nYou dropped the " + user.inventory.get(m).name + " here in the " + userLocation.name);
 						updateScore(user, userLocation, true, false, m);
@@ -156,7 +155,6 @@ public class Player {
 				
 				for (int i = 0; i < user.inventory.size(); i++) {
 					if (item[1].equals(user.inventory.get(i).name.toUpperCase())) {
-						user.actionCount--;
 						userLocation.items.add(user.inventory.get(i));
 						System.out.println("\nYou dropped the " + user.inventory.get(i).name + " here in the " + userLocation.name);
 						updateScore(user, userLocation, true, false, i);
@@ -185,7 +183,6 @@ public class Player {
 			}
 			
 			for (int i = 0; i < userLocation.items.size(); i++) {
-				user.actionCount--;
 				if (userLocation.items.get(i).isDiscovered == false) {
 					userLocation.items.get(i).isDiscovered = true;
 					System.out.println("\n" + userLocation.items.get(i).discovered);
@@ -213,9 +210,9 @@ public class Player {
 		static void useBottle(Player user, String[] item, LimitedUseItem limitedItem) {
 			for (int i = 0; i < user.inventory.size(); i++) {
 				if(user.inventory.get(i).name.equals(item[1].toLowerCase()) && limitedItem.usesRemaining != 0) {
-					user.actionCount--;
-					System.out.println("You drank the water inside the bottle");
 					limitedItem.usesRemaining --;
+					user.actionCount += 2;
+					System.out.println("You drank the water inside the bottle\n" + "+2 move count\n");
 					break;
 				} else if (limitedItem.usesRemaining == 0) {
 					System.out.println(limitedItem.afterUse);
@@ -229,11 +226,11 @@ public class Player {
 				if (user.inventory.get(i).name.equals(item[1].toLowerCase()) && limitedItem.usesRemaining != 0) {
 					for (int m = 0; m < user.inventory.size(); m++) {
 						if (user.inventory.get(m).name.equals("batteries") && findUserLoc(user,LOCALES,3) == true) {
-							user.actionCount--;
+							limitedItem.usesRemaining --;
 							System.out.print("You calculated the equation on the wall 761 − 347 = 414");
 							return;
 						} else if (user.inventory.get(m).name.equals("batteries")) {
-							user.actionCount--;
+							limitedItem.usesRemaining --;
 							System.out.println("You are playing with the calculator, weirdo...");
 							return;
 						}
@@ -248,12 +245,12 @@ public class Player {
 		}
 		
 		static void yell(Player user, Locale userLocation, String[] text) {
-			user.actionCount--;
 			System.out.println("\nYou yelled out '" + text[1] + "'");
 	
 			if (userLocation.questionFound == false) {
 				System.out.println("Nothing happened");
 			} else {
+				userLocation.questionCount--;
 				if (text[1].equals(userLocation.answer) && userLocation.questionCheck == false && userLocation.questionCount != 0) {
 					userLocation.questionCheck = true;
 					System.out.println("A checkmark appeared to next the question written on the wall");
@@ -267,10 +264,9 @@ public class Player {
 	
 	
 	// A more useful toString method
-	@Override
-	public String toString() {
+	public String toString(Player user, Locale[] LOCALES) {
 		return "Your name is " + this.name + "\n" +
-				"You're current at " + this.location + "\n" +
+				"You're current at " + returnUserLoc(user, LOCALES).name + "\n" +
 				"Your score is: " + this.score + "\n" +
 				"You have the following items: " + this.inventory;
 	}

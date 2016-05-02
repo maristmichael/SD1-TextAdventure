@@ -41,10 +41,10 @@ public class HouseOfQuestions {
 		"Suprisingly you found the kitchen though it doesn't look like it has much to eat",
 		"You enter a room littered with many scientific journals and books",
 		"This room contains many philosophical rhetoric inscribed on the walls",
-		"What a beautiful room! It has many works of art scattered around",
+		"You are now in a room with a giant globe with many history books surrounding it",
 		"You enter a room with many dictionaries and novels all stacked neatly" + 
 				"\nThe next path is closed off by a metal door inscribed with a drawing of a calculator",
-		"You are now in a room with a giant globe with many history books surrounding it"
+		"What a beautiful room! It has many works of art scattered around"
 	};
 	
 	// This is a Locale array with instances of locations
@@ -56,44 +56,26 @@ public class HouseOfQuestions {
 		new Locale("Kitchen", LocDescrip[4], true, true),
 		new Locale("Science Room", LocDescrip[5], false, false),
 		new Locale("Philosophy Room", LocDescrip[6], false, false),
-		new Locale("Art Room", LocDescrip[7], false, false),
+		new Locale("History Room", LocDescrip[7], false, false),
 		new Locale("English Room", LocDescrip[8], false, false),
-		new SecureLocale("History Room", LocDescrip[9], false, false)
+		new SecureLocale("Art Room", LocDescrip[9], false, false
+	)
 	};
 	
 	// This is the navigation matrix
 	public final static int [][] MAP = {
 			  /*{N,S,W,E}*/
-		/*0*/	{1,2,3,7},   // From Start   --> Math(W), Music(N), Art(E), Result(S)
+		/*0*/	{1,2,3,7},   // From Start   --> Math(W), Music(N), History(E), Result(S)
 	 	/*1*/	{-1,0,-1,-1},// From Music   --> Start(S)
 	 	/*2*/	{0,-1,-1,-1},// From Result  --> Start(N)
 	 	/*3*/	{4,5,-1,0},  // From Math    --> Start(E), Kitchen(N), Science(S)
 	 	/*4*/	{-1,3,-1,-1},// From Kitchen --> Math(S)
 	 	/*5*/	{3,6,-1,-1}, // From Science --> Math(N), Philosophy(S)
 	 	/*6*/	{5,-1,-1,-1},// From Philosophy --> Science(N)
-	 	/*7*/	{8,-1,0,-1}, // From Art     --> English (N), Start(E)
-	 	/*8*/	{9,7,-1,-1}, // From English --> History(N), Art(S)
-	 	/*9*/	{-1,8,-1,-1} // From History --> English(S)
+	 	/*7*/	{8,-1,0,-1}, // From History     --> English (N), Start(E)
+	 	/*8*/	{9,7,-1,-1}, // From English --> Art(N), Art(S)
+	 	/*9*/	{-1,8,-1,-1} // From Art --> English(S)
 	};
-	
-	// This is a String variable holding the game map
-	public static void showMap(){ 
-		System.out.println(
-			"                     History \n" +
-			"                         |   \n" +
-			"                         |   \n" +
-			"  Kitchen     Music  English \n" +
-			"     |         |         |   \n" +
-			"     |         |         |   \n" +
-			"   Math------Start------Art  \n" +
-			"     |         |             \n" +
-			"     |         |             \n" +
-			"  Science     Result         \n" +
-			"     |                       \n" +
-			"     |                       \n" +
-			"   Philosophy                \n"
-		);
-	}
 	
 	// This is the instance of the Player object 
 	static Player currentPlayer = new Player("", 0);
@@ -124,24 +106,43 @@ public class HouseOfQuestions {
 	// This method displays the game map if player has obtained the map
 	static void displayMap(){
 		if (currentPlayer.inventory.contains(map)) {
-			showMap();
+			System.out.println(
+				"                        Art  \n" +
+				"                         |   \n" +
+				"                         |   \n" +
+				"  Kitchen     Music  English \n" +
+				"     |         |         |   \n" +
+				"     |         |         |   \n" +
+				"   Math------Start---History \n" +
+				"     |         |             \n" +
+				"     |         |             \n" +
+				"  Science     Result         \n" +
+				"     |                       \n" +
+				"     |                       \n" +
+				"  Philosophy                 \n"
+				);
 		} else {
 			System.out.println("You do not have a map");
 		}
 	}
 	
 	static String showHelp() {
-		return "\nExplore by entering 'n', 's', 'e', 'w'\n" + 
-				"Enter 'q' to quit the game.\n" + 
-				"Enter 't' to take an item that may be in a room.\n" + 
-				"Enter 'd' to drop an item by entering the exact name of it.\n" +
-				"Enter 'u' to use an item.\n" +
-				"Enter 'x' to examine the room your currently at.\n" +
-				"Enter 'y' to yell something out loud.\n" +
-				"Enter 'm' to display the game map if you found it.\n" + 
-				"Enter 'b' to follow your crumb trail back to a previos room.\n";
+		return 
+			"\nExplore by entering 'n', 's', 'e', 'w'\n" + 
+			"Enter 'q' : quits the game.\n" + 
+			"Enter 'm' : displays the game map if you found it.\n" + 
+			"Enter 'b' : backtrack to the previous room you were in.\n" +
+			"Enter 'x' : examines the room your currently at.\n" +
+			"Enter 'i' : info on your current status is displayed \n\n" +
+			"Enter 't' + item name: takes an item that may be in a room.\n" + 
+			"Enter 'd' + item name: drops an item by entering the exact name of it.\n" +
+			"Enter 'u' + item name: uses an item.\n" +
+			"Enter 'y' + any word : yells something out loud.\n";
 	}
 	
+	static void showStatus() {
+		System.out.print(currentPlayer.toString());
+	}
 	// This method looks at player's current location 
 	static int from(int dir){
 		int locId = currentPlayer.location;
@@ -154,8 +155,9 @@ public class HouseOfQuestions {
 		
 		if (!(nextLoc ==-1) && LOCALES[nextLoc] instanceof SecureLocale && LOCALES[nextLoc] == LOCALES[9]) {
 			if (SecureLocale.canEnter(currentPlayer, calculator)) {
-				LOCALES[currentPlayer.location].visitCount++;
 				currentPlayer.location = nextLoc;
+				LOCALES[currentPlayer.location].visitCount++;
+				playerTrail.dropCrumb(currentPlayer.location);
 				System.out.println("The door suddenly opened allowing me to access the next room");
 				System.out.println("\n"+HouseOfQuestions.locToScene());
 			} else {
@@ -164,8 +166,9 @@ public class HouseOfQuestions {
 			}
 		} else if (!(nextLoc ==-1) && LOCALES[nextLoc] instanceof SecureLocale && LOCALES[nextLoc] == LOCALES[2]) {
 			if (SecureLocale.canEnter(LOCALES)) {
-				LOCALES[currentPlayer.location].visitCount++;
 				currentPlayer.location = nextLoc;
+				LOCALES[currentPlayer.location].visitCount++;
+				playerTrail.dropCrumb(currentPlayer.location);
 				System.out.println("The wall magically dissapeared before your eyes, allowing you to enter the room");
 				System.out.println("\n"+HouseOfQuestions.locToScene());
 			}  else {
@@ -194,17 +197,17 @@ public class HouseOfQuestions {
 				currentPlayer.location = trail.currentCrumb();
 				System.out.println("You followed your breadcrumb trail back a room");
 				System.out.println("\n" + HouseOfQuestions.locToScene());
-			} else {
-				currentPlayer.location = 0;
-				trail.dropCrumb(currentPlayer.location);
-				System.out.println("Your already at your final crumb on the trail you made.\n");
-				System.out.println("You are in the " + LOCALES[currentPlayer.location].name);
-			}
+			} 
+		} else {	
+			currentPlayer.location = 0;
+			trail.dropCrumb(currentPlayer.location);
+			System.out.println("Your already at your final crumb on the trail you made.\n");
+			System.out.println("You are in the " + LOCALES[currentPlayer.location].name);
 		}
 	}
 	
 	// This method checks to see if player has visited every location, and if so, player can choose victory.
-	static void visitVictoryCheck() {
+	static boolean visitVictoryCheck() {
 		int locsVisited = 0;
 		
 		for (int i = 0; i < LOCALES.length; i++) {
@@ -214,58 +217,48 @@ public class HouseOfQuestions {
 		}
 		
 		if (currentPlayer.ignoreVisitVictory == false) {
-			if (locsVisited == LOCALES.length) {
+			if (locsVisited == LOCALES.length-1) {
+				System.out.println("*********************************************************");
 				System.out.println("You have visited every location of the House Of Questions");
-				System.out.print("Do you want to leave the house and be done with it?" +"\nY or N?: ");
+				System.out.print("Do you want to leave the house and be done with it?" +"\nEnter Yes or No: ");
 				
 				while (true) {
 					userInput = inputSource.nextLine().trim().toUpperCase();
-					if (userInput.equals("Y")) {
+					if (userInput.equals("YES")) {
 						System.out.println("\n" +"CONGRATULATIONS"  + "\nYou have won the game via visiting every location.");
-						System.out.println("\nCopyright Michael Gutierrez");
-						System.out.println("===========================");
-						System.out.println("Under the supervision of Professor Johnson");
-						inputSource.close();
-					} else if (userInput.equals("N")) {
+						return true;
+					} else if (userInput.equals("NO")) {
 						currentPlayer.ignoreVisitVictory = true;
-						System.out.println("");
+						System.out.println("*********************************************************");
 						break;
 					} else {
-						System.out.print("Not a valid command\n" + "Y or N?");
+						System.out.print("Not a valid command\n" + "Yes or No?");
 						continue;
 					}
 				}
 			}
 		}
+		return false;
 	}
 	
-	static void questionVictoryCheck() {
-		boolean check = false;
-		for (int i = 0; i < LOCALES.length; i++) {
-			if (LOCALES[i].questionCheck == false) {
-				check = false;
-				break;
-			}
-			check = true;
-		}
-		if (check == true) {
-				System.out.print("Final Question: Did you like this game?: ");
-				while(true) {
-					userInput = inputSource.nextLine().trim().toUpperCase();
-					if(userInput.equals("YES")) {
-						System.out.println("YOU " + currentPlayer.name.toUpperCase()+ " WIN!!!!!!!!!\n\n\n");
-						inputSource.close();
-					} else if (userInput.equals("NO")) {
-						System.out.println("YOU LOOOSE\n\n\n");
-						inputSource.close();
-					} else {
-						System.out.println("Not a valid answer");
-						continue;
-					}
+	static boolean questionVictoryCheck() {
+		if (Player.returnUserLoc(currentPlayer, LOCALES).equals(LOCALES[2])) {
+			System.out.print("Final Question: Did you like this game?: ");
+			while(true) {
+				if(userInput.equals("YES")) {
+					System.out.println("YOU " + currentPlayer.name.toUpperCase()+ " WIN!!!!!!!!!\n\n\n");
+					return true;
+				} else if (userInput.equals("NO")) {
+					System.out.println("YOU LOOOSE\n\n\n");
+					return false;
+				} else {
+					System.out.println("Not a valid answer");
+					continue;
 				}
-				
 			}
 		}
+		return false;
+	}
 		
 	public Item findItem(Player user, Item item){
 		if (user.inventory.contains(item)){
@@ -275,15 +268,12 @@ public class HouseOfQuestions {
 	}
 	
 	// This method checks to see if player's action count is zero, and if so, the player loses.
-	static void outOfActions() {
+	static boolean outOfActions() {
 		if (currentPlayer.actionCount == 0) {
-			System.out.println("\n" +"Unfortunately you have ran out of actions to take." + "\nYOU LOSE :(");
-			System.out.println("\nCopyright Michael Gutierrez");
-			System.out.println("===========================");
-			System.out.println("Under the supervision of Professor Johnson");
-			userInput = inputSource.nextLine();
-			inputSource.close();
+			System.out.println("\n" +"The number on your hand turned to 0...." + "\nYOU DIED....");
+			return true;
 		}
+		return false;
 	}
 	
 	// This method creates instances of Item and sets them in their proper location
@@ -327,10 +317,15 @@ public class HouseOfQuestions {
 		while (true) {
 			
 			// User input that is case-insensitive
-			visitVictoryCheck();
-			outOfActions();
-			questionVictoryCheck();
-			System.out.println("Move count: " + currentPlayer.actionCount + "\n");
+			if (visitVictoryCheck()) {
+				break;
+			} else if (outOfActions()) {
+				break;
+			} else if (questionVictoryCheck()) {
+				break;
+			}
+			
+			System.out.println("Number on Hand: " + currentPlayer.actionCount + "\n");
 			System.out.println("**************************");
 			System.out.print("What should I do?: ");
 			userInput = inputSource.nextLine().trim().toUpperCase();
@@ -350,7 +345,9 @@ public class HouseOfQuestions {
 			} else if (userInput.equals("X")) {
 				Player.examine(currentPlayer,LOCALES[currentPlayer.location]);
 			} else if (userInput.equals("M")) {
-				showMap();
+				displayMap();
+			} else if (userInput.equals("I")) {
+				showStatus();
 			} else if (userInput.equals("H")) {
 				locationScene = showHelp();
 			} else if (userInput.equals("Q")) {
@@ -404,24 +401,25 @@ public class HouseOfQuestions {
 		System.out.print("\n" + "What's your name?: ");
 		enteredName = inputSource.nextLine();
 		currentPlayer.name = enteredName;
-		System.out.println("\nYou, " + currentPlayer.name + ", wake up to find yourself inside of the "+
+		System.out.println("\nHello " + currentPlayer.name + ",\n\nYou wake up to find yourself inside of the "+
 			"'House of Questions'\n"+"Nothing else to do but explore...\n");
-		System.out.println("You have a limited amount of moves you can use\n");
+		System.out.println("On your hand you see the number " + currentPlayer.actionCount);
+		System.out.println("Game Note: Enter 'h' for a list of commands\n");
 		System.out.println(HouseOfQuestions.locToScene() + "\n");
 	}
 	
-	// This method displays the game credits
-	static void gameCredits() {
-		System.out.println("\n" +"Quitting game... ;(\n" + "Thank you for playing :)");
+	// This method end the game and displays the game credits
+	static void gameEnd() {
+		System.out.println("\nThank you for playing :)");
 		System.out.println("\nCopyright Michael Gutierrez");
 		System.out.println("===========================");
 		System.out.println("Under the supervision of Professor Johnson");
+		inputSource.close();
 	}
 	
 	public static void main(String[] args) {
 		HouseOfQuestions.gameIntro();
 		HouseOfQuestions.gameStart();
-		HouseOfQuestions.gameCredits();
-		inputSource.close();
+		HouseOfQuestions.gameEnd();
 	}	
 }
