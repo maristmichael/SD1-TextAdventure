@@ -9,6 +9,7 @@ public class Player {
 	ArrayList<Item> inventory;
 	boolean ignoreVisitVictory;
 	int actionCount;
+	int questionCount;
 	
 	public Player(String name, int location) {
 		this.name = name;
@@ -17,6 +18,7 @@ public class Player {
 		this.location = location;
 		this.ignoreVisitVictory = false;
 		this.actionCount = 20;
+		this.questionCount = 3;
 	}
 	
 	
@@ -59,7 +61,7 @@ public class Player {
 		return scoreChange;
 	}
 	
-	public static boolean findUserLoc(Player user, Locale[] LOCALES, int locNum) {
+	public static boolean checkUserLoc(Player user, Locale[] LOCALES, int locNum) {
 		if (LOCALES[user.location] == LOCALES[locNum]){
 			return true;
 		}
@@ -172,25 +174,28 @@ public class Player {
 	
 		
 		// This method allows user to examine room in order to discover items to pick up
-		static void examine(Player user, Locale userLocation) {
-			userLocation.questionFound = true;
-			if (userLocation.questionCount != 0 && userLocation.question != null) {
-				System.out.println("\nThere is a question inscribed in the wall\n" + userLocation.question);
-			} else if (userLocation.questionCheck == true && userLocation.question != null) {
-				System.out.println("\nThere is a check mark now, next to the question");
-			} else if (userLocation.questionCount == 0) {
-				System.out.println("\nThe question on the wall dissapeared after you yelled a few times");
+		static void examine(Player user, Locale[] currentLoc) {
+			if (currentLoc[user.location] instanceof SecureLocale) {
+				SecureLocale secureLoc = (SecureLocale) currentLoc[user.location];
+				secureLoc.questionFound = true;
+					if (secureLoc.questionCount != 0 && secureLoc.question != null) {
+						System.out.println("\nThere is a question inscribed in the wall\n" + secureLoc.question);
+					} else if (secureLoc.questionCheck == true && secureLoc.question != null) {
+						System.out.println("\nThere is a check mark now, next to the question");
+					} else if (secureLoc.questionCount == 0) {
+						System.out.println("\nThe question on the wall dissapeared after you yelled a few times");
+					}	
 			}
 			
-			for (int i = 0; i < userLocation.items.size(); i++) {
-				if (userLocation.items.get(i).isDiscovered == false) {
-					userLocation.items.get(i).isDiscovered = true;
-					System.out.println("\n" + userLocation.items.get(i).discovered);
-				} else if( userLocation.items.size() != 0) {
-					System.out.println("\nThe " + userLocation.items.get(i).name + " is in the room");
+			for (int i = 0; i < currentLoc[user.location].items.size(); i++) {
+				if (currentLoc[user.location].items.get(i).isDiscovered == false) {
+					currentLoc[user.location].items.get(i).isDiscovered = true;
+					System.out.println("\n" + currentLoc[user.location].items.get(i).discovered);
+				} else if( currentLoc[user.location].items.size() != 0) {
+					System.out.println("\nThe " + currentLoc[user.location].items.get(i).name + " is in the room");
 				} 
 			}
-			if (userLocation.items.size() == 0) {
+			if (currentLoc[user.location].items.size() == 0) {
 				System.out.println("Nothing special to take in this room");
 			}
 		}
@@ -225,7 +230,7 @@ public class Player {
 			for (int i= 0; i < user.inventory.size(); i++) {
 				if (user.inventory.get(i).name.equals(item[1].toLowerCase()) && limitedItem.usesRemaining != 0) {
 					for (int m = 0; m < user.inventory.size(); m++) {
-						if (user.inventory.get(m).name.equals("batteries") && findUserLoc(user,LOCALES,3) == true) {
+						if (user.inventory.get(m).name.equals("batteries") && checkUserLoc(user,LOCALES,3) == true) {
 							limitedItem.usesRemaining --;
 							System.out.print("You calculated the equation on the wall 761 − 347 = 414");
 							return;
@@ -244,21 +249,38 @@ public class Player {
 			System.out.println("The calulator doesn't turn on, maybe there are batteries to find...");
 		}
 		
-		static void yell(Player user, Locale userLocation, String[] text) {
+		static void yell(Player user, Locale[] currentLoc, String[] text) {
 			System.out.println("\nYou yelled out '" + text[1] + "'");
-	
-			if (userLocation.questionFound == false) {
-				System.out.println("Nothing happened");
+			
+			if (!(currentLoc[user.location] instanceof SecureLocale)) {
+				System.out.println("Nothing happened...");
 			} else {
-				userLocation.questionCount--;
-				if (text[1].equals(userLocation.answer) && userLocation.questionCheck == false && userLocation.questionCount != 0) {
-					userLocation.questionCheck = true;
+				SecureLocale secureLoc = (SecureLocale) currentLoc[user.location];
+				if (secureLoc.questionFound == false) {
+					System.out.println("Nothing happened...");
+					return;
+				} else if (text[1].equals(secureLoc.answer) && secureLoc.questionCheck == false && secureLoc.questionCount != 0) {
+					secureLoc.questionCheck = true;
 					System.out.println("A checkmark appeared to next the question written on the wall");
-				} else if (text[1].equals(userLocation.answer) && userLocation.questionCheck == true) {
+					return;
+				} else if (secureLoc.questionCheck == true) {
 					System.out.println("You already got the answer to the room");
-				} else if (userLocation.questionCount == 0) {
+					return;
+				} else if (secureLoc.questionCount == 0) {
 					System.out.println("The question on the wall dissapeared");
+					System.out.println("Nothing happened...");
+					return;
+				} else {
+					secureLoc.questionCount--;
+					user.questionCount--;
+					if (secureLoc.questionCount != 0) {
+						System.out.println("Nothing happened...");
+					} else {
+						System.out.println("The question on the suddenly dissapeared");
+					}
+					System.out.println("The number on ur left palm is now " + user.questionCount);
 				}
+
 			}
 		}
 	

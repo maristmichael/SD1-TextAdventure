@@ -49,18 +49,30 @@ public class HouseOfQuestions {
 	
 	// This is a Locale array with instances of locations
 	public final static Locale[] LOCALES = {
-		new Locale("Starting Room", LocDescrip[0], true, true),
-		new Locale("Music Room", LocDescrip[1], false, false),
-		new SecureLocale("Result Room", LocDescrip[2], true, true),
-		new Locale("Math Room", LocDescrip[3], false, false),
-		new Locale("Kitchen", LocDescrip[4], true, true),
-		new Locale("Science Room", LocDescrip[5], false, false),
-		new Locale("Philosophy Room", LocDescrip[6], false, false),
-		new Locale("History Room", LocDescrip[7], false, false),
-		new Locale("English Room", LocDescrip[8], false, false),
-		new SecureLocale("Art Room", LocDescrip[9], false, false
-	)
+		new Locale("Starting Room", LocDescrip[0]),
+		new SecureLocale("Music Room", LocDescrip[1], false, false, 2),
+		new Locale("Result Room", LocDescrip[2]),
+		new SecureLocale("Math Room", LocDescrip[3], false, false, 2),
+		new Locale("Kitchen", LocDescrip[4]),
+		new SecureLocale("Science Room", LocDescrip[5], false, false, 2),
+		new SecureLocale("Philosophy Room", LocDescrip[6], false, false, 2),
+		new SecureLocale("History Room", LocDescrip[7], false, false, 2),
+		new SecureLocale("English Room", LocDescrip[8], false, false, 2),
+		new SecureLocale("Art Room", LocDescrip[9], false, false, 2)
 	};
+	
+	
+	// This SecureLocale array references the locations that are SecureLocales in LOCALES[]
+	public final static SecureLocale[] SECURELOCS = new SecureLocale[] {
+		(SecureLocale) LOCALES[1],
+		(SecureLocale) LOCALES[3],
+		(SecureLocale) LOCALES[5],
+		(SecureLocale) LOCALES[6],
+		(SecureLocale) LOCALES[7],
+		(SecureLocale) LOCALES[8],
+		(SecureLocale) LOCALES[9],
+	};
+	
 	
 	// This is the navigation matrix
 	public final static int [][] MAP = {
@@ -165,7 +177,7 @@ public class HouseOfQuestions {
 				System.out.println("You are in the " + LOCALES[currentPlayer.location].name);
 			}
 		} else if (!(nextLoc ==-1) && LOCALES[nextLoc] instanceof SecureLocale && LOCALES[nextLoc] == LOCALES[2]) {
-			if (SecureLocale.canEnter(LOCALES)) {
+			if (SecureLocale.canEnter(SECURELOCS)) {
 				currentPlayer.location = nextLoc;
 				LOCALES[currentPlayer.location].visitCount++;
 				playerTrail.dropCrumb(currentPlayer.location);
@@ -267,15 +279,23 @@ public class HouseOfQuestions {
 		return null;
 	}
 	
-	// This method checks to see if player's action count is zero, and if so, the player loses.
+	// This method checks to see if player has taken too many steps, and if so, the player loses.
 	static boolean outOfActions() {
 		if (currentPlayer.actionCount == 0) {
-			System.out.println("\n" +"The number on your hand turned to 0...." + "\nYOU DIED....");
+			System.out.println("\n" +"The number on your right hand turned to 0...." + "\nYOU DIED....");
 			return true;
 		}
 		return false;
 	}
 	
+	// This method checks to see if player has guessed too many times when answering the location questions, if so the player loses
+	static boolean outOfGuesses() {
+		if (currentPlayer.questionCount == 0) {
+			System.out.println("\n" +"The number on your left hand turned to 0...." + "\nYOU DIED....");
+			return true;
+		}
+		return false;
+	}
 	// This method creates instances of Item and sets them in their proper location
 	static void setItems() {
 		LOCALES[0].placeItems(map);
@@ -323,10 +343,12 @@ public class HouseOfQuestions {
 				break;
 			} else if (questionVictoryCheck()) {
 				break;
+			} else if (outOfGuesses()) {
+				break;
 			}
 			
-			System.out.println("Number on Hand: " + currentPlayer.actionCount + "\n");
-			System.out.println("**************************");
+			System.out.println("****************************");
+			System.out.println("Number on right hand: " + currentPlayer.actionCount + "\n");
 			System.out.print("What should I do?: ");
 			userInput = inputSource.nextLine().trim().toUpperCase();
 			String[] inputSplit = userInput.split(" ");
@@ -343,7 +365,7 @@ public class HouseOfQuestions {
 			} else if (userInput.equals("B")) {
 				back(playerTrail);
 			} else if (userInput.equals("X")) {
-				Player.examine(currentPlayer,LOCALES[currentPlayer.location]);
+				Player.examine(currentPlayer,LOCALES);
 			} else if (userInput.equals("M")) {
 				displayMap();
 			} else if (userInput.equals("I")) {
@@ -380,7 +402,7 @@ public class HouseOfQuestions {
 				if (inputSplit.length == 1) {
 					System.out.println("\nWhat did you want to yell?"); 
 				} else {
-					Player.yell(currentPlayer,LOCALES[currentPlayer.location], inputSplit);
+					Player.yell(currentPlayer,LOCALES, inputSplit);
 				}
 				
 			} else {
@@ -403,7 +425,8 @@ public class HouseOfQuestions {
 		currentPlayer.name = enteredName;
 		System.out.println("\nHello " + currentPlayer.name + ",\n\nYou wake up to find yourself inside of the "+
 			"'House of Questions'\n"+"Nothing else to do but explore...\n");
-		System.out.println("On your hand you see the number " + currentPlayer.actionCount);
+		System.out.println("On your right hand you see the number " + currentPlayer.actionCount + " branded on your skin");
+		System.out.println("On your left hand you see the number " + currentPlayer.questionCount + " branded on your skin");
 		System.out.println("Game Note: Enter 'h' for a list of commands\n");
 		System.out.println(HouseOfQuestions.locToScene() + "\n");
 	}
