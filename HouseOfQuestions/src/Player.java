@@ -4,23 +4,43 @@ import java.util.Scanner;
 
 public class Player {
 	String name;
-	int location = 0;
-	int score;
 	ArrayList<Item> inventory;
 	boolean ignoreVisitVictory;
+	boolean spiritual;
+	boolean intelligent;
+	int location = 0;
+	int score;
 	int actionCount;
-	int questionCount;
+	int questionCounter;
+	int clueCounter;
+
+
 	
 	public Player(String name, int location) {
 		this.name = name;
-		this.score = 0;
 		this.inventory = new ArrayList<Item>();
 		this.location = location;
 		this.ignoreVisitVictory = false;
+		this.spiritual = false;
+		this.intelligent = false;
+		this.score = 0;
 		this.actionCount = 20;
-		this.questionCount = 3;
+		this.questionCounter = 3;
+		this.clueCounter = 3;
 	}
 	
+	public final static String[] PRAYERS = {
+			"You shall answer all questions that may arise to succeed",
+			"The genre you seek is very repetitive",
+			"You have found the answers",
+			"Use technology to seek the answer",
+			"Drink to replinish thou's life",
+			"The same color of thou's feces",
+			"The famous mortal whose names begins with P",
+			"The number you seek is below 30",
+			"The word you seek is has a length of 6",
+			"The wonderful city is located in the beautiful country of Italy"
+		};
 	
 	static int updateScore(Player user, Locale userLocation, boolean singleItem, boolean gainPoints, int itemNum) {
 		int scoreChange = 0;
@@ -68,8 +88,48 @@ public class Player {
 		return false;
 	}
 	
+	static boolean checkUserTrait(Player user) {
+		if(user.intelligent) {
+			return true;
+		}
+		return false;
+	}
+	
+	
 	public static Locale returnUserLoc(Player user, Locale [] LOCALES) {
 		return LOCALES[user.location];
+	}
+	
+	public static void setUserName(Player user, Scanner inputSource){
+		String enteredName;
+
+		System.out.print("\n" + "What's your name?: ");
+		enteredName = inputSource.nextLine();
+		user.name = enteredName;
+		System.out.println("\nHello " + user.name + "\n");
+	}
+	
+	public static void setUserTrait(Player user, Scanner inputSource){
+		String enteredTrait;
+		
+
+		while(true) {
+			System.out.print("Are you a person who's (S)piritual, or (I)ntelligent?: ");
+			enteredTrait = inputSource.nextLine().trim().toUpperCase();
+			
+			if (enteredTrait.equals("S")) {
+				user.spiritual = true;
+				System.out.println("You decided to be a spiritual person");
+				break;
+			} else if(enteredTrait.equals("I")) {
+				user.intelligent = true;
+				System.out.println("\nYou decided to be an intelligent person");
+				break;
+			} else {
+				System.out.println("\nPlease answer the question...");
+				continue;
+			}
+		}
 	}
 	
 	
@@ -273,25 +333,30 @@ public class Player {
 					return;
 				} else {
 					secureLoc.questionCount--;
-					user.questionCount--;
+					user.questionCounter--;
 					if (secureLoc.questionCount != 0) {
 						System.out.println("Nothing happened...");
 					} else {
 						System.out.println("The question on the suddenly dissapeared");
 					}
-					System.out.println("The number on ur left palm is now " + user.questionCount);
+					System.out.println("The number on ur left palm is now " + user.questionCounter);
 				}
 
 			}
+		}
+		
+		static void pray(Player user, Locale[] currentLoc) {
+			
 		}
 	
 	
 	// A more useful toString method
 	@Override
 	public String toString() {
-		return "\nYour name is " + this.name + "\n" +
-				"You're current at " + HouseOfQuestions.findUserLoc(this.location) + "\n" +
-				"Your score is: " + this.score + "\n" +
-				"You have the following items: " + this.inventory + "\n";
+		return "\nName: " + this.name + "\n" +
+				"Trait: " + HouseOfQuestions.returnUserTrait() + "\n" +
+				"Current Location: " + HouseOfQuestions.findUserLoc(this.location) + "\n" +
+				"Score: " + this.score + "\n" +
+				"Inventory: " + this.inventory + "\n";
 	}
 }

@@ -89,6 +89,7 @@ public class HouseOfQuestions {
 	 	/*9*/	{-1,8,-1,-1} // From Art --> English(S)
 	};
 	
+	
 	// This is the instance of the Player object 
 	static Player currentPlayer = new Player("", 0);
 	static BreadcrumbTrail playerTrail = new BreadcrumbTrail();
@@ -144,18 +145,31 @@ public class HouseOfQuestions {
 		return LOCALES[userLoc].name;
 	}
 	
-	static String showHelp() {
-		return 
-			"\nExplore by entering 'n', 's', 'e', 'w'\n" + 
-			"Enter 'q' : quits the game.\n" + 
-			"Enter 'm' : displays the game map if you found it.\n" + 
-			"Enter 'b' : backtrack to the previous room you were in.\n" +
-			"Enter 'x' : examines the room your currently at.\n" +
-			"Enter 'i' : info on your current status is displayed \n\n" +
-			"Enter 't' + item name: takes an item that may be in a room.\n" + 
-			"Enter 'd' + item name: drops an item by entering the exact name of it.\n" +
-			"Enter 'u' + item name: uses an item.\n" +
-			"Enter 'y' + any word : yells something out loud.\n";
+	static String returnUserTrait(){
+		if (currentPlayer.intelligent) {
+			return "Intelligent";
+		}
+		return "Spiritual";
+	}
+	
+	static void showHelp() {
+		System.out.println( 
+			". . . . . . . . . . . . . . . . . . . . . . . . . . . . .\n" +
+			".                                                       .\n" +
+			".  Enter 'n', 's', 'e', 'w': move a direction           .\n" + 
+			".  Enter 'q' : quits the game                           .\n" + 
+			".  Enter 'm' : displays the game map                    .\n" + 
+			".  Enter 'b' : backtrack to last room                   .\n" +
+			".  Enter 'x' : examines the room                        .\n" +
+			".  Enter 'i' : info on your current status              .\n" +
+			".                                                       .\n" +
+			".  Enter 't' + item name: takes an item                 .\n" + 
+			".  Enter 'd' + item name: drops an item                 .\n" +
+			".  Enter 'u' + item name: uses an item                  .\n" +
+			".  Enter 'y' + any word : yells something out loud      .\n" +
+			".                                                       .\n" +
+			". . . . . . . . . . . . . . . . . . . . . . . . . . . . ."
+		);
 	}
 	
 	static void showStatus() {
@@ -207,19 +221,17 @@ public class HouseOfQuestions {
 	
 	// This method uses a stack interface in order for player to back track
 	static void back(BreadcrumbTrail trail) {
-		if (trail.hasMoreCrumbs()) {
+		if (trail.hasMoreCrumbs() && trail.currentCrumb() > 0) {
 			trail.pickupCrumb();
 			if (trail.currentCrumb() >= 0) {
 				currentPlayer.actionCount--;
 				currentPlayer.location = trail.currentCrumb();
-				System.out.println("You followed your breadcrumb trail back a room");
 				System.out.println("\n" + HouseOfQuestions.locToScene());
 			} 
+			
 		} else {	
-			currentPlayer.location = 0;
-			trail.dropCrumb(currentPlayer.location);
-			System.out.println("Your already at your final crumb on the trail you made.\n");
-			System.out.println("You are in the " + LOCALES[currentPlayer.location].name);
+			System.out.println("\nAlready reached your first crumb");
+			System.out.println("*You are in the " + LOCALES[currentPlayer.location].name + "*");
 		}
 	}
 	
@@ -262,9 +274,9 @@ public class HouseOfQuestions {
 		if (LOCALES[currentPlayer.location].equals(LOCALES[2])) {
 			System.out.print("Final Question: Did you like this game?: ");
 			
-			while(true) {
+			while (true) {
 				userInput = inputSource.nextLine().trim().toUpperCase();
-				if(userInput.equals("YES")) {
+				if (userInput.equals("YES")) {
 					System.out.println("YOU " + currentPlayer.name.toUpperCase() + " WIN!!!!!!!!!\n\n\n");
 					return true;
 				} else if (userInput.equals("NO")) {
@@ -280,7 +292,7 @@ public class HouseOfQuestions {
 	}
 		
 	public Item findItem(Player user, Item item){
-		if (user.inventory.contains(item)){
+		if (user.inventory.contains(item)) {
 			return item;
 		}
 		return null;
@@ -297,7 +309,7 @@ public class HouseOfQuestions {
 	
 	// This method checks to see if player has guessed too many times when answering the location questions, if so the player loses
 	static boolean outOfGuesses() {
-		if (currentPlayer.questionCount == 0) {
+		if (currentPlayer.questionCounter == 0) {
 			System.out.println("\n" +"The number on your left hand turned to 0...." + "\nYOU DIED....");
 			return true;
 		}
@@ -325,17 +337,17 @@ public class HouseOfQuestions {
 		LOCALES[5].setAnswer("BROWN");
 		LOCALES[6].setQuestion("Who is Socrates's famous student: ");
 		LOCALES[6].setAnswer("PLATO");
-		LOCALES[7].setQuestion("In what city is the Statue of David located at?: ");
-		LOCALES[7].setAnswer("FLORENCE");
+		LOCALES[7].setQuestion("Currently, how many amendments are in the U.S. constitution?: ");
+		LOCALES[7].setAnswer("27");
 		LOCALES[8].setQuestion("What is the word that is defined as 'a time of intense difficulty': ");
 		LOCALES[8].setAnswer("CRISIS");
-		LOCALES[9].setQuestion("Currently, how many amendments are in the U.S. constitution?: ");
-		LOCALES[9].setAnswer("27");
+		LOCALES[9].setQuestion("In what city is the Statue of David located at?: ");
+		LOCALES[9].setAnswer("FLORENCE");
+		
 	}
 	
 	// This method starts the game loop
 	public static void gameStart() {
-		String locationScene = "";
 		setItems();
 		setQuizAndAnswers();
 		LOCALES[currentPlayer.location].visitCount++;
@@ -378,7 +390,7 @@ public class HouseOfQuestions {
 			} else if (userInput.equals("I")) {
 				showStatus();
 			} else if (userInput.equals("H")) {
-				locationScene = showHelp();
+				showHelp();
 			} else if (userInput.equals("Q")) {
 				break;
 				
@@ -416,24 +428,23 @@ public class HouseOfQuestions {
 				System.out.println("Not a valid comman\n");
 				continue;
 			}	
-			System.out.println(locationScene);
-			locationScene = "";
+			System.out.println("");
 		}
 	} 
 	
 	// This method displays the welcome message and captures player's name
 	static void gameIntro(){
-		String enteredName;
 		
 		System.out.println("\n"+"House of Questions");
 		System.out.println("------------------");
-		System.out.print("\n" + "What's your name?: ");
-		enteredName = inputSource.nextLine();
-		currentPlayer.name = enteredName;
+		showHelp();
+		Player.setUserName(currentPlayer, inputSource);
+		Player.setUserTrait(currentPlayer, inputSource);
+		System.out.println("\n****************************");
 		System.out.println("\nHello " + currentPlayer.name + ",\n\nYou wake up to find yourself inside of the "+
 			"'House of Questions'\n"+"Nothing else to do but explore...\n");
 		System.out.println("On your right hand you see the number " + currentPlayer.actionCount + " branded on your skin");
-		System.out.println("On your left hand you see the number " + currentPlayer.questionCount + " branded on your skin");
+		System.out.println("On your left hand you see the number " + currentPlayer.questionCounter + " branded on your skin");
 		System.out.println("Game Note: Enter 'h' for a list of commands\n");
 		System.out.println(HouseOfQuestions.locToScene() + "\n");
 	}
