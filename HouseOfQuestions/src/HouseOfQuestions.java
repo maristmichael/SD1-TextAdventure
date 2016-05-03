@@ -73,7 +73,6 @@ public class HouseOfQuestions {
 		(SecureLocale) LOCALES[9],
 	};
 	
-	
 	// This is the navigation matrix
 	public final static int [][] MAP = {
 			  /*{N,S,W,E}*/
@@ -117,7 +116,7 @@ public class HouseOfQuestions {
 	}
 	
 	// This method displays the game map if player has obtained the map
-	static void displayMap(){
+	public static void displayMap(){
 		if (currentPlayer.inventory.contains(map)) {
 			System.out.println(
 				". . . . . . . . . . . . . . . . .\n"+
@@ -141,11 +140,15 @@ public class HouseOfQuestions {
 		}
 	}
 	
-	static String findUserLoc(int userLoc) {
+	public static String findUserLoc(int userLoc) {
 		return LOCALES[userLoc].name;
 	}
 	
-	static String returnUserTrait(){
+	public static int userLocInSecureLocs() {
+		return currentPlayer.location - 3;
+	}
+	
+	public static String returnUserTrait(){
 		if (currentPlayer.intelligent) {
 			return "Intelligent";
 		}
@@ -385,6 +388,8 @@ public class HouseOfQuestions {
 				back(playerTrail);
 			} else if (userInput.equals("X")) {
 				Player.examine(currentPlayer,LOCALES);
+			} else if (userInput.equals("P")) {
+				Player.playerAction(currentPlayer, LOCALES, SECURELOCS);
 			} else if (userInput.equals("M")) {
 				displayMap();
 			} else if (userInput.equals("I")) {

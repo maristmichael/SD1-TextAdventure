@@ -38,7 +38,7 @@ public class Player {
 			"The same color of thou's feces",
 			"The famous mortal whose names begins with P",
 			"The number you seek is below 30",
-			"The word you seek is has a length of 6",
+			"The word you seek has a length of 6",
 			"The wonderful city is located in the beautiful country of Italy"
 		};
 	
@@ -89,7 +89,7 @@ public class Player {
 	}
 	
 	static boolean checkUserTrait(Player user) {
-		if(user.intelligent) {
+		if (user.intelligent) {
 			return true;
 		}
 		return false;
@@ -112,7 +112,6 @@ public class Player {
 	public static void setUserTrait(Player user, Scanner inputSource){
 		String enteredTrait;
 		
-
 		while(true) {
 			System.out.print("Are you a person who's (S)piritual, or (I)ntelligent?: ");
 			enteredTrait = inputSource.nextLine().trim().toUpperCase();
@@ -135,7 +134,6 @@ public class Player {
 	
 	// This method allows player to grab all items and store them in the inventory
 		static void take(Player user, Locale userLocation, String[] item) {
-			
 			if (item[1].equals("ALL")) {
 				for (int k = 0; k < userLocation.items.size(); k++) {
 					if (userLocation.items.get(k).isDiscovered == false) {
@@ -148,6 +146,7 @@ public class Player {
 						userLocation.items.clear();
 					}
 				}
+				
 			} else if (userLocation.items.size() == 0) {
 				System.out.print("No items in the room\n");
 				
@@ -187,7 +186,7 @@ public class Player {
 		
 	
 		
-	// This method allows player to drop specified items or all items in the player inventory
+		// This method allows player to drop specified items or all items in the player inventory
 		static void drop(Player user, Locale userLocation, String[] item) {			
 			if (item[1].equals("ALL")) {
 				userLocation.items.addAll(user.inventory);
@@ -195,8 +194,10 @@ public class Player {
 				updateScore(user, userLocation, false, false, 0);
 				user.inventory.clear();
 				System.out.println("Your inventory: " + user.inventory.toString());
+				
 			} else if (user.inventory.size() == 0) {
 				System.out.println("No items to drop");	
+				
 			} else if (user.inventory.size() == 1) { 				
 				for (int m = 0; m < user.inventory.size(); m++) {
 					if (item[1].equals(user.inventory.get(m).name.toUpperCase())) {
@@ -212,6 +213,7 @@ public class Player {
 						continue;
 					}
 				}
+				
 			} else if (user.inventory.size() > 1) {
 				int itemCount = user.inventory.size();
 				
@@ -235,22 +237,28 @@ public class Player {
 		
 		// This method allows user to examine room in order to discover items to pick up
 		static void examine(Player user, Locale[] currentLoc) {
+			SecureLocale secureLoc;
+			System.out.println(currentLoc[user.location].hasExamined);
+			currentLoc[user.location].hasExamined = true;
+			System.out.println(currentLoc[user.location].hasExamined);
 			if (currentLoc[user.location] instanceof SecureLocale) {
-				SecureLocale secureLoc = (SecureLocale) currentLoc[user.location];
+				secureLoc = (SecureLocale) currentLoc[user.location];
 				secureLoc.questionFound = true;
-					if (secureLoc.questionCount != 0 && secureLoc.question != null) {
-						System.out.println("\nThere is a question inscribed in the wall\n" + secureLoc.question);
-					} else if (secureLoc.questionCheck == true && secureLoc.question != null) {
-						System.out.println("\nThere is a check mark now, next to the question");
-					} else if (secureLoc.questionCount == 0) {
-						System.out.println("\nThe question on the wall dissapeared after you yelled a few times");
-					}	
+				
+				if (secureLoc.questionCount != 0 && secureLoc.question != null) {
+					System.out.println("\nThere is a question inscribed in the wall\n" + secureLoc.question);
+				} else if (secureLoc.questionCheck == true && secureLoc.question != null) {
+					System.out.println("\nThere is a check mark now, next to the question");
+				} else if (secureLoc.questionCount == 0) {
+					System.out.println("\nThe question on the wall dissapeared after you yelled a few times");
+				}	
 			}
 			
 			for (int i = 0; i < currentLoc[user.location].items.size(); i++) {
 				if (currentLoc[user.location].items.get(i).isDiscovered == false) {
 					currentLoc[user.location].items.get(i).isDiscovered = true;
 					System.out.println("\n" + currentLoc[user.location].items.get(i).discovered);
+					
 				} else if( currentLoc[user.location].items.size() != 0) {
 					System.out.println("\nThe " + currentLoc[user.location].items.get(i).name + " is in the room");
 				} 
@@ -297,7 +305,7 @@ public class Player {
 							return;
 						} else if (user.inventory.get(m).name.equals("batteries")) {
 							limitedItem.usesRemaining --;
-							System.out.println("You are playing with the calculator, weirdo...");
+							System.out.println("You play with calculator");
 							return;
 						}
 					}
@@ -334,6 +342,7 @@ public class Player {
 				} else {
 					secureLoc.questionCount--;
 					user.questionCounter--;
+					
 					if (secureLoc.questionCount != 0) {
 						System.out.println("Nothing happened...");
 					} else {
@@ -345,7 +354,42 @@ public class Player {
 			}
 		}
 		
-		static void pray(Player user, Locale[] currentLoc) {
+		static void playerAction(Player user, Locale[] currentLoc, SecureLocale[] loc) {
+			if (user.spiritual) {
+				pray(user, currentLoc, loc);
+			}
+		}
+		
+		static void pray(Player user, Locale[] currentLoc, SecureLocale[] loc) {
+			if (currentLoc[user.location].hasExamined) {
+				if (!(currentLoc[user.location] instanceof SecureLocale)) {
+					if (user.clueCounter != 0) {
+						System.out.println("\n" + PRAYERS[user.location]);
+						user.clueCounter--;
+						return;
+					} else if (user.clueCounter == 0) {
+						System.out.println("\nYou asked for divine help but nothing happened");
+						return;
+					}
+				} else {
+					for (int i = 0; i < loc.length; i++) {
+						if (loc[i].equals(currentLoc[user.location])) {
+							if (loc[i].questionFound && user.clueCounter != 0) {
+								System.out.println("\n" + PRAYERS[user.location]);
+								user.clueCounter--;
+								return;
+							} else if (user.clueCounter == 0) {
+								System.out.println("\nYou asked for divine help but nothing happened");
+								return;
+							}
+						}
+					}
+				}
+			}
+			System.out.println("\nMaybe I should examine the room before I ask for help");
+		}
+		
+		static void something(Player user, Locale[] currentLoc) {
 			
 		}
 	

@@ -6,12 +6,14 @@ public class Locale {
 	String question;
 	String answer;
 	ArrayList<Item>items;
+	boolean hasExamined;
 	int visitCount;
 	
 	public Locale(String name, String description) {
 		this.name = name;
 		this.description = description;
 		this.items = new ArrayList<Item>();
+		this.hasExamined = false;
 		this.visitCount = 0;
 	};
 	
