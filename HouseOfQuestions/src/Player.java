@@ -7,8 +7,8 @@ public class Player {
 	ArrayList<Item> inventory;
 	boolean ignoreVisitVictory;
 	boolean spiritual;
-	boolean intelligent;
-	int location = 0;
+	boolean lucky;
+	int location;
 	int score;
 	int actionCount;
 	int questionCounter;
@@ -16,17 +16,16 @@ public class Player {
 
 
 	
-	public Player(String name, int location) {
-		this.name = name;
+	public Player() {
 		this.inventory = new ArrayList<Item>();
-		this.location = location;
 		this.ignoreVisitVictory = false;
-		this.spiritual = false;
-		this.intelligent = false;
-		this.score = 0;
-		this.actionCount = 20;
-		this.questionCounter = 3;
-		this.clueCounter = 3;
+		this.spiritual          = false;
+		this.lucky            = false;
+		this.location           = 0;
+		this.score              = 0;
+		this.actionCount        = 20;
+		this.questionCounter    = 3;
+		this.clueCounter        = 3;
 	}
 	
 	public final static String[] PRAYERS = {
@@ -89,7 +88,7 @@ public class Player {
 	}
 	
 	static boolean checkUserTrait(Player user) {
-		if (user.intelligent) {
+		if (user.lucky) {
 			return true;
 		}
 		return false;
@@ -113,16 +112,18 @@ public class Player {
 		String enteredTrait;
 		
 		while(true) {
-			System.out.print("Are you a person who's (S)piritual, or (I)ntelligent?: ");
+			System.out.print("Are you a person who's (S)piritual, or (L)ucky?: ");
 			enteredTrait = inputSource.nextLine().trim().toUpperCase();
 			
 			if (enteredTrait.equals("S")) {
 				user.spiritual = true;
-				System.out.println("You decided to be a spiritual person");
+				System.out.println("\nYou are a spiritual person");
 				break;
-			} else if(enteredTrait.equals("I")) {
-				user.intelligent = true;
-				System.out.println("\nYou decided to be an intelligent person");
+			} else if(enteredTrait.equals("L")) {
+				user.actionCount     *= 2;
+				user.questionCounter *= 2;
+				user.lucky = true;
+				System.out.println("\nYou are a lucky person");
 				break;
 			} else {
 				System.out.println("\nPlease answer the question...");
@@ -238,9 +239,7 @@ public class Player {
 		// This method allows user to examine room in order to discover items to pick up
 		static void examine(Player user, Locale[] currentLoc) {
 			SecureLocale secureLoc;
-			System.out.println(currentLoc[user.location].hasExamined);
 			currentLoc[user.location].hasExamined = true;
-			System.out.println(currentLoc[user.location].hasExamined);
 			if (currentLoc[user.location] instanceof SecureLocale) {
 				secureLoc = (SecureLocale) currentLoc[user.location];
 				secureLoc.questionFound = true;
@@ -348,7 +347,7 @@ public class Player {
 					} else {
 						System.out.println("The question on the suddenly dissapeared");
 					}
-					System.out.println("The number on ur left palm is now " + user.questionCounter);
+					System.out.println("\nThe number on ur left palm is now " + user.questionCounter);
 				}
 
 			}
@@ -357,6 +356,8 @@ public class Player {
 		static void playerAction(Player user, Locale[] currentLoc, SecureLocale[] loc) {
 			if (user.spiritual) {
 				pray(user, currentLoc, loc);
+			} else {
+				System.out.println("\nNot a valid command");
 			}
 		}
 		

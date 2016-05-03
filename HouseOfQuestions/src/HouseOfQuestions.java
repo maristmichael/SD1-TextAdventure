@@ -90,7 +90,7 @@ public class HouseOfQuestions {
 	
 	
 	// This is the instance of the Player object 
-	static Player currentPlayer = new Player("", 0);
+	static Player currentPlayer = new Player();
 	static BreadcrumbTrail playerTrail = new BreadcrumbTrail();
 	
 	// These variables handle input by user
@@ -144,36 +144,34 @@ public class HouseOfQuestions {
 		return LOCALES[userLoc].name;
 	}
 	
-	public static int userLocInSecureLocs() {
-		return currentPlayer.location - 3;
-	}
-	
 	public static String returnUserTrait(){
-		if (currentPlayer.intelligent) {
-			return "Intelligent";
+		if (currentPlayer.lucky) {
+			return "Lucky";
 		}
 		return "Spiritual";
 	}
 	
 	static void showHelp() {
 		System.out.println( 
-			". . . . . . . . . . . . . . . . . . . . . . . . . . . . .\n" +
-			".                                                       .\n" +
-			".  Enter 'n', 's', 'e', 'w': move a direction           .\n" + 
-			".  Enter 'q' : quits the game                           .\n" + 
-			".  Enter 'm' : displays the game map                    .\n" + 
-			".  Enter 'b' : backtrack to last room                   .\n" +
-			".  Enter 'x' : examines the room                        .\n" +
-			".  Enter 'i' : info on your current status              .\n" +
-			".                                                       .\n" +
-			".  Enter 't' + item name: takes an item                 .\n" + 
-			".  Enter 'd' + item name: drops an item                 .\n" +
-			".  Enter 'u' + item name: uses an item                  .\n" +
-			".  Enter 'y' + any word : yells something out loud      .\n" +
-			".                                                       .\n" +
-			". . . . . . . . . . . . . . . . . . . . . . . . . . . . ."
+			". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .\n" +
+			".                                                             .\n" +
+			".  Enter 'n', 's', 'e', 'w': move a direction                 .\n" + 
+			".  Enter 'q' : quits the game                                 .\n" + 
+			".  Enter 'm' : displays the game map                          .\n" + 
+			".  Enter 'b' : backtrack to last room                         .\n" +
+			".  Enter 'x' : examines the room                              .\n" +
+			".  Enter 'i' : info on your current status                    .\n" +
+			".  Enter 'p' : pray to get divine help *if you're spiritual*  .\n" +
+			".                                                             .\n" +
+			".  Enter 't' + item name: takes an item                       .\n" + 
+			".  Enter 'd' + item name: drops an item                       .\n" +
+			".  Enter 'u' + item name: uses an item                        .\n" +
+			".  Enter 'y' + any word : yells something out loud            .\n" +
+			".                                                             .\n" +
+			". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ."
 		);
 	}
+	
 	
 	static void showStatus() {
 		System.out.print(currentPlayer.toString());
@@ -194,7 +192,7 @@ public class HouseOfQuestions {
 				LOCALES[currentPlayer.location].visitCount++;
 				playerTrail.dropCrumb(currentPlayer.location);
 				System.out.println("The door suddenly opened allowing me to access the next room");
-				System.out.println("\n"+HouseOfQuestions.locToScene());
+				System.out.println(HouseOfQuestions.locToScene());
 			} else {
 				System.out.println("\nThe door leading to the next room wont budge" + "\nMaybe I need to have an item...");
 				System.out.println("You are in the " + LOCALES[currentPlayer.location].name);
@@ -205,17 +203,17 @@ public class HouseOfQuestions {
 				LOCALES[currentPlayer.location].visitCount++;
 				playerTrail.dropCrumb(currentPlayer.location);
 				System.out.println("The wall magically dissapeared before your eyes, allowing you to enter the room");
-				System.out.println("\n"+HouseOfQuestions.locToScene());
+				System.out.println(HouseOfQuestions.locToScene());
 			} else {
 				System.out.println("\nThere is a wall blocking your path");
-				System.out.println("You are in the " + LOCALES[currentPlayer.location].name);
+				System.out.println("*You are in the " + LOCALES[currentPlayer.location].name + "*");
 			}
 		} else if (!(nextLoc ==-1)) {
 			currentPlayer.location = nextLoc;
 			LOCALES[currentPlayer.location].visitCount++;
 			playerTrail.dropCrumb(currentPlayer.location);
 			currentPlayer.actionCount--;
-			System.out.println("\n"+HouseOfQuestions.locToScene());
+			System.out.println(HouseOfQuestions.locToScene());
 		} else {
 			System.out.println("Cannot go this way... Choose another path");
 			System.out.println("You are in the " + LOCALES[currentPlayer.location].name);
@@ -401,14 +399,14 @@ public class HouseOfQuestions {
 				
 			} else if (inputSplit[0].equals("T")) {
 				if (inputSplit.length == 1) {
-					System.out.println("What did you want to take?");
+					System.out.println("\nWhat did you want to take?");
 				} else {
 					Player.take(currentPlayer, LOCALES[currentPlayer.location], inputSplit);
 				}
 				
 			} else if (inputSplit[0].equals("D")) {
 				if (inputSplit.length == 1) {
-					System.out.println("What did you want to drop?");
+					System.out.println("\nWhat did you want to drop?");
 				} else {
 					Player.drop(currentPlayer, LOCALES[currentPlayer.location], inputSplit);
 				}
@@ -451,7 +449,7 @@ public class HouseOfQuestions {
 		System.out.println("On your right hand you see the number " + currentPlayer.actionCount + " branded on your skin");
 		System.out.println("On your left hand you see the number " + currentPlayer.questionCounter + " branded on your skin");
 		System.out.println("Game Note: Enter 'h' for a list of commands\n");
-		System.out.println(HouseOfQuestions.locToScene() + "\n");
+		System.out.println(HouseOfQuestions.locToScene());
 	}
 	
 	// This method end the game and displays the game credits
