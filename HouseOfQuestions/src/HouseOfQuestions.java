@@ -20,7 +20,7 @@ public class HouseOfQuestions {
 	static Item novel      = new Item("novel", "Great Gatsby, a famous book by F.Scott Fitzgerald", "You find your favorite novel of all time");
 	static Item textbook   = new Item("textbook", "A thick book containing U.S. history", "You see a big and textbook on the table");
 	static Item beard	   = new Item("beard", "A fake beard to wear for philosophizing", "You see a beard on the floor");
-	static LimitedUseItem bottle     = new LimitedUseItem("bottle", "A water bottle", "You see a bottle", 3, "You drank some of the water");
+	static LimitedUseItem bottle     = new LimitedUseItem("bottle", "A water bottle", "You see a bottle", 2, "You drank some of the water");
 	static LimitedUseItem calculator = new LimitedUseItem("calculator","A nifty TI-84 calculator", "You spot a nice calculator",
 														  4,"The calulator turned off, the batteries must be drained");
 
@@ -50,15 +50,15 @@ public class HouseOfQuestions {
 	// This is a Locale array with instances of locations
 	public final static Locale[] LOCALES = {
 		new Locale("Starting Room", LocDescrip[0]),
-		new SecureLocale("Music Room", LocDescrip[1], false, false, 2),
+		new SecureLocale("Music Room", LocDescrip[1], false, false, 3),
 		new Locale("Result Room", LocDescrip[2]),
-		new SecureLocale("Math Room", LocDescrip[3], false, false, 2),
+		new SecureLocale("Math Room", LocDescrip[3], false, false, 3),
 		new Locale("Kitchen", LocDescrip[4]),
-		new SecureLocale("Science Room", LocDescrip[5], false, false, 2),
-		new SecureLocale("Philosophy Room", LocDescrip[6], false, false, 2),
-		new SecureLocale("History Room", LocDescrip[7], false, false, 2),
-		new SecureLocale("English Room", LocDescrip[8], false, false, 2),
-		new SecureLocale("Art Room", LocDescrip[9], false, false, 2)
+		new SecureLocale("Science Room", LocDescrip[5], false, false, 3),
+		new SecureLocale("Philosophy Room", LocDescrip[6], false, false, 3),
+		new SecureLocale("History Room", LocDescrip[7], false, false, 3),
+		new SecureLocale("English Room", LocDescrip[8], false, false, 3),
+		new SecureLocale("Art Room", LocDescrip[9], false, false, 3)
 	};
 	
 	
@@ -119,23 +119,29 @@ public class HouseOfQuestions {
 	static void displayMap(){
 		if (currentPlayer.inventory.contains(map)) {
 			System.out.println(
-				"                        Art  \n" +
-				"                         |   \n" +
-				"                         |   \n" +
-				"  Kitchen     Music  English \n" +
-				"     |         |         |   \n" +
-				"     |         |         |   \n" +
-				"   Math------Start---History \n" +
-				"     |         |             \n" +
-				"     |         |             \n" +
-				"  Science     Result         \n" +
-				"     |                       \n" +
-				"     |                       \n" +
-				"  Philosophy                 \n"
-				);
+				". . . . . . . . . . . . . . . . .\n"+
+				".                         Art   .\n" +
+				".                          |    .\n" +
+				".                          |    .\n" +
+				".   Kitchen    Music   English  .\n" +
+				".     |          |         |    .\n" +
+				".     |          |         |    .\n" +
+				".    Math------Start---History  .\n" +
+				".     |          |              .\n" +
+				".     |          |              .\n" +
+				".   Science     Result          .\n" +
+				".     |                         .\n" +
+				".     |                         .\n" +
+				".   Philosophy                  .\n" +
+				". . . . . . . . . . . . . . . . ."
+			);
 		} else {
 			System.out.println("You do not have a map");
 		}
+	}
+	
+	static String findUserLoc(int userLoc) {
+		return LOCALES[userLoc].name;
 	}
 	
 	static String showHelp() {
@@ -176,18 +182,17 @@ public class HouseOfQuestions {
 				System.out.println("\nThe door leading to the next room wont budge" + "\nMaybe I need to have an item...");
 				System.out.println("You are in the " + LOCALES[currentPlayer.location].name);
 			}
-		} else if (!(nextLoc ==-1) && LOCALES[nextLoc] instanceof SecureLocale && LOCALES[nextLoc] == LOCALES[2]) {
-			if (SecureLocale.canEnter(SECURELOCS)) {
+		} else if (!(nextLoc ==-1) && LOCALES[nextLoc] == LOCALES[2]) {
+			if(SecureLocale.canEnter(SECURELOCS)) {
 				currentPlayer.location = nextLoc;
 				LOCALES[currentPlayer.location].visitCount++;
 				playerTrail.dropCrumb(currentPlayer.location);
 				System.out.println("The wall magically dissapeared before your eyes, allowing you to enter the room");
 				System.out.println("\n"+HouseOfQuestions.locToScene());
-			}  else {
+			} else {
 				System.out.println("\nThere is a wall blocking your path");
 				System.out.println("You are in the " + LOCALES[currentPlayer.location].name);
 			}
-			
 		} else if (!(nextLoc ==-1)) {
 			currentPlayer.location = nextLoc;
 			LOCALES[currentPlayer.location].visitCount++;
@@ -254,15 +259,17 @@ public class HouseOfQuestions {
 	}
 	
 	static boolean questionVictoryCheck() {
-		if (Player.returnUserLoc(currentPlayer, LOCALES).equals(LOCALES[2])) {
+		if (LOCALES[currentPlayer.location].equals(LOCALES[2])) {
 			System.out.print("Final Question: Did you like this game?: ");
+			
 			while(true) {
+				userInput = inputSource.nextLine().trim().toUpperCase();
 				if(userInput.equals("YES")) {
-					System.out.println("YOU " + currentPlayer.name.toUpperCase()+ " WIN!!!!!!!!!\n\n\n");
+					System.out.println("YOU " + currentPlayer.name.toUpperCase() + " WIN!!!!!!!!!\n\n\n");
 					return true;
 				} else if (userInput.equals("NO")) {
-					System.out.println("YOU LOOOSE\n\n\n");
-					return false;
+					System.out.println("Keep playing");
+					break;
 				} else {
 					System.out.println("Not a valid answer");
 					continue;

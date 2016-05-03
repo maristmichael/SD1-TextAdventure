@@ -213,11 +213,12 @@ public class Player {
 		
 		
 		static void useBottle(Player user, String[] item, LimitedUseItem limitedItem) {
+			int gainMoveAction = 5;
 			for (int i = 0; i < user.inventory.size(); i++) {
 				if(user.inventory.get(i).name.equals(item[1].toLowerCase()) && limitedItem.usesRemaining != 0) {
 					limitedItem.usesRemaining --;
-					user.actionCount += 2;
-					System.out.println("You drank the water inside the bottle\n" + "+2 move count\n");
+					user.actionCount += gainMoveAction;
+					System.out.println("You drank the water inside the bottle\n" + "The number on right hand increased by 5\n");
 					break;
 				} else if (limitedItem.usesRemaining == 0) {
 					System.out.println(limitedItem.afterUse);
@@ -286,11 +287,11 @@ public class Player {
 	
 	
 	// A more useful toString method
-	public String toString(Player user, Locale[] LOCALES) {
-		return "Your name is " + this.name + "\n" +
-				"You're current at " + returnUserLoc(user, LOCALES).name + "\n" +
+	@Override
+	public String toString() {
+		return "\nYour name is " + this.name + "\n" +
+				"You're current at " + HouseOfQuestions.findUserLoc(this.location) + "\n" +
 				"Your score is: " + this.score + "\n" +
-				"You have the following items: " + this.inventory;
+				"You have the following items: " + this.inventory + "\n";
 	}
-
 }
