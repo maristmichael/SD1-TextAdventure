@@ -3,7 +3,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 /**
- * The Class Player.
+ * The Class Player
  */
 public class Player {
 	

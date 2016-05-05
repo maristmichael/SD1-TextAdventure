@@ -1,8 +1,9 @@
 /**
- * @author Michael Gutierrez
+ * @author Michael Gutierrez <michael.gutierrez2@marist.edu>
+ * @version 1.0
  * CMPT 220L-114
  * Professor Johnson
- * 25 February 2016
+ * 6 May 2016
  *
  */
 
@@ -11,27 +12,36 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * The Class HouseOfQuestions
+ */
 public class HouseOfQuestions {
-
- 	static Item map        = new Item("map", "A map of the house", "You spot a map on the floor");
-	static Item guitar     = new Item("guitar", "A nifty acoustic guitar", "You found a cool guitar");
-	static Item batteries  = new Item("batteries", "a pair of Double-A batteries", "You see a pair of batteries on a lab table");
-	static Item painting   = new Item("painting", "Van Gogh's famous famous painting","A familiar painting catches your eyes");
-	static Item novel      = new Item("novel", "Great Gatsby, a famous book by F.Scott Fitzgerald", "You find your favorite novel of all time");
-	static Item textbook   = new Item("textbook", "A thick book containing U.S. history", "You see a big and textbook on the table");
-	static Item beard	   = new Item("beard", "A fake beard to wear for philosophizing", "You see a beard on the floor");
+	
+	/** All items in the game: bottle, and calculator are items that can be used */
+ 	static Item map                  = new Item("map", "A map of the house", "You spot a map on the floor");
+	static Item guitar               = new Item("guitar", "A nifty acoustic guitar", "You found a cool guitar");
+	static Item batteries            = new Item("batteries", "a pair of Double-A batteries", "You see a pair of batteries on a lab table");
+	static Item painting             = new Item("painting", "Van Gogh's famous famous painting","A familiar painting catches your eyes");
+	static Item novel                = new Item("novel", "Great Gatsby, a famous book by F.Scott Fitzgerald", "You find your favorite novel of all time");
+	static Item textbook             = new Item("textbook", "A thick book containing U.S. history", "You see a big and textbook on the table");
+	static Item beard	             = new Item("beard", "A fake beard to wear for philosophizing", "You see a beard on the floor");
 	static LimitedUseItem bottle     = new LimitedUseItem("bottle", "A water bottle", "You see a bottle", 2, "You drank some of the water");
 	static LimitedUseItem calculator = new LimitedUseItem("calculator","A nifty TI-84 calculator", "You spot a nice calculator",
-														  4,"The calulator turned off, the batteries must be drained");
+														   4,"The calulator turned off, the batteries must be drained");
 
-	
-	// These are constant variables representing directions for matrix
+	/** The Constant N represents North as the number 0*/
 	public static final int N = 0;
+	
+	/** The Constant S represents South as the number 1*/
 	public static final int S = 1;
+	
+	/** The Constant W represents West as the number 2*/
 	public static final int W = 2;
+	
+	/** The Constant E represents East as the number 3 */
 	public static final int E = 3;
 
-	// This is a String array containing Locale descriptions
+	/** String array that contains Locale descriptions */
 	public static final String[] LocDescrip = {
 		"This is the starting area, there are several paths to take",
 		"In this room, you hear many melodies emanating from the walls",
@@ -47,22 +57,22 @@ public class HouseOfQuestions {
 		"What a beautiful room! It has many works of art scattered around"
 	};
 	
-	// This is a Locale array with instances of locations
+	/** Locale array with instances of Locale and SecureLocale */
 	public final static Locale[] LOCALES = {
-		new Locale("Starting Room", LocDescrip[0]),
-		new SecureLocale("Music Room", LocDescrip[1], false, false, 3),
-		new Locale("Result Room", LocDescrip[2]),
-		new SecureLocale("Math Room", LocDescrip[3], false, false, 3),
-		new Locale("Kitchen", LocDescrip[4]),
-		new SecureLocale("Science Room", LocDescrip[5], false, false, 3),
-		new SecureLocale("Philosophy Room", LocDescrip[6], false, false, 3),
-		new SecureLocale("History Room", LocDescrip[7], false, false, 3),
-		new SecureLocale("English Room", LocDescrip[8], false, false, 3),
-		new SecureLocale("Art Room", LocDescrip[9], false, false, 3)
+		new Locale      ("Starting Room",   LocDescrip[0]),
+		new SecureLocale("Music Room",      LocDescrip[1] , false, false, 3),
+		new Locale      ("Result Room",     LocDescrip[2]),
+		new SecureLocale("Math Room",       LocDescrip[3] , false, false, 3),
+		new Locale      ("Kitchen",         LocDescrip[4]),
+		new SecureLocale("Science Room",    LocDescrip[5] , false, false, 3),
+		new SecureLocale("Philosophy Room", LocDescrip[6] , false, false, 3),
+		new SecureLocale("History Room",    LocDescrip[7] , false, false, 3),
+		new SecureLocale("English Room",    LocDescrip[8] , false, false, 3),
+		new SecureLocale("Art Room",        LocDescrip[9] , false, false, 3)
 	};
 	
 	
-	// This SecureLocale array references the locations that are SecureLocales in LOCALES[]
+	/** SecureLocale array that references all Locale that are instances of SecureLocale in the array LOCALES */
 	public final static SecureLocale[] SECURELOCS = new SecureLocale[] {
 		(SecureLocale) LOCALES[1],
 		(SecureLocale) LOCALES[3],
@@ -73,7 +83,7 @@ public class HouseOfQuestions {
 		(SecureLocale) LOCALES[9],
 	};
 	
-	// This is the navigation matrix
+	/** The navigation matrix */
 	public final static int [][] MAP = {
 			  /*{N,S,W,E}*/
 		/*0*/	{1,2,3,7},   // From Start   --> Math(W), Music(N), History(E), Result(S)
@@ -89,37 +99,35 @@ public class HouseOfQuestions {
 	};
 	
 	
-	// This is the instance of the Player object 
+	/** Starting instance of Player */
 	static Player currentPlayer = new Player();
+	
+	/** Starting instance of BreadcrumTrail */
 	static BreadcrumbTrail playerTrail = new BreadcrumbTrail();
 	
-	// These variables handle input by user
+	/** Starting instance of Scanner used for user input */
 	public static Scanner inputSource = new Scanner(System.in);
+	
+	/** String variable that holds user in */
 	public static String userInput;
 	
-	// This method looks at player's location and displays appropriate description
+	/**
+	 * Method looks at player's location and displays appropriate description.
+	 *
+	 * @return String description of Locale that player is located at
+	 */
 	static String locToScene() {
 		return LOCALES[currentPlayer.location].toString();
 	}
 	
-	// This method converts the directions into integers to navigate the matrix
-	static int dirToInt(String direction) {
-		if (direction.equals("N")) {
-			return 0;
-		} else if (direction.equals("S")) {
-			return 1;
-		} else if (direction.equals("W")) {
-			return 2;
-		} else {
-			return 3;
-		}
-	}
-	
-	// This method displays the game map if player has obtained the map
+	/**
+	 * Method that displays map in String form if player has a map item
+	 */
 	public static void displayMap(){
 		if (currentPlayer.inventory.contains(map)) {
 			System.out.println(
 				". . . . . . . . . . . . . . . . .\n"+
+				".                               .\n" +
 				".                         Art   .\n" +
 				".                          |    .\n" +
 				".                          |    .\n" +
@@ -133,6 +141,7 @@ public class HouseOfQuestions {
 				".     |                         .\n" +
 				".     |                         .\n" +
 				".   Philosophy                  .\n" +
+				".                               .\n" +
 				". . . . . . . . . . . . . . . . ."
 			);
 		} else {
@@ -140,10 +149,21 @@ public class HouseOfQuestions {
 		}
 	}
 	
+	/**
+	 * Method that finds the name of the Locale player is located at
+	 *
+	 * @param userLoc the player location number
+	 * @return the name of the Locale
+	 */
 	public static String findUserLoc(int userLoc) {
 		return LOCALES[userLoc].name;
 	}
 	
+	/**
+	 * Method that returns the Player trait in String form
+	 *
+	 * @return the user trait
+	 */
 	public static String returnUserTrait(){
 		if (currentPlayer.lucky) {
 			return "Lucky";
@@ -151,6 +171,9 @@ public class HouseOfQuestions {
 		return "Spiritual";
 	}
 	
+	/**
+	 * Method that displays all possible commands in String form
+	 */
 	static void showHelp() {
 		System.out.println( 
 			". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .\n" +
@@ -163,26 +186,31 @@ public class HouseOfQuestions {
 			".  Enter 'i' : info on your current status                    .\n" +
 			".  Enter 'p' : pray to get divine help *if you're spiritual*  .\n" +
 			".                                                             .\n" +
-			".  Enter 't' + item name: takes an item                       .\n" + 
-			".  Enter 'd' + item name: drops an item                       .\n" +
-			".  Enter 'u' + item name: uses an item                        .\n" +
-			".  Enter 'y' + any word : yells something out loud            .\n" +
+			".  Enter 't' + 'all' or 'item name': takes an item(s)         .\n" + 
+			".  Enter 'd' + 'all' or 'item name': drops an item(s)         .\n" +
+			".  Enter 'u' + 'item name': uses an item                      .\n" +
+			".  Enter 'y' + 'any word': yells something out loud           .\n" +
 			".                                                             .\n" +
 			". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ."
 		);
 	}
 	
-	
-	static void showStatus() {
-		System.out.print(currentPlayer.toString());
-	}
-	// This method looks at player's current location 
+	/**
+	 * Method looks at player's current location 
+	 *
+	 * @param dir the desired direction
+	 * @return the location number player is at
+	 */
 	static int from(int dir){
 		int locId = currentPlayer.location;
 		return MAP[locId][dir];
 	}
 	
-	// This method moves player based on where they are at
+	/**
+	 * Method that moves player based on where they are located at
+	 *
+	 * @param direction the desired locaton
+	 */
 	static void move(int direction) {
 		int nextLoc = from(direction);
 		
@@ -198,7 +226,7 @@ public class HouseOfQuestions {
 				System.out.println("You are in the " + LOCALES[currentPlayer.location].name);
 			}
 		} else if (!(nextLoc ==-1) && LOCALES[nextLoc] == LOCALES[2]) {
-			if(SecureLocale.canEnter(SECURELOCS)) {
+			if (SecureLocale.canEnter(SECURELOCS)) {
 				currentPlayer.location = nextLoc;
 				LOCALES[currentPlayer.location].visitCount++;
 				playerTrail.dropCrumb(currentPlayer.location);
@@ -220,7 +248,11 @@ public class HouseOfQuestions {
 		}
 	}
 	
-	// This method uses a stack interface in order for player to back track
+	/**
+	 * Method uses a stack interface in order for player to backtrack
+	 *
+	 * @param trail the BreadcrumbTrail
+	 */
 	static void back(BreadcrumbTrail trail) {
 		if (trail.hasMoreCrumbs() && trail.currentCrumb() > 0) {
 			trail.pickupCrumb();
@@ -228,15 +260,18 @@ public class HouseOfQuestions {
 				currentPlayer.actionCount--;
 				currentPlayer.location = trail.currentCrumb();
 				System.out.println("\n" + HouseOfQuestions.locToScene());
-			} 
-			
+			}
 		} else {	
 			System.out.println("\nAlready reached your first crumb");
 			System.out.println("*You are in the " + LOCALES[currentPlayer.location].name + "*");
 		}
 	}
 	
-	// This method checks to see if player has visited every location, and if so, player can choose victory.
+	/**
+	 * Method that checks to see if player has visited every location, and if so, player can choose victory
+	 *
+	 * @return true, if successful
+	 */
 	static boolean visitVictoryCheck() {
 		int locsVisited = 0;
 		
@@ -246,31 +281,34 @@ public class HouseOfQuestions {
 			}		
 		}
 		
-		if (currentPlayer.ignoreVisitVictory == false) {
-			if (locsVisited == LOCALES.length-1) {
-				System.out.println("*********************************************************");
-				System.out.println("You have visited every location of the House Of Questions");
-				System.out.print("Do you want to leave the house and be done with it?" +"\nEnter Yes or No: ");
+		if (locsVisited == LOCALES.length-1) {
+			System.out.println("*********************************************************");
+			System.out.println("You have visited every location of the House Of Questions");
+			System.out.print("Do you want to leave the house and be done with it?" +"\nEnter Yes or No: ");
 				
-				while (true) {
-					userInput = inputSource.nextLine().trim().toUpperCase();
-					if (userInput.equals("YES")) {
-						System.out.println("\n" +"CONGRATULATIONS"  + "\nYou have won the game via visiting every location.");
-						return true;
-					} else if (userInput.equals("NO")) {
-						currentPlayer.ignoreVisitVictory = true;
-						System.out.println("*********************************************************");
-						break;
-					} else {
-						System.out.print("Not a valid command\n" + "Yes or No?");
-						continue;
-					}
+			while (true) {
+				userInput = inputSource.nextLine().trim().toUpperCase();
+				if (userInput.equals("YES")) {
+					System.out.println("\n" +"CONGRATULATIONS"  + "\nYou have won the game via visiting every location.");
+					return true;
+				} else if (userInput.equals("NO")) {
+					System.out.println("*********************************************************");
+					break;
+				} else {
+					System.out.print("Not a valid command\n" + "Yes or No?");
+					continue;
 				}
 			}
 		}
+	
 		return false;
 	}
 	
+	/**
+	 * Method that checks if player has answered final question correctly
+	 *
+	 * @return true, if successful
+	 */
 	static boolean questionVictoryCheck() {
 		if (LOCALES[currentPlayer.location].equals(LOCALES[2])) {
 			System.out.print("Final Question: Did you like this game?: ");
@@ -291,15 +329,12 @@ public class HouseOfQuestions {
 		}
 		return false;
 	}
-		
-	public Item findItem(Player user, Item item){
-		if (user.inventory.contains(item)) {
-			return item;
-		}
-		return null;
-	}
 	
-	// This method checks to see if player has taken too many steps, and if so, the player loses.
+	/**
+	 * Method checks to see if player has taken too many steps, and if so, the player loses.
+	 *
+	 * @return true, if successful
+	 */
 	static boolean outOfActions() {
 		if (currentPlayer.actionCount == 0) {
 			System.out.println("\n" +"The number on your right hand turned to 0...." + "\nYOU DIED....");
@@ -308,15 +343,22 @@ public class HouseOfQuestions {
 		return false;
 	}
 	
-	// This method checks to see if player has guessed too many times when answering the location questions, if so the player loses
+	/**
+	 * Method checks to see if player has guessed too many times when answering questions, if so, the player loses
+	 *
+	 * @return true, if successful
+	 */
 	static boolean outOfGuesses() {
-		if (currentPlayer.questionCounter == 0) {
+		if (currentPlayer.answerCount == 0) {
 			System.out.println("\n" +"The number on your left hand turned to 0...." + "\nYOU DIED....");
 			return true;
 		}
 		return false;
 	}
-	// This method creates instances of Item and sets them in their proper location
+	
+	/**
+	 * Method creates instances of Item and sets them in their proper location
+	 */
 	static void setItems() {
 		LOCALES[0].placeItems(map);
 		LOCALES[1].placeItems(guitar);
@@ -329,34 +371,43 @@ public class HouseOfQuestions {
 		LOCALES[9].placeItems(textbook);
 	}
 	
+	/**
+	 * Method that sets the questions and answers of some SecureLocale
+	 */
 	static void setQuizAndAnswers() {
-		LOCALES[1].setQuestion("What genre of music does Michael Jackson perform?: ");
-		LOCALES[1].setAnswer("POP");
-		LOCALES[3].setQuestion("What is 761 − 347?: ");
-		LOCALES[3].setAnswer("414");
-		LOCALES[5].setQuestion("What eye color is typically dominant in humans?: ");
-		LOCALES[5].setAnswer("BROWN");
-		LOCALES[6].setQuestion("Who is Socrates's famous student: ");
-		LOCALES[6].setAnswer("PLATO");
-		LOCALES[7].setQuestion("Currently, how many amendments are in the U.S. constitution?: ");
-		LOCALES[7].setAnswer("27");
-		LOCALES[8].setQuestion("What is the word that is defined as 'a time of intense difficulty': ");
-		LOCALES[8].setAnswer("CRISIS");
-		LOCALES[9].setQuestion("In what city is the Statue of David located at?: ");
-		LOCALES[9].setAnswer("FLORENCE");
+		SECURELOCS[0].setQuestion("What genre of music does Michael Jackson perform?: ");
+		SECURELOCS[0].setAnswer("POP");
+		SECURELOCS[1].setQuestion("What is 761 − 347?: ");
+		SECURELOCS[1].setAnswer("414");
+		SECURELOCS[2].setQuestion("What eye color is typically dominant in humans?: ");
+		SECURELOCS[2].setAnswer("BROWN");
+		SECURELOCS[3].setQuestion("Who is Socrates's famous student: ");
+		SECURELOCS[3].setAnswer("PLATO");
+		SECURELOCS[4].setQuestion("Currently, how many amendments are in the U.S. constitution?: ");
+		SECURELOCS[4].setAnswer("27");
+		SECURELOCS[5].setQuestion("What is the word that is defined as 'a time of intense difficulty': ");
+		SECURELOCS[5].setAnswer("CRISIS");
+		SECURELOCS[6].setQuestion("In what city is the Statue of David located at?: ");
+		SECURELOCS[6].setAnswer("FLORENCE");
 		
 	}
 	
-	// This method starts the game loop
+	/**
+	 * Method that starts the game
+	 */
 	public static void gameStart() {
+		// Continue if player does not quit before games truly begins
+		if (!(gameIntro())) {
+			return;
+		}
 		setItems();
 		setQuizAndAnswers();
 		LOCALES[currentPlayer.location].visitCount++;
 		playerTrail.dropCrumb(currentPlayer.location);
 		
+		// Main game loop, when player loses or quits the loop is broken
 		while (true) {
-			
-			// User input that is case-insensitive
+			// Victory conditions and Lose conditions are checked
 			if (visitVictoryCheck()) {
 				break;
 			} else if (outOfActions()) {
@@ -373,7 +424,7 @@ public class HouseOfQuestions {
 			userInput = inputSource.nextLine().trim().toUpperCase();
 			String[] inputSplit = userInput.split(" ");
 			
-			// Game loops until user quits
+			// Determines what to do if player inputs certain commands
 			if (userInput.equals("N")) {
 				move(N);
 			} else if (userInput.equals("S")) {
@@ -387,11 +438,11 @@ public class HouseOfQuestions {
 			} else if (userInput.equals("X")) {
 				Player.examine(currentPlayer,LOCALES);
 			} else if (userInput.equals("P")) {
-				Player.playerAction(currentPlayer, LOCALES, SECURELOCS);
+				Player.actionCheck(currentPlayer, LOCALES, SECURELOCS);
 			} else if (userInput.equals("M")) {
 				displayMap();
 			} else if (userInput.equals("I")) {
-				showStatus();
+				System.out.println(currentPlayer);;
 			} else if (userInput.equals("H")) {
 				showHelp();
 			} else if (userInput.equals("Q")) {
@@ -435,25 +486,58 @@ public class HouseOfQuestions {
 		}
 	} 
 	
-	// This method displays the welcome message and captures player's name
-	static void gameIntro(){
+	/**
+	 * Method that handles the game's introduction
+	 *
+	 * @return true, if player wishes to start the game
+	 */
+	static boolean gameIntro(){
+		// Player can choose to quit game before it starts by entering 'Q', else continue with 'C'
+		String gameStart;
+		boolean continueGame;
 		
 		System.out.println("\n"+"House of Questions");
 		System.out.println("------------------");
 		showHelp();
+		
+		while(true) {
+			System.out.print("Enter C to continue or Q to quit: ");
+			gameStart = inputSource.nextLine().trim().toUpperCase();
+			
+			if (gameStart.equals("C")) {
+				continueGame = true;
+				break;
+			} else if(gameStart.equals("Q")) {
+				continueGame = false;
+				break;
+			} else {
+				System.out.println("\nPlease enter C or Q...");
+				continue;
+			}
+		}
+		
+		if (continueGame == false) {
+			return continueGame;
+		}
+		
+		// Captures Player name, and trait
 		Player.setUserName(currentPlayer, inputSource);
 		Player.setUserTrait(currentPlayer, inputSource);
 		System.out.println("\n****************************");
 		System.out.println("\nHello " + currentPlayer.name + ",\n\nYou wake up to find yourself inside of the "+
 			"'House of Questions'\n"+"Nothing else to do but explore...\n");
 		System.out.println("On your right hand you see the number " + currentPlayer.actionCount + " branded on your skin");
-		System.out.println("On your left hand you see the number " + currentPlayer.questionCounter + " branded on your skin");
+		System.out.println("On your left hand you see the number " + currentPlayer.actionCount + " branded on your skin");
 		System.out.println("Game Note: Enter 'h' for a list of commands\n");
-		System.out.println(HouseOfQuestions.locToScene());
+		System.out.println(locToScene());
+		return continueGame;
 	}
 	
+	/**
+	 * Method that displays the game credits
+	 */
 	// This method end the game and displays the game credits
-	static void gameEnd() {
+	static void gameCredits() {
 		System.out.println("\nThank you for playing :)");
 		System.out.println("\nCopyright Michael Gutierrez");
 		System.out.println("===========================");
@@ -461,9 +545,13 @@ public class HouseOfQuestions {
 		inputSource.close();
 	}
 	
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
 	public static void main(String[] args) {
-		HouseOfQuestions.gameIntro();
-		HouseOfQuestions.gameStart();
-		HouseOfQuestions.gameEnd();
+		gameStart();
+		gameCredits();
 	}	
 }
