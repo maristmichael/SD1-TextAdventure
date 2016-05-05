@@ -33,8 +33,9 @@ public class Player {
 	
 	/** Count for player receiving clues */
 	int clueCount;
-
-
+	
+	/** boolean that checks if game can skip the victory condition by visiting all Locale*/
+	boolean skipVisitVictory;
 	
 	/**
 	 * Instantiates a new player.
@@ -48,6 +49,7 @@ public class Player {
 		this.actionCount      = 20;
 		this.answerCount      = 3;
 		this.clueCount        = 3;
+		this.skipVisitVictory = false;
 	}
 	
 	/** String array that holds text for when player prays  */

@@ -23,8 +23,8 @@ public class Locale {
 	/**
 	 * Instantiates a new locale.
 	 *
-	 * @param name the name
-	 * @param description the description
+	 * @param name the name of the locale
+	 * @param description the description of the locale
 	 */
 	public Locale(String name, String description) {
 		this.name        = name;
@@ -35,21 +35,19 @@ public class Locale {
 	};
 	
 	/**
-	 * Place items.
+	 * 	Method that creates and places new items into the Locale ArrayList
 	 *
-	 * @param name the name
+	 * @param name the name of item being placed
 	 */
-	// This method creates and places new items into the Locale ArrayList
 	public void placeItems(Item name) {
 		this.items.add(name);   
 	}
 	
 
 	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	/* 
+	 * A more useful toString method
 	 */
-	// A more useful toString method
 		@Override
 		public String toString() {
 			return this.description + "\n*You are in the " + this.name + "*";

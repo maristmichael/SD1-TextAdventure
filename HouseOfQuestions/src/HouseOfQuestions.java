@@ -292,7 +292,8 @@ public class HouseOfQuestions {
 					System.out.println("\n" +"CONGRATULATIONS"  + "\nYou have won the game via visiting every location.");
 					return true;
 				} else if (userInput.equals("NO")) {
-					System.out.println("*********************************************************");
+					currentPlayer.skipVisitVictory = true;
+					System.out.println("Continue with the game\n");
 					break;
 				} else {
 					System.out.print("Not a valid command\n" + "Yes or No?");
@@ -300,7 +301,6 @@ public class HouseOfQuestions {
 				}
 			}
 		}
-	
 		return false;
 	}
 	
@@ -408,7 +408,7 @@ public class HouseOfQuestions {
 		// Main game loop, when player loses or quits the loop is broken
 		while (true) {
 			// Victory conditions and Lose conditions are checked
-			if (visitVictoryCheck()) {
+			if (currentPlayer.skipVisitVictory == false && visitVictoryCheck()) {
 				break;
 			} else if (outOfActions()) {
 				break;
