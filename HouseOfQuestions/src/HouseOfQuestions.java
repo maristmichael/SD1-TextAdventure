@@ -21,10 +21,10 @@ public class HouseOfQuestions {
  	static Item map                  = new Item("map", "A map of the house", "You spot a map on the floor");
 	static Item guitar               = new Item("guitar", "A nifty acoustic guitar", "You found a cool guitar");
 	static Item batteries            = new Item("batteries", "a pair of Double-A batteries", "You see a pair of batteries on a lab table");
-	static Item painting             = new Item("painting", "Van Gogh's famous famous painting","A familiar painting catches your eyes");
-	static Item novel                = new Item("novel", "Great Gatsby, a famous book by F.Scott Fitzgerald", "You find your favorite novel of all time");
-	static Item textbook             = new Item("textbook", "A thick book containing U.S. history", "You see a big and textbook on the table");
-	static Item beard	             = new Item("beard", "A fake beard to wear for philosophizing", "You see a beard on the floor");
+	static Item painting             = new Item("painting", "What a weird painting, it only colored brown","A weird painting catches your eyes");
+	static Item dictionary           = new Item("dictionary", "A normal pocket dictionary", "You see a dictionary on a table, boring...");
+	static Item textbook             = new Item("textbook", "A thick book containing world history", "You see a big and textbook on the table");
+	static Item beard	             = new Item("beard", "A fake beard to wear while philosophizing", "You see a beard on the floor");
 	static LimitedUseItem bottle     = new LimitedUseItem("bottle", "A water bottle", "You see a bottle", 2, "You drank some of the water");
 	static LimitedUseItem calculator = new LimitedUseItem("calculator","A nifty TI-84 calculator", "You spot a nice calculator",
 														   4,"The calulator turned off, the batteries must be drained");
@@ -45,8 +45,8 @@ public class HouseOfQuestions {
 	public static final String[] LocDescrip = {
 		"This is the starting area, there are several paths to take",
 		"In this room, you hear many melodies emanating from the walls",
-		"You have entered the secret room, its wall completely white and has " + 
-				"a wall inscribed with the answers to the questions you answered",
+		"You have entered the secret room, its wall completely covered with moniters " + 
+				"and weird comptuer technology",
 		"This is a room that has walls written with math equations",
 		"Suprisingly you found the kitchen though it doesn't look like it has much to eat",
 		"You enter a room littered with many scientific journals and books",
@@ -61,7 +61,7 @@ public class HouseOfQuestions {
 	public final static Locale[] LOCALES = {
 		new Locale      ("Starting Room",   LocDescrip[0]),
 		new SecureLocale("Music Room",      LocDescrip[1] , false, false, 3),
-		new Locale      ("Result Room",     LocDescrip[2]),
+		new Locale      ("Computer Room",     LocDescrip[2]),
 		new SecureLocale("Math Room",       LocDescrip[3] , false, false, 3),
 		new Locale      ("Kitchen",         LocDescrip[4]),
 		new SecureLocale("Science Room",    LocDescrip[5] , false, false, 3),
@@ -86,15 +86,15 @@ public class HouseOfQuestions {
 	/** The navigation matrix */
 	public final static int [][] MAP = {
 			  /*{N,S,W,E}*/
-		/*0*/	{1,2,3,7},   // From Start   --> Math(W), Music(N), History(E), Result(S)
-	 	/*1*/	{-1,0,-1,-1},// From Music   --> Start(S)
-	 	/*2*/	{0,-1,-1,-1},// From Result  --> Start(N)
-	 	/*3*/	{4,5,-1,0},  // From Math    --> Start(E), Kitchen(N), Science(S)
-	 	/*4*/	{-1,3,-1,-1},// From Kitchen --> Math(S)
-	 	/*5*/	{3,6,-1,-1}, // From Science --> Math(N), Philosophy(S)
+		/*0*/	{1,2,3,7},   // From Start    --> Math(W), Music(N), History(E), Computer(S)
+	 	/*1*/	{-1,0,-1,-1},// From Music    --> Start(S)
+	 	/*2*/	{0,-1,-1,-1},// From Computer --> Start(N)
+	 	/*3*/	{4,5,-1,0},  // From Math     --> Start(E), Kitchen(N), Science(S)
+	 	/*4*/	{-1,3,-1,-1},// From Kitchen  --> Math(S)
+	 	/*5*/	{3,6,-1,-1}, // From Science  --> Math(N), Philosophy(S)
 	 	/*6*/	{5,-1,-1,-1},// From Philosophy --> Science(N)
-	 	/*7*/	{8,-1,0,-1}, // From History     --> English (N), Start(E)
-	 	/*8*/	{9,7,-1,-1}, // From English --> Art(N), Art(S)
+	 	/*7*/	{8,-1,0,-1}, // From History    --> English (N), Start(E)
+	 	/*8*/	{9,7,-1,-1}, // From English   --> Art(N), Art(S)
 	 	/*9*/	{-1,8,-1,-1} // From Art --> English(S)
 	};
 	
@@ -137,7 +137,7 @@ public class HouseOfQuestions {
 				".    Math------Start---History  .\n" +
 				".     |          |              .\n" +
 				".     |          |              .\n" +
-				".   Science     Result          .\n" +
+				".   Science   Computer          .\n" +
 				".     |                         .\n" +
 				".     |                         .\n" +
 				".   Philosophy                  .\n" +
@@ -178,7 +178,8 @@ public class HouseOfQuestions {
 		System.out.println( 
 			". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .\n" +
 			".                                                             .\n" +
-			".  Enter 'n', 's', 'e', 'w': move a direction                 .\n" + 
+			".  Enter 'n', 's', 'e', 'w': move a direction                 .\n" +
+			".  Enter 'h' : displays all commands                          .\n" +
 			".  Enter 'q' : quits the game                                 .\n" + 
 			".  Enter 'm' : displays the game map                          .\n" + 
 			".  Enter 'b' : backtrack to last room                         .\n" +
@@ -190,6 +191,7 @@ public class HouseOfQuestions {
 			".  Enter 'd' + 'all' or 'item name': drops an item(s)         .\n" +
 			".  Enter 'u' + 'item name': uses an item                      .\n" +
 			".  Enter 'y' + 'any word': yells something out loud           .\n" +
+			".    **Answer questions by yelling**                          .\n" +
 			".                                                             .\n" +
 			". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ."
 		);
@@ -209,7 +211,7 @@ public class HouseOfQuestions {
 	/**
 	 * Method that moves player based on where they are located at
 	 *
-	 * @param direction the desired locaton
+	 * @param direction the desired location
 	 */
 	static void move(int direction) {
 		int nextLoc = from(direction);
@@ -282,6 +284,9 @@ public class HouseOfQuestions {
 		}
 		
 		if (locsVisited == LOCALES.length-1) {
+			if (LOCALES[currentPlayer.location].equals(LOCALES[2])) {
+				return false;
+			}
 			System.out.println("*********************************************************");
 			System.out.println("You have visited every location of the House Of Questions");
 			System.out.print("Do you want to leave the house and be done with it?" +"\nEnter Yes or No: ");
@@ -311,19 +316,22 @@ public class HouseOfQuestions {
 	 */
 	static boolean questionVictoryCheck() {
 		if (LOCALES[currentPlayer.location].equals(LOCALES[2])) {
-			System.out.print("Final Question: Did you like this game?: ");
+			System.out.println("A computer A.I. speaks to you, 'Final Question'");
+			System.out.print("A self-contained step-by-step set of operations to be performed is an?: ");
 			
 			while (true) {
 				userInput = inputSource.nextLine().trim().toUpperCase();
-				if (userInput.equals("YES")) {
+				if (userInput.equals("ALGORITHM")) {
+					System.out.println("\nThe A.I. short circuits and explodes");
+					System.out.println("It appears that you have solved the mystery of The House of Questions\n");
 					System.out.println("YOU " + currentPlayer.name.toUpperCase() + " WIN!!!!!!!!!\n\n\n");
 					return true;
-				} else if (userInput.equals("NO")) {
-					System.out.println("Keep playing");
-					break;
 				} else {
-					System.out.println("Not a valid answer");
-					continue;
+					System.out.println("\nThe A.I. speaks, 'INCORRECT, YOU ARE SENTENCED TO LIFE IN THIS ROOM'");
+					System.out.println("The room's lights shut off and you " + currentPlayer.name + 
+											" are never heard of ever again...\n");
+					System.out.println("YOU " + currentPlayer.name.toUpperCase() + " LOSE....\n\n\n");
+					return true;
 				}
 			}
 		}
@@ -337,7 +345,7 @@ public class HouseOfQuestions {
 	 */
 	static boolean outOfActions() {
 		if (currentPlayer.actionCount == 0) {
-			System.out.println("\n" +"The number on your right hand turned to 0...." + "\nYOU DIED....");
+			System.out.println("\n" +"The number on your right hand turned to 0...." + "\nYOU SUDDENLY COLLAPSE AND DIED....");
 			return true;
 		}
 		return false;
@@ -350,7 +358,7 @@ public class HouseOfQuestions {
 	 */
 	static boolean outOfGuesses() {
 		if (currentPlayer.answerCount == 0) {
-			System.out.println("\n" +"The number on your left hand turned to 0...." + "\nYOU DIED....");
+			System.out.println("\n" +"The number on your left hand turned to 0...." + "\nYOU SUDDENLY COLLAPSE AND DIED....");
 			return true;
 		}
 		return false;
@@ -366,9 +374,9 @@ public class HouseOfQuestions {
 		LOCALES[4].items.add(bottle);
 		LOCALES[5].placeItems(batteries);
 		LOCALES[6].placeItems(beard);
-		LOCALES[7].placeItems(painting);
-		LOCALES[8].placeItems(novel);
-		LOCALES[9].placeItems(textbook);
+		LOCALES[7].placeItems(textbook);
+		LOCALES[8].placeItems(dictionary);
+		LOCALES[9].placeItems(painting);
 	}
 	
 	/**
@@ -377,16 +385,16 @@ public class HouseOfQuestions {
 	static void setQuizAndAnswers() {
 		SECURELOCS[0].setQuestion("What genre of music does Michael Jackson perform?: ");
 		SECURELOCS[0].setAnswer("POP");
-		SECURELOCS[1].setQuestion("What is 761 − 347?: ");
-		SECURELOCS[1].setAnswer("414");
+		SECURELOCS[1].setQuestion("What is 2 to the power of twelve?: ");
+		SECURELOCS[1].setAnswer("4096");
 		SECURELOCS[2].setQuestion("What eye color is typically dominant in humans?: ");
 		SECURELOCS[2].setAnswer("BROWN");
-		SECURELOCS[3].setQuestion("Who is Socrates's famous student: ");
+		SECURELOCS[3].setQuestion("Who is Socrates's famous student?: ");
 		SECURELOCS[3].setAnswer("PLATO");
 		SECURELOCS[4].setQuestion("Currently, how many amendments are in the U.S. constitution?: ");
 		SECURELOCS[4].setAnswer("27");
-		SECURELOCS[5].setQuestion("What is the word that is defined as 'a time of intense difficulty': ");
-		SECURELOCS[5].setAnswer("CRISIS");
+		SECURELOCS[5].setQuestion("What word is defined as 'a state of society without government or law'?: ");
+		SECURELOCS[5].setAnswer("ANARCHY");
 		SECURELOCS[6].setQuestion("In what city is the Statue of David located at?: ");
 		SECURELOCS[6].setAnswer("FLORENCE");
 		
@@ -408,16 +416,15 @@ public class HouseOfQuestions {
 		// Main game loop, when player loses or quits the loop is broken
 		while (true) {
 			// Victory conditions and Lose conditions are checked
-			if (currentPlayer.skipVisitVictory == false && visitVictoryCheck()) {
+			if (questionVictoryCheck()){
 				break;
 			} else if (outOfActions()) {
 				break;
-			} else if (questionVictoryCheck()) {
-				break;
 			} else if (outOfGuesses()) {
 				break;
-			}
-			
+			} else if (currentPlayer.skipVisitVictory == false && visitVictoryCheck()) {
+				break;
+			}			
 			System.out.println("****************************");
 			System.out.println("Number on right hand: " + currentPlayer.actionCount + "\n");
 			System.out.print("What should I do?: ");
@@ -465,12 +472,14 @@ public class HouseOfQuestions {
 			} else if (inputSplit[0].equals("U")) {
 				if (inputSplit.length == 1) {
 					System.out.println("\nWhat did you want to use?");
-				} else if (Item.hasLimitedItem(currentPlayer)) {
-					Player.use(currentPlayer, LOCALES, Item.returnLimitedItem(currentPlayer), inputSplit);
-				} else {
+				} else if (currentPlayer.inventory.size() == 0) {
 					System.out.println("\nNo item in your inventory that can be used");
+				} else if (Item.hasLimitedItem(currentPlayer)) {
+					Player.use(currentPlayer, LOCALES, LimitedUseItem.returnLimitedItem(currentPlayer), inputSplit);
+				} else {
+					Player.use(currentPlayer, inputSplit);
 				}
-				
+			
 			} else if (inputSplit[0].equals("Y")) {
 				if (inputSplit.length == 1) {
 					System.out.println("\nWhat did you want to yell?"); 
@@ -479,7 +488,7 @@ public class HouseOfQuestions {
 				}
 				
 			} else {
-				System.out.println("Not a valid comman\n");
+				System.out.println("Not a valid command\n");
 				continue;
 			}	
 			System.out.println("");
@@ -526,9 +535,8 @@ public class HouseOfQuestions {
 		System.out.println("\n****************************");
 		System.out.println("\nHello " + currentPlayer.name + ",\n\nYou wake up to find yourself inside of the "+
 			"'House of Questions'\n"+"Nothing else to do but explore...\n");
-		System.out.println("On your right hand you see the number " + currentPlayer.actionCount + " branded on your skin");
+		System.out.println("On your right hand you see the number " + currentPlayer.answerCount + " branded on your skin");
 		System.out.println("On your left hand you see the number " + currentPlayer.actionCount + " branded on your skin");
-		System.out.println("Game Note: Enter 'h' for a list of commands\n");
 		System.out.println(locToScene());
 		return continueGame;
 	}
@@ -538,6 +546,7 @@ public class HouseOfQuestions {
 	 */
 	// This method end the game and displays the game credits
 	static void gameCredits() {
+		System.out.println("*******************************************");
 		System.out.println("\nThank you for playing :)");
 		System.out.println("\nCopyright Michael Gutierrez");
 		System.out.println("===========================");

@@ -1,31 +1,38 @@
-
-// TODO: Auto-generated Javadoc
 /**
- * The Class Item.
+ * @author Michael Gutierrez <michael.gutierrez2@marist.edu>
+ * @version 1.0
+ * CMPT 220L-114
+ * Professor Johnson
+ * 6 May 2016
+ *
+ */
+
+/**
+ * The Class Item
  */
 public class Item {
 	
-	/** The name. */
+	/** The name name of the item */
 	String name;
 	
-	/** The descrip. */
+	/** The description of the item */
 	String descrip;
 	
-	/** The discovered. */
+	/** The text for when the item has been discovered */
 	String discovered;
 	
-	/** The is discovered. */
+	/** Check if item has been discovered */
 	boolean isDiscovered;
 	
-	/** The value. */
+	/** The value of the item */
 	int value;
 	
 	/**
-	 * Instantiates a new item.
+	 * Instantiates a new item
 	 *
-	 * @param name the name
-	 * @param descrip the descrip
-	 * @param discovered the discovered
+	 * @param name the name of the item
+	 * @param descrip the description of the item
+	 * @param discovered the text for when item is discovered
 	 */
 	public Item(String name, String descrip, String discovered){
 		this.name = name;
@@ -35,18 +42,11 @@ public class Item {
 		this.isDiscovered = false;
 	};
 	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString(){
-		return this.name;
-	}
 	
 	/**
-	 * Checks for limited item.
+	 * Checks if player has a LimitedUseItem
 	 *
-	 * @param user the user
+	 * @param user the player
 	 * @return true, if successful
 	 */
 	public static boolean hasLimitedItem(Player user){
@@ -58,18 +58,12 @@ public class Item {
 		return false;
 	}
 	
-	/**
-	 * Return limited item.
-	 *
-	 * @param user the user
-	 * @return the limited use item
+	
+	@Override
+	/* 
+	 * A more useful toString method
 	 */
-	public static LimitedUseItem returnLimitedItem(Player user){
-		for(int i = 0; i < user.inventory.size(); i++) {
-			if (user.inventory.get(i) instanceof LimitedUseItem) {
-				return (LimitedUseItem) user.inventory.get(i);
-			}
-		}
-		return null;
+	public String toString(){
+		return this.name;
 	}
 }

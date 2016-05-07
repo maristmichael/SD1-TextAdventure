@@ -1,3 +1,11 @@
+/**
+ * @author Michael Gutierrez <michael.gutierrez2@marist.edu>
+ * @version 1.0
+ * CMPT 220L-114
+ * Professor Johnson
+ * 6 May 2016
+ *
+ */
 
 /**
  * The Class LimitedUseItem
@@ -23,5 +31,20 @@ public class LimitedUseItem extends Item {
 		super(name, descrip, discovered);
 		this.usesRemaining = uses;
 		this.afterUse      = afterUse;
+	}
+	
+	/**
+	 * Method that returns a LimitedUseItem
+	 *
+	 * @param user the player
+	 * @return the limited use item else, return null
+	 */
+	public static LimitedUseItem returnLimitedItem(Player user){
+		for(int i = 0; i < user.inventory.size(); i++) {
+			if (user.inventory.get(i) instanceof LimitedUseItem) {
+				return (LimitedUseItem) user.inventory.get(i);
+			}
+		}
+		return null;
 	}
 }

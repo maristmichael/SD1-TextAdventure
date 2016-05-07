@@ -1,3 +1,12 @@
+/**
+ * @author Michael Gutierrez <michael.gutierrez2@marist.edu>
+ * @version 1.0
+ * CMPT 220L-114
+ * Professor Johnson
+ * 6 May 2016
+ *
+ */
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -22,7 +31,7 @@ public class Player {
 	/** Player location */
 	int location;
 	
-	/** Player score. */
+	/** Player score */
 	int score;
 	
 	/** Count for player moves */
@@ -34,7 +43,7 @@ public class Player {
 	/** Count for player receiving clues */
 	int clueCount;
 	
-	/** boolean that checks if game can skip the victory condition by visiting all Locale*/
+	/** boolean that checks if game can skip the victory condition by visiting all Locale */
 	boolean skipVisitVictory;
 	
 	/**
@@ -336,28 +345,57 @@ public class Player {
 			System.out.println("Nothing special to take in this room");
 		}
 	}
-		
+	
+	/**
+	 * Method allows user to use a normal item
+	 *
+	 * @param user the player
+	 * @param LOCALES the array containing all instances of Locale
+     * @param useItem the limited use item that is being used
+	 * @param item String array that takes in the split user input
+     */
+	static void use(Player user, String[] item) {
+		if (item[1].equals("TEXTBOOK")) {
+			useTextbook(user, item);
+		} else if (item[1].equals("MAP")) {
+			useMap(user, item);
+		} else if (item[1].equals("GUITAR")) {
+			useGuitar(user, item);
+		} else if (item[1].equals("BATTERIES")) {
+			useBatteries(user, item);
+		} else if (item[1].equals("PAINTING")) {
+			usePainting(user, item);
+		} else if (item[1].equals("DICTIONARY")) {
+			useDictionary(user, item);
+		} else if (item[1].equals("BEARD")) {
+			useBeard(user, item);
+		} else { 
+			System.out.println("\nNot an item that can be used");
+		}
+	}
+	
 	/**
 	 * Method allows user to use a limited-use-item
 	 *
 	 * @param user the player
 	 * @param LOCALES the array containing all instances of Locale
-     * @param limitedItem the limited use item that is being used
+     * @param useLimitedItem the limited use item that is being used
 	 * @param item String array that takes in the split user input
      */
-	static void use(Player user, Locale[] LOCALES, LimitedUseItem limitedItem, String[] item) {
+	static void use(Player user, Locale[] LOCALES, LimitedUseItem useLimitedItem, String[] item) {
 		if (item[1].equals("BOTTLE")) {
-			useBottle(user,limitedItem, item);
+			useBottle(user,useLimitedItem, item);
 		} else if (item[1].equals("CALCULATOR")) {
-			useCalculator(user, LOCALES, limitedItem, item);
-		} else { 
+			useCalculator(user, LOCALES, useLimitedItem, item);
+		} else  if (user.inventory.size() > 0) {
+			use(user, item);
+		} else {
 			System.out.println("\nNot an item that can be used");
 		}
-	}
-		
+	}	
 		
 	/**
-	 * user() helper method that handles player using the bottle item
+	 * use() helper method that handles player using the bottle item
 	 *
 	 * @param user the player
      * @param limitedItem the limited use item that is being used
@@ -370,7 +408,7 @@ public class Player {
 			if(user.inventory.get(i).name.equals(item[1].toLowerCase()) && limitedItem.usesRemaining != 0) {
 				limitedItem.usesRemaining --;
 				user.actionCount += gainMoveAction;
-				System.out.println("You drank the water inside the bottle\n" + "The number on right hand increased by 5\n");
+				System.out.println("\nYou drank the water inside the bottle\n" + "The number on right hand increased by 5\n");
 				break;
 			} else if (limitedItem.usesRemaining == 0) {
 				System.out.println(limitedItem.afterUse);
@@ -380,7 +418,7 @@ public class Player {
 	}
 		
 	/**
-	 * user() helper method that handles player using the calculator item
+	 * use() helper method that handles player using the calculator item
 	 *
 	 * @param user the player
 	 * @param LOCALES the array containing all instances of Locale
@@ -393,11 +431,11 @@ public class Player {
 				for (int m = 0; m < user.inventory.size(); m++) {
 					if (user.inventory.get(m).name.equals("batteries") && checkUserLoc(user,LOCALES,3) == true) {
 						limitedItem.usesRemaining --;
-						System.out.print("You calculated the equation on the wall 761 − 347 = 414");
+						System.out.print("\nYou calculated the equation on the wall: 2^12 = 4096\n");
 						return;
 					} else if (user.inventory.get(m).name.equals("batteries")) {
 						limitedItem.usesRemaining --;
-						System.out.println("You play with calculator");
+						System.out.println("\nYou play with calculator");
 						return;
 					}
 				}
@@ -407,7 +445,117 @@ public class Player {
 				return;
 			}
 		}
-		System.out.println("The calulator doesn't turn on, maybe there are batteries to find...");
+		System.out.println("\nThe calulator doesn't turn on, maybe there are batteries to find...");
+	}
+	
+	/**
+	 * use() helper method that handles player using the textbook item
+	 *
+	 * @param user the player
+	 * @param item String array that takes in the split user input
+	 */
+	static void useTextbook(Player user, String[] item) {
+		for (int i = 0; i < user.inventory.size(); i++) {
+			if(user.inventory.get(i).name.equals(item[1].toLowerCase())) {
+				System.out.println("\nYou read the textbook and found out that the Statue of David is Flo.....");
+				System.out.println("Crud, the rest of the page is torn");
+				break;
+			} 
+		}
+	}
+	
+	/**
+	 * use() helper method that handles player using the map item
+	 *
+	 * @param user the player
+	 * @param item String array that takes in the split user input
+	 */
+	static void useMap(Player user, String[] item) {
+		for (int i = 0; i < user.inventory.size(); i++) {
+			if(user.inventory.get(i).name.equals(item[1].toLowerCase())) {
+				HouseOfQuestions.displayMap();
+				break;
+			} 
+		}
+	}
+	
+	/**
+	 * use() helper method that handles player using the guitar item
+	 *
+	 * @param user the player
+	 * @param item String array that takes in the split user input
+	 */
+	static void useGuitar(Player user, String[] item) {
+		for (int i = 0; i < user.inventory.size(); i++) {
+			if(user.inventory.get(i).name.equals(item[1].toLowerCase())) {
+				System.out.println("\nUnfortunately, you cannot play the guitar...");
+				System.out.println("One day you will learn how to play your favorite rock song 'Anarchy' in the U.K.");
+				break;
+			} 
+		}
+	}
+	
+	/**
+	 * use() helper method that handles player using the batteries item
+	 *
+	 * @param user the player
+	 * @param item String array that takes in the split user input
+	 */
+	static void useBatteries(Player user, String[] item) {
+		for (int i = 0; i < user.inventory.size(); i++) {
+			if(user.inventory.get(i).name.equals(item[1].toLowerCase())) {
+				System.out.println("\nThere must be some use for these batteries");
+				break;
+			} 
+		}
+	}
+	
+	/**
+	 * use() helper method that handles player using the painting item
+	 *
+	 * @param user the player
+	 * @param item String array that takes in the split user input
+	 */
+	static void usePainting(Player user, String[] item) {
+		for (int i = 0; i < user.inventory.size(); i++) {
+			if(user.inventory.get(i).name.equals(item[1].toLowerCase())) {
+				System.out.println("\nNot much you can do with this brown painting of an eye");
+				break;
+			} 
+		}
+	}
+	
+	/**
+	 * use() helper method that handles player using the dictionary item
+	 *
+	 * @param user the player
+	 * @param item String array that takes in the split user input
+	 */
+	static void useDictionary(Player user, String[] item) {
+		for (int i = 0; i < user.inventory.size(); i++) {
+			if(user.inventory.get(i).name.equals(item[1].toLowerCase())) {
+				System.out.println("\nYou scroll through the boring dictionary and find nothing of interest");
+				System.out.println("Strangely, you find a page that has a word mostly crossed off: 'Alg...'");
+				System.out.println("The rest of the word cannot be read nor its definition");
+				break;
+			} 
+		}
+	}
+	
+	/**
+	 * use() helper method that handles player using the beard item
+	 *
+	 * @param user the player
+	 * @param item String array that takes in the split user input
+	 */
+	static void useBeard(Player user, String[] item) {
+		for (int i = 0; i < user.inventory.size(); i++) {
+			if(user.inventory.get(i).name.equals(item[1].toLowerCase())) {
+				System.out.println("\nThis cool beard will surely give me wisdom"); 
+				System.out.println("No wonder the ancient philosphers rocked this these");
+				break;
+			} 
+		}
 	}
 		
 	/**
@@ -429,7 +577,7 @@ public class Player {
 				return;
 			} else if (text[1].equals(secureLoc.answer) && secureLoc.questionCheck == false && secureLoc.questionCount != 0) {
 				secureLoc.questionCheck = true;
-				System.out.println("A checkmark appeared to next the question written on the wall");
+				System.out.println("A checkmark appeared next to the question written on the wall");
 				return;
 			} else if (secureLoc.questionCheck == true) {
 				System.out.println("You already got the answer to the room");
@@ -445,10 +593,10 @@ public class Player {
 				if (secureLoc.questionCount != 0) {
 					System.out.println("Nothing happened...");
 				} else {
-					System.out.println("The question on the suddenly dissapeared");
+					System.out.println("The question on the wall suddenly dissapeared");
 				}
 				
-				System.out.println("\nThe number on ur left palm is now " + user.answerCount);
+				System.out.println("\nThe number on your left palm is now " + user.answerCount);
 			}
 		}
 	}
@@ -484,6 +632,7 @@ public class Player {
 					return;
 				} else if (user.clueCount == 0) {
 					System.out.println("\nYou asked for divine help but nothing happened");
+					System.out.println("Maybe you have asked for too many blessings");
 					return;
 				}
 			} else {

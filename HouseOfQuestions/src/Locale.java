@@ -1,3 +1,12 @@
+/**
+ * @author Michael Gutierrez <michael.gutierrez2@marist.edu>
+ * @version 1.0
+ * CMPT 220L-114
+ * Professor Johnson
+ * 6 May 2016
+ *
+ */
+
 import java.util.ArrayList;
 
 /**
@@ -8,20 +17,20 @@ public class Locale {
 	/** The name */
 	String name;
 	
-	/** The description. */
+	/** The description */
 	String description;
 	
-	/** The items contained in */
+	/** The items contained in Locale*/
 	ArrayList<Item>items;
 	
-	/** The has examined. */
+	/** Check if player has examined Locale */
 	boolean hasExamined;
 	
-	/** The visit count. */
+	/** Visit count for the Locale */
 	int visitCount;
 	
 	/**
-	 * Instantiates a new locale.
+	 * Instantiates a new locale
 	 *
 	 * @param name the name of the locale
 	 * @param description the description of the locale
@@ -35,21 +44,19 @@ public class Locale {
 	};
 	
 	/**
-	 * 	Method that creates and places new items into the Locale ArrayList
+	 * Method that creates and places new items into the Locale ArrayList
 	 *
 	 * @param name the name of item being placed
 	 */
 	public void placeItems(Item name) {
 		this.items.add(name);   
 	}
-	
 
-	
+	@Override
 	/* 
 	 * A more useful toString method
 	 */
-		@Override
-		public String toString() {
-			return this.description + "\n*You are in the " + this.name + "*";
-		}
+	public String toString() {
+		return this.description + "\n*You are in the " + this.name + "*";
+	}
 }

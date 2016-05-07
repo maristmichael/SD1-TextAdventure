@@ -1,3 +1,11 @@
+/**
+ * @author Michael Gutierrez <michael.gutierrez2@marist.edu>
+ * @version 1.0
+ * CMPT 220L-114
+ * Professor Johnson
+ * 6 May 2016
+ *
+ */
 
 /**
  * The Interface BreadcrumbStack.
